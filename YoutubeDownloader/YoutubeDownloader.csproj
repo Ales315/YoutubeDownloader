@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Images\close24.png" />
+    <None Remove="Resources\Images\download24.png" />
+    <None Remove="Resources\Images\icon.png" />
+    <None Remove="Resources\Images\Loading.gif" />
+    <None Remove="Resources\Images\minimize24.png" />
+    <None Remove="Resources\Images\paste24.png" />
+    <None Remove="Resources\Images\pasteDark24.png" />
+    <None Remove="Resources\Images\searchDark24.png" />
+    <None Remove="Resources\Images\settings24.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
+    <PackageReference Include="YoutubeExplode" Version="6.4.4" />
+    <PackageReference Include="YoutubeExplode.Converter" Version="6.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\close24.png" />
+    <Resource Include="Resources\Images\download24.png" />
+    <Resource Include="Resources\Images\icon.png" />
+    <Resource Include="Resources\Images\Loading.gif" />
+    <Resource Include="Resources\Images\minimize24.png" />
+    <Resource Include="Resources\Images\paste24.png" />
+    <Resource Include="Resources\Images\pasteDark24.png" />
+    <Resource Include="Resources\Images\searchDark24.png" />
+    <Resource Include="Resources\Images\settings24.png" />
+  </ItemGroup>
+
+</Project>
