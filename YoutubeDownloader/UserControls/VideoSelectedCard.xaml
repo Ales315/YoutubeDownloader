@@ -19,7 +19,7 @@
 
         <!--Thumbnail-->
 
-        <Border Width="180" Height="101" CornerRadius="8" BorderThickness="1" BorderBrush="LightGray">
+        <Border Width="auto" Height="auto" Margin="10,10,10,10" CornerRadius="8" BorderThickness="1" BorderBrush="LightGray">
             <Border.Background>
                 <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
             </Border.Background>

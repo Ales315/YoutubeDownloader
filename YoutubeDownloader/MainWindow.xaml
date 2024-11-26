@@ -7,17 +7,27 @@
         xmlns:local="clr-namespace:YoutubeDownloader"
         xmlns:uc="clr-namespace:YoutubeDownloader.UserControls" 
         xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
-        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com" xmlns:views="clr-namespace:YoutubeDownloader.Views"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="419" Width="679"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
         Background="DarkSlateGray">
-
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
     <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:HomePageViewModel}">
+            <views:HomePageView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <views:SettingsView />
+        </DataTemplate>
+
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
+
         <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -62,11 +72,9 @@
         </Trigger>
     </ControlTemplate.Triggers>-->
         </ControlTemplate>
-
         <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
             <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
         </ControlTemplate>
-
         <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
             <Setter Property="SnapsToDevicePixels" Value="true"/>
             <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -152,7 +160,6 @@
             <Style.Triggers>
             </Style.Triggers>
         </Style>
-
         <!-- SimpleStyles: ComboBoxItem -->
         <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
             <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -186,24 +193,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1.5*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
-        <Border Grid.Row="1" Background="#fbfbfe"></Border>
-        <Border Grid.Row="2" Background="#dedcff"></Border>
-        <Border Grid.Row="3" Background="#fbfbfe"></Border>
 
-        <!--Titlebar Drop Shadow Effect-->
-        <Rectangle Panel.ZIndex="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="20" Opacity="0.1">
-            <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#00131313" Offset="1"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
 
         <!--Titlebar-->
         <StackPanel Panel.ZIndex="3" WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -257,112 +250,9 @@
             <Image Source="/Resources/Images/icon.png" Width="24"></Image>
             <TextBlock Text="Youtube Downloader" Foreground="DarkSlateGray" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"/>
         </StackPanel>
-
-        <!--URL Bar-->
-        <Grid Grid.Row="1" Panel.ZIndex="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="15*"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <Border Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
-                    CornerRadius="8" BorderBrush="DarkSlateGray" BorderThickness="1">
-                
-            </Border>
-            <TextBox Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1" Name="textboxInputUrl" FontSize="16" Foreground="DarkSlateGray" TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,0,0" Padding="5,0,100,0" Background="White" BorderBrush="Transparent"/>
-            <Button x:Name="buttonPaste" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,52,0"  Click="buttonPaste_Click" Style="{StaticResource PasteButton}">
-                <Image Source="/Resources/Images/pasteDark24.png" Width="24"></Image>
-            </Button>
-            <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" IsEnabled="{Binding }" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" Click="buttonSearch_Click" Style="{StaticResource PasteButton}">
-                <Image Source="/Resources/Images/searchDark24.png" Width="24"></Image>
-            </Button>
-            <Label Name="textBlockURLHint" Content="Incolla un URL qui..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="DarkSlateGray" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="2,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
-            <Rectangle Panel.ZIndex="4" Fill="Gray" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
-        </Grid>
-
-        <!--Video Card-->
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="15*"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Border Grid.Row="1" Grid.Column="1" 
-                    Background="#fbfbfe" CornerRadius="8"
-                    Visibility="{Binding UIState.IsVideoFound, Converter={StaticResource BoolToVisibilityConverter}}">
-                <uc:VideoSelectedCard HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="15" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.3"></DropShadowEffect>
-                </Border.Effect>
-            </Border>
-            <Image x:Name="imgLoadingGif" Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="96" 
-                   gif:ImageBehavior.AnimatedSource="Resources/Images/Loading.gif" gif:ImageBehavior.AnimationSpeedRatio="1.3" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
-                   IsVisibleChanged="Image_IsVisibleChanged"
-                   Visibility="{Binding UIState.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <TextBlock Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Inserisci un URL per iniziare" 
-                       Foreground="#64627a" FontSize="18" FontWeight="DemiBold"
-                       Visibility="{Binding UIState.IsFirstOpening, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <StackPanel Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Visibility="{Binding UIState.IsAnalizingError, Converter={StaticResource BoolToVisibilityConverter}}">
-                <Image Width="48" Source="Resources/Images/close24.png"/>
-                <TextBlock Text="Video non trovato"
-                           Foreground="#64627a" FontSize="18" FontWeight="DemiBold"/>
-            </StackPanel>
-        </Grid>
-
-        <!--Bottom Settings and download Bar-->
-        <Grid Grid.Row="3">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="15*"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <!--Button Download-->
-            <Button Grid.Column="1" Grid.Row="1" x:Name="buttonDownload" VerticalAlignment="Center" HorizontalAlignment="Right" Height="40" Width="130" 
-                    BorderBrush="Transparent" 
-                    BorderThickness="0" 
-                    Style="{StaticResource ActionButton}" 
-                    Click="buttonDownload_Click" 
-                    IsEnabled="{Binding UIState.IsVideoFound}">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Text="Download" VerticalAlignment="Center" Margin="5,0,0,0" Style="{StaticResource ButtonTextBlock}"></TextBlock>
-                    <Image Source="/Resources/Images/download24.png" Width="24" Margin="3,0,0,0"></Image>
-                </StackPanel>
-            </Button>
-
-            <!--Button Settings-->
-            <Button Grid.Column="1" Grid.Row="1" x:Name="buttonSettings" VerticalAlignment="Center" Height="40" Width="40" HorizontalAlignment="Left" Margin="0,0,0,0" BorderBrush="Transparent" BorderThickness="0" Style="{StaticResource CommonButtonDark}">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Resources/Images/settings24.png" Width="24"></Image>
-                </StackPanel>
-            </Button>
-
-            <!--Download Options Combobox-->
-            <!--TODO: SPOSTARE SU UN USER CONTROL-->
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch">
-                <Border Padding="0" Background="Transparent" Height="40">
-                    <ComboBox Name="cbAudioFormat" Grid.Column="1" Height="40" Width="90" SelectedIndex="0" 
-                              ItemsSource="{Binding AudioFormatOptions}" SelectedItem="{Binding SelectedAudioFormat, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Key"/>
-                </Border>
-                <Border Margin="20,0,0,0" Padding="0" Background="Transparent" Height="40">
-                    <ComboBox Name="cbAudioQuality" Grid.Column="1" Height="40" Width="90" SelectedIndex="0" 
-                              ItemsSource="{Binding AudioQualityOptions}" SelectedItem="{Binding SelectedAudioQuality, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Key"/>
-                </Border>
-            </StackPanel>
-        </Grid>
-
+        
+        <!--Current Page-->
+        <ContentControl Content="{Binding CurrentPageViewModel}" Grid.Row="1"/>
     </Grid>
 
 </Window>

@@ -1,0 +1,294 @@
+﻿<UserControl x:Class="YoutubeDownloader.Views.HomePageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:YoutubeDownloader.Views"
+             xmlns:uc="clr-namespace:YoutubeDownloader.UserControls"
+             xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
+        
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Border
+          x:Name="Border" 
+          Grid.ColumnSpan="2"
+          CornerRadius="8"
+          Background="#FF3F3F3F"
+          BorderBrush="Transparent"
+          BorderThickness="1" />
+                <Border 
+          Grid.Column="0"
+          CornerRadius="8" 
+          Margin="1" 
+          Background="#FF3F3F3F" 
+          BorderBrush="Transparent"
+          BorderThickness="0,0,0,0" />
+                <Path 
+          x:Name="Arrow"
+          Grid.Column="1"     
+          Fill="White"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"/>
+            </Grid>
+            <!--<ControlTemplate.Triggers>
+            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                <Setter TargetName="Border" Property="Background" Value="#808080" />
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="true">
+                <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
+                <Setter Property="Foreground" Value="#888888"/>
+                <Setter TargetName="Arrow" Property="Fill" Value="#888888" />
+            </Trigger>
+        </ControlTemplate.Triggers>-->
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
+            <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
+        </ControlTemplate>
+
+        <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton" 
+                                      Template="{StaticResource ComboBoxToggleButton}" 
+                                      Grid.Column="2" 
+                                      Focusable="false"
+                                      IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                      ClickMode="Press">
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                          Margin="3,3,23,3"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                                 Style="{x:Null}" 
+                                 Template="{StaticResource ComboBoxTextBox}" 
+                                 HorizontalAlignment="Left" 
+                                 VerticalAlignment="Center" 
+                                 Margin="3,3,23,3"
+                                 Focusable="True" 
+                                 Background="#FF3F3F3F"
+                                 Foreground="Green"
+                                 Visibility="Hidden"
+                                 IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup Name="Popup"
+                                Placement="Bottom"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                AllowsTransparency="True" 
+                                Focusable="False"
+                                PopupAnimation="Slide">
+
+                                <Grid Name="DropDown"
+                                   SnapsToDevicePixels="True"                
+                                   MinWidth="{TemplateBinding ActualWidth}"
+                                   MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                         Background="#FF3F3F3F"
+                                         CornerRadius="8"
+                                         BorderThickness="1"
+                                         BorderBrush="Transparent"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#888888"/>
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </Trigger>
+                            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0"/>
+                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsEditable"  Value="true">
+                                <Setter Property="IsTabStop" Value="false"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+
+        <!-- SimpleStyles: ComboBoxItem -->
+        <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border Name="Border"
+                      Padding="2"
+                      SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="#FF4F4F4F"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#888888"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
+        <Border Grid.Row="1" Background="#fbfbfe"></Border>
+        <Border Grid.Row="2" Background="#dedcff"></Border>
+        <Border Grid.Row="3" Background="#fbfbfe"></Border>
+
+        <!--URL Bar-->
+        <Grid Grid.Row="1" Panel.ZIndex="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="15*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Border Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
+                CornerRadius="8" BorderBrush="DarkSlateGray" BorderThickness="1">
+
+            </Border>
+            <TextBox Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1" Name="textboxInputUrl" FontSize="16" Foreground="DarkSlateGray" TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,0,0" Padding="5,0,100,0" Background="White" BorderBrush="Transparent"/>
+            <Button x:Name="buttonPaste" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,52,0"  Click="buttonPaste_Click" Style="{StaticResource PasteButton}">
+                <Image Source="/Resources/Images/pasteDark24.png" Width="24"></Image>
+            </Button>
+            <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" IsEnabled="{Binding }" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" Click="buttonSearch_Click" Style="{StaticResource PasteButton}">
+                <Image Source="/Resources/Images/searchDark24.png" Width="24"></Image>
+            </Button>
+            <Label Name="textBlockURLHint" Content="Incolla un URL qui..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="DarkSlateGray" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="2,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
+            <Rectangle Panel.ZIndex="4" Fill="Gray" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
+        </Grid>
+
+        <!--Video Card-->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Row="1" Grid.Column="1" 
+                Background="#fbfbfe" CornerRadius="8"
+                Visibility="{Binding UIState.IsVideoFound, Converter={StaticResource BoolToVisibilityConverter}}">
+                <uc:VideoSelectedCard HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.3"></DropShadowEffect>
+                </Border.Effect>
+            </Border>
+            <Image x:Name="imgLoadingGif" Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="96" 
+               gif:ImageBehavior.AnimatedSource="/Resources/Images/Loading.gif" gif:ImageBehavior.AnimationSpeedRatio="1.3" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
+               IsVisibleChanged="imgLoadingGif_IsVisibleChanged"
+               Visibility="{Binding UIState.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Inserisci un URL per iniziare" 
+                   Foreground="#64627a" FontSize="18" FontWeight="DemiBold"
+                   Visibility="{Binding UIState.IsFirstOpening, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <StackPanel Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Visibility="{Binding UIState.IsAnalizingError, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Image Width="48" Source="/Resources/Images/close24.png"/>
+                <TextBlock Text="Video non trovato"
+                       Foreground="#64627a" FontSize="18" FontWeight="DemiBold"/>
+            </StackPanel>
+        </Grid>
+
+        <!--Bottom Settings and download Bar-->
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="15*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <!--Button Download-->
+            <Button Grid.Column="1" Grid.Row="1" x:Name="buttonDownload" VerticalAlignment="Center" HorizontalAlignment="Right" Height="40" Width="130" 
+                BorderBrush="Transparent" 
+                BorderThickness="0" 
+                Style="{StaticResource ActionButton}" 
+                Click="buttonDownload_Click" 
+                IsEnabled="{Binding UIState.IsVideoFound}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Download" VerticalAlignment="Center" Margin="5,0,0,0" Style="{StaticResource ButtonTextBlock}"></TextBlock>
+                    <Image Source="/Resources/Images/download24.png" Width="24" Margin="3,0,0,0"></Image>
+                </StackPanel>
+            </Button>
+
+            <!--Button Settings-->
+            <Button Grid.Column="1" Grid.Row="1" x:Name="buttonSettings" VerticalAlignment="Center" Height="40" Width="40" HorizontalAlignment="Left" Margin="0,0,0,0" BorderBrush="Transparent" BorderThickness="0" Style="{StaticResource CommonButtonDark}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="/Resources/Images/settings24.png" Width="24"></Image>
+                </StackPanel>
+            </Button>
+
+            <!--Download Options Combobox-->
+            <!--TODO: SPOSTARE SU UN USER CONTROL-->
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Visibility="Hidden">
+                <Border Padding="0" Background="Transparent" Height="40">
+                    <ComboBox Name="cbAudioFormat" Grid.Column="1" Height="40" Width="90" SelectedIndex="0" 
+                          ItemsSource="{Binding AudioFormatOptions}" SelectedItem="{Binding SelectedAudioFormat, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Key"/>
+                </Border>
+                <Border Margin="20,0,0,0" Padding="0" Background="Transparent" Height="40">
+                    <ComboBox Name="cbAudioQuality" Grid.Column="1" Height="40" Width="90" SelectedIndex="0" 
+                          ItemsSource="{Binding AudioQualityOptions}" SelectedItem="{Binding SelectedAudioQuality, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Key"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</UserControl>
