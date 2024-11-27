@@ -223,7 +223,7 @@
 
             <Border Grid.Row="1" Grid.Column="1" 
                 Background="#fbfbfe" CornerRadius="8"
-                Visibility="{Binding UIState.IsVideoFound, Converter={StaticResource BoolToVisibilityConverter}}">
+                Visibility="{Binding StateHandler.IsVideoFound, Converter={StaticResource BoolToVisibilityConverter}}">
                 <uc:VideoSelectedCard HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="15" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.3"></DropShadowEffect>
@@ -232,11 +232,11 @@
             <Image x:Name="imgLoadingGif" Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="96" 
                gif:ImageBehavior.AnimatedSource="/Resources/Images/Loading.gif" gif:ImageBehavior.AnimationSpeedRatio="1.3" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
                IsVisibleChanged="imgLoadingGif_IsVisibleChanged"
-               Visibility="{Binding UIState.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+               Visibility="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <TextBlock Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Inserisci un URL per iniziare" 
                    Foreground="#64627a" FontSize="18" FontWeight="DemiBold"
-                   Visibility="{Binding UIState.IsFirstOpening, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <StackPanel Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Visibility="{Binding UIState.IsAnalizingError, Converter={StaticResource BoolToVisibilityConverter}}">
+                   Visibility="{Binding StateHandler.IsFirstOpening, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <StackPanel Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Visibility="{Binding StateHandler.IsAnalizingError, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Image Width="48" Source="/Resources/Images/close24.png"/>
                 <TextBlock Text="Video non trovato"
                        Foreground="#64627a" FontSize="18" FontWeight="DemiBold"/>
@@ -262,7 +262,7 @@
                 BorderThickness="0" 
                 Style="{StaticResource ActionButton}" 
                 Click="buttonDownload_Click" 
-                IsEnabled="{Binding UIState.IsVideoFound}">
+                IsEnabled="{Binding StateHandler.IsVideoFound}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="Download" VerticalAlignment="Center" Margin="5,0,0,0" Style="{StaticResource ButtonTextBlock}"></TextBlock>
                     <Image Source="/Resources/Images/download24.png" Width="24" Margin="3,0,0,0"></Image>
