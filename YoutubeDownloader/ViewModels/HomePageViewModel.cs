@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using YoutubeDownloader.Enums;
+using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
 using YoutubeDownloader.Services;
 
@@ -18,7 +20,9 @@ namespace YoutubeDownloader.ViewModels
         private ImageSource _thumbnail = null!;
 
         private YoutubeService _ytService = new YoutubeService();
-        private string _previousValidUrl = string.Empty;    
+        private string _previousValidUrl = string.Empty;
+        private ICommand _getVideoData = null!;
+        private ICommand _downloadVideo = null!;
 
         public ControlStateHandler StateHandler { get; set; }
         public string Url
@@ -71,6 +75,20 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(Duration));
             }
         }
+        public ICommand GetVideoData
+        {
+            get
+            {
+                return _getVideoData ?? (_getVideoData = new RelayCommandAsync(GetVideoMetadata, (c) => true));
+            }
+        }
+        public ICommand DownloadVideo
+        {
+            get
+            {
+                return _downloadVideo ?? (_downloadVideo = new RelayCommandAsync(Download, (c) => true));
+            }
+        }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
@@ -93,7 +111,6 @@ namespace YoutubeDownloader.ViewModels
 
         #region METHODS
         //Get video metadata
-        //todo: binding metodo al bottone e Url al textbox
         public async Task GetVideoMetadata()
         {
             if(!CanProcessRequest()) return;
@@ -117,7 +134,11 @@ namespace YoutubeDownloader.ViewModels
 
         private bool CanProcessRequest()
         {
-            if ((Url == _previousValidUrl && StateHandler.IsVideoFound) || StateHandler.IsAnalizing || StateHandler.IsDownloading) 
+            if(StateHandler.IsAnalizing || StateHandler.IsDownloading)
+                return false;
+            if (string.IsNullOrWhiteSpace(Url)) 
+                return false;
+            if (Url == _previousValidUrl && StateHandler.IsVideoFound) 
                 return false;
             return true;
         }
@@ -142,7 +163,7 @@ namespace YoutubeDownloader.ViewModels
         }
 
         //Download video
-        public async void Download()
+        public async Task Download()
         {
             try
             {
