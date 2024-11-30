@@ -23,6 +23,7 @@ namespace YoutubeDownloader.ViewModels
         private string _previousValidUrl = string.Empty;
         private ICommand _getVideoData = null!;
         private ICommand _downloadVideo = null!;
+        private double _progress;
 
         public ControlStateHandler StateHandler { get; set; }
         public string Url
@@ -75,6 +76,16 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(Duration));
             }
         }
+        public double Progress
+        {
+            get => _progress;
+            set
+            {
+                if (_progress == value) return;
+                _progress = value;
+                OnPropertyChanged(nameof(Progress));
+            }
+        }
         public ICommand GetVideoData
         {
             get
@@ -118,7 +129,7 @@ namespace YoutubeDownloader.ViewModels
             {
                 StateHandler.SetUI(AppState.AnalyzingUrl);
 
-                var videoData = await _ytService.GetInfo(Url);
+                var videoData = await _ytService.GetVideoAsync(Url);
                 if (videoData.ErrorMessage != string.Empty)
                     throw new Exception(videoData.ErrorMessage);
 
@@ -143,7 +154,7 @@ namespace YoutubeDownloader.ViewModels
             return true;
         }
 
-        private void UpdateVideoData(VideoMetadataModel videoData)
+        private void UpdateVideoData(VideoDataModel videoData)
         {
             LoadThumbnail(videoData.ThumbnailUrl);
             Title = videoData.Title;
@@ -167,7 +178,8 @@ namespace YoutubeDownloader.ViewModels
         {
             try
             {
-                await _ytService.DownloadVideo(_url);
+                var progress = new Progress<double>(p=> Progress = p);
+                await _ytService.DownloadVideo(_url, progress);
             }
             catch (Exception)
             {
