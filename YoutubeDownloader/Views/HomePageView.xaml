@@ -197,9 +197,8 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
-                CornerRadius="8" BorderBrush="DarkSlateGray" BorderThickness="1">
-
+            <Border Name="UrlBarBorder" Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
+                CornerRadius="8" BorderThickness="2" BorderBrush="DarkSlateGray">
             </Border>
             <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                      Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="White" BorderBrush="Transparent"

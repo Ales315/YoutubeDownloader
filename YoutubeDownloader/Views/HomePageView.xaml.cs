@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WpfAnimatedGif;
 
 namespace YoutubeDownloader.Views
@@ -14,6 +15,8 @@ namespace YoutubeDownloader.Views
         {
             InitializeComponent();
             textboxInputUrl.TextChanged += (s, e) => textBlockURLHint.Visibility = textboxInputUrl.Text.Length > 0 ? Visibility.Hidden : Visibility.Visible;
+            textboxInputUrl.GotFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Blue);
+            textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.DarkSlateGray);
         }
 
         private void buttonPaste_Click(object sender, RoutedEventArgs e)
