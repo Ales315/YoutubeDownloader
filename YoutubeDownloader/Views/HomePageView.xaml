@@ -179,18 +179,17 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0"/>
-            <RowDefinition Height="1.2*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
-        <Border Grid.Row="1" Background="#fbfbfe"></Border>
+        <Border Grid.Row="0" Background="#fbfbfe"></Border>
+        <Border Grid.Row="1" Background="#dedcff"></Border>
         <Border Grid.Row="2" Background="#dedcff"></Border>
-        <Border Grid.Row="3" Background="#fbfbfe"></Border>
 
         <!--URL Bar-->
-        <Grid Grid.Row="1" Panel.ZIndex="2">
+        <Grid Grid.Row="0" Panel.ZIndex="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="15*"></ColumnDefinition>
@@ -219,11 +218,10 @@
         </Grid>
 
         <!--Video Card-->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="10*"/>
-                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -252,53 +250,5 @@
                        Foreground="#64627a" FontSize="18" FontWeight="DemiBold"/>
             </StackPanel>
         </Grid>
-
-        <!--Bottom Settings and download Bar-->
-        <Grid Grid.Row="3">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="15*"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <!--Button Download-->
-            <Button Grid.Column="1" Grid.Row="1" x:Name="buttonDownload" VerticalAlignment="Center" HorizontalAlignment="Right" Height="40" Width="130" 
-                BorderBrush="Transparent" 
-                BorderThickness="0" 
-                Style="{StaticResource ActionButton}" 
-                Click="buttonDownload_Click" 
-                IsEnabled="{Binding StateHandler.IsVideoFound}">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Text="Download" VerticalAlignment="Center" Margin="5,0,0,0" Style="{StaticResource ButtonTextBlock}"></TextBlock>
-                    <Image Source="/Resources/Images/download24.png" Width="24" Margin="3,0,0,0"></Image>
-                </StackPanel>
-            </Button>
-
-            <!--Button Settings-->
-            <Button Grid.Column="1" Grid.Row="1" x:Name="buttonSettings" VerticalAlignment="Center" Height="40" Width="40" HorizontalAlignment="Left" Margin="0,0,0,0" BorderBrush="Transparent" BorderThickness="0" Style="{StaticResource CommonButtonDark}">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Resources/Images/settings24.png" Width="24"></Image>
-                </StackPanel>
-            </Button>
-
-            <!--Download Options Combobox-->
-            <!--TODO: SPOSTARE SU UN USER CONTROL-->
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Visibility="Hidden">
-                <Border Padding="0" Background="Transparent" Height="40">
-                    <ComboBox Name="cbAudioFormat" Grid.Column="1" Height="40" Width="90" SelectedIndex="0" 
-                          ItemsSource="{Binding AudioFormatOptions}" SelectedItem="{Binding SelectedAudioFormat, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Key"/>
-                </Border>
-                <Border Margin="20,0,0,0" Padding="0" Background="Transparent" Height="40">
-                    <ComboBox Name="cbAudioQuality" Grid.Column="1" Height="40" Width="90" SelectedIndex="0" 
-                          ItemsSource="{Binding AudioQualityOptions}" SelectedItem="{Binding SelectedAudioQuality, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Key"/>
-                </Border>
-            </StackPanel>
-        </Grid>
-
     </Grid>
 </UserControl>

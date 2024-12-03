@@ -13,7 +13,8 @@
         Title="MainWindow" Height="480" Width="854"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
-        Background="DarkSlateGray">
+        Background="DarkSlateGray"
+        TextOptions.TextFormattingMode="Display">
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
