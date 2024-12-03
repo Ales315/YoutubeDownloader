@@ -34,19 +34,13 @@ namespace YoutubeDownloader.Views
         private void buttonPaste_Click(object sender, RoutedEventArgs e)
         {
             textboxInputUrl.Text = Regex.Replace(Clipboard.GetText(), @"\t|\n|\r", "");
+            textboxInputUrl.Focus();
+            textboxInputUrl.Select(textboxInputUrl.Text.Length, 0);
         }
 
         private void buttonDownload_Click(object sender, RoutedEventArgs e)
         {
             //todo: da togliere
-        }
-
-        private void buttonSearch_Click(object sender, RoutedEventArgs e)
-        {
-            string inputUrl = textboxInputUrl.Text.Trim();
-            if (string.IsNullOrWhiteSpace(inputUrl)) return;
-            textboxInputUrl.Text = inputUrl;
-            //_mainViewModel.GetVideoMetadata(inputUrl);
         }
 
         //Loading gif play parameters

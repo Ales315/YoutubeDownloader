@@ -10,7 +10,7 @@
         xmlns:gif="http://wpfanimatedgif.codeplex.com" xmlns:views="clr-namespace:YoutubeDownloader.Views"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="419" Width="679"
+        Title="MainWindow" Height="480" Width="854"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
         Background="DarkSlateGray">
