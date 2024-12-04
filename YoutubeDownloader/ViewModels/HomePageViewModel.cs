@@ -27,6 +27,7 @@ namespace YoutubeDownloader.ViewModels
         private double _progress;
         private long _viewCount;
         private string _date;
+        private string _downloadSize;
         private IEnumerable<VideoOnlyStreamInfo> _videoStreams;
         private IEnumerable<AudioOnlyStreamInfo> _audioStreams;
         private VideoOnlyStreamInfo _videoStreamSelected;
@@ -93,6 +94,16 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(Date));
             }
         }
+        public string DownloadSize
+        {
+            get => _downloadSize;
+            set
+            {
+                if (_downloadSize == value) return;
+                _downloadSize = value;
+                OnPropertyChanged(nameof(DownloadSize));
+            }
+        }
         public long ViewCount
         {
             get => _viewCount;
@@ -141,6 +152,7 @@ namespace YoutubeDownloader.ViewModels
                 if (_videoStreamSelected == value) return;
                 _videoStreamSelected = value;
                 OnPropertyChanged(nameof(VideoStreamSelected));
+                CalculateDownloadSize();
             }
         }
         public AudioOnlyStreamInfo AudioStreamSelected
@@ -151,6 +163,7 @@ namespace YoutubeDownloader.ViewModels
                 if (_audioStreamSelected == value) return;
                 _audioStreamSelected = value;
                 OnPropertyChanged(nameof(AudioStreamSelected));
+                CalculateDownloadSize();
             }
         }
 
@@ -212,6 +225,15 @@ namespace YoutubeDownloader.ViewModels
             catch (Exception)
             {
                 StateHandler.SetUI(AppState.VideoNotFound);
+                Thumbnail = null!;
+                Title = null!;
+                ChannelName = null!;
+                ViewCount = 0;
+                Date = null!;
+                AudioStreams = null!;
+                VideoStreams = null!;
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
             }
         }
 
@@ -254,6 +276,13 @@ namespace YoutubeDownloader.ViewModels
             VideoStreams = streamData.VideoStreams;
             VideoStreamSelected = VideoStreams.Last();
             AudioStreamSelected = AudioStreams.Last();
+        }
+
+        private void CalculateDownloadSize()
+        {
+            var videoSizeBytes = VideoStreamSelected == null ? 0 : VideoStreamSelected.Size.Bytes;
+            var audioSizeBytes = AudioStreamSelected == null ? 0 : AudioStreamSelected.Size.Bytes;
+            DownloadSize = $"{new FileSize(videoSizeBytes + audioSizeBytes)}";
         }
 
         //Download video

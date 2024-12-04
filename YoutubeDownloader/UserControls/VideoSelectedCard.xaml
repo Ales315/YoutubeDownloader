@@ -29,6 +29,7 @@
             <Border.Background>
                 <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
             </Border.Background>
+
             <Border Background="Black" Opacity="0.82" Width="auto" Height="auto" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     CornerRadius="4"
                     Margin="0,0,6,6">
@@ -41,7 +42,6 @@
                            Padding="1,0,3,1"
                            FontWeight="DemiBold"/>
             </Border>
-
         </Border>
 
         <!--Video Info-->

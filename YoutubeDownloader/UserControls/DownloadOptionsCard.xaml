@@ -173,12 +173,16 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-            <ComboBox Name="cbDownloadType" SelectedIndex="0" ItemsSource="{Binding DownloadType}" Margin="0,0,20,0"/>
-            <ComboBox Name="cbVideoQuality" SelectedIndex="0" Margin="0,0,20,0" Width="auto"
+            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Content="Video + Audio"/>
+            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Content="Extract Audio"/>
+            <ComboBox Name="cbVideoQuality" SelectedIndex="0" Margin="0,0,10,0" Width="auto"
                       ItemsSource="{Binding VideoStreams}" 
                       SelectedItem="{Binding VideoStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="VideoQuality"/>
-            <ComboBox Name="cbAudioQuality" SelectedIndex="0" ItemsSource="{Binding AudioStreams}" SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Bitrate" Margin="0,0,20,0"/>
+            <ComboBox Name="cbAudioQuality" SelectedIndex="0" Margin="0,0,10,0"
+                      ItemsSource="{Binding AudioStreams}" 
+                      SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
+                      DisplayMemberPath="Bitrate"/>
             <CheckBox x:Name="checkBoxSavePreset" VerticalAlignment="Center" 
                       Content="Save Preset"
                       Foreground="DarkSlateGray"
@@ -186,11 +190,14 @@
                       Padding="5,0,0,0"
                       Background="Transparent"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2">
-            <TextBlock Text="Size: 18.5Mb" TextWrapping="NoWrap" VerticalAlignment="Center"
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" Margin="30,0,0,0">
+            <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
                        Foreground="DarkSlateGray"
-                       Margin="0,0,10,0"/>
-            <Button x:Name="buttonDownload" Style="{StaticResource ActionButton}" Height="auto" Width="45" HorizontalAlignment="Right" Command="{Binding DownloadVideo}">
+                       Margin="0,0,10,0">
+                <Run Text="{Binding DownloadSize}"/>
+            </TextBlock>
+            <Button x:Name="buttonDownload" Style="{StaticResource ActionButton}" Height="auto" Width="45" HorizontalAlignment="Right" Margin="0,0,0,0"
+                    Command="{Binding DownloadVideo}">
                 <Image Source="/Resources/Images/download24.png" Height="24"/>
             </Button>
         </StackPanel>
