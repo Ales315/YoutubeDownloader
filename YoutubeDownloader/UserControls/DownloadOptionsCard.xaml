@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YoutubeDownloader.UserControls"
-             xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels" xmlns:converter="clr-namespace:YoutubeDownloader.Converters" d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+             xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels" 
+             xmlns:converter="clr-namespace:YoutubeDownloader.Converters" 
+             d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
              Name="VideoCard"
              mc:Ignorable="d" Height="auto"
              Background="Transparent" Width="auto"
@@ -160,20 +162,23 @@
     <Grid MinWidth="700" MinHeight="50">
         <Grid.RowDefinitions>
             <RowDefinition Height="12"/>
-            <RowDefinition/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="25"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <ComboBox Name="cbDownloadType" SelectedIndex="0" ItemsSource="{Binding DownloadType}" Margin="0,0,20,0"/>
-            <ComboBox Name="cbVideoQuality" SelectedIndex="0" ItemsSource="{Binding VideoQuality}" Margin="0,0,20,0"/>
-            <ComboBox Name="cbAudioQuality" SelectedIndex="0" ItemsSource="{Binding AudioQuality}" Margin="0,0,20,0"/>
+            <ComboBox Name="cbVideoQuality" SelectedIndex="0" Margin="0,0,20,0" Width="auto"
+                      ItemsSource="{Binding VideoStreams}" 
+                      SelectedItem="{Binding VideoStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
+                      DisplayMemberPath="VideoQuality"/>
+            <ComboBox Name="cbAudioQuality" SelectedIndex="0" ItemsSource="{Binding AudioStreams}" SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Bitrate" Margin="0,0,20,0"/>
             <CheckBox x:Name="checkBoxSavePreset" VerticalAlignment="Center" 
                       Content="Save Preset"
                       Foreground="DarkSlateGray"
@@ -185,8 +190,8 @@
             <TextBlock Text="Size: 18.5Mb" TextWrapping="NoWrap" VerticalAlignment="Center"
                        Foreground="DarkSlateGray"
                        Margin="0,0,10,0"/>
-            <Button x:Name="buttonDownload" Style="{StaticResource ActionButton}" Height="auto" Width="45" HorizontalAlignment="Right">
-                <Image Source="/Resources/Images/download24.png"/>
+            <Button x:Name="buttonDownload" Style="{StaticResource ActionButton}" Height="auto" Width="45" HorizontalAlignment="Right" Command="{Binding DownloadVideo}">
+                <Image Source="/Resources/Images/download24.png" Height="24"/>
             </Button>
         </StackPanel>
     </Grid>

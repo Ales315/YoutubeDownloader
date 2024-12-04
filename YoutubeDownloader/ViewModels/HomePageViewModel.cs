@@ -6,6 +6,7 @@ using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
 using YoutubeDownloader.Services;
+using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeDownloader.ViewModels
 {
@@ -26,6 +27,10 @@ namespace YoutubeDownloader.ViewModels
         private double _progress;
         private long _viewCount;
         private string _date;
+        private IEnumerable<VideoOnlyStreamInfo> _videoStreams;
+        private IEnumerable<AudioOnlyStreamInfo> _audioStreams;
+        private VideoOnlyStreamInfo _videoStreamSelected;
+        private AudioOnlyStreamInfo _audioStreamSelected;
 
         public ControlStateHandler StateHandler { get; set; }
         public string Url
@@ -108,6 +113,47 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(Progress));
             }
         }
+        public IEnumerable<VideoOnlyStreamInfo> VideoStreams
+        {
+            get => _videoStreams;
+            set
+            {
+                if (_videoStreams == value) return;
+                _videoStreams = value;
+                OnPropertyChanged(nameof(VideoStreams));
+            }
+        }
+        public IEnumerable<AudioOnlyStreamInfo> AudioStreams
+        {
+            get => _audioStreams;
+            set
+            {
+                if (_audioStreams == value) return;
+                _audioStreams = value;
+                OnPropertyChanged(nameof(AudioStreams));
+            }
+        }
+        public VideoOnlyStreamInfo VideoStreamSelected
+        {
+            get => _videoStreamSelected;
+            set
+            {
+                if (_videoStreamSelected == value) return;
+                _videoStreamSelected = value;
+                OnPropertyChanged(nameof(VideoStreamSelected));
+            }
+        }
+        public AudioOnlyStreamInfo AudioStreamSelected
+        {
+            get => _audioStreamSelected;
+            set
+            {
+                if (_audioStreamSelected == value) return;
+                _audioStreamSelected = value;
+                OnPropertyChanged(nameof(AudioStreamSelected));
+            }
+        }
+
         public ICommand GetVideoData
         {
             get
@@ -202,9 +248,12 @@ namespace YoutubeDownloader.ViewModels
             bitmap.EndInit();
             Thumbnail = bitmap;
         }
-        private void UpdateVideoStreamData(object streamData)
+        private void UpdateVideoStreamData(VideoDataModel streamData)
         {
-            //todo: implementare gli stream
+            AudioStreams = streamData.AudioStreams;
+            VideoStreams = streamData.VideoStreams;
+            VideoStreamSelected = VideoStreams.Last();
+            AudioStreamSelected = AudioStreams.Last();
         }
 
         //Download video
@@ -213,7 +262,7 @@ namespace YoutubeDownloader.ViewModels
             try
             {
                 var progress = new Progress<double>(p=> Progress = p);
-                await _ytService.DownloadVideo(_url, progress);
+                await _ytService.DownloadVideo(_url, progress, VideoStreamSelected, AudioStreamSelected);
             }
             catch (Exception)
             {

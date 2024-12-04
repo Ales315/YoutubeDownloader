@@ -194,7 +194,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="65"/>
         </Grid.RowDefinitions>
         <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>

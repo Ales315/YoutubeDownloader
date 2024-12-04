@@ -58,7 +58,7 @@ public class YoutubeService
         throw new NotImplementedException();
     }
 
-    public async Task DownloadVideo(string url, Progress<double> progress)
+    public async Task DownloadVideo(string url, Progress<double> progress, VideoOnlyStreamInfo videoStream, AudioOnlyStreamInfo audioStream)
     {
 #warning TODO: Download video
         var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(url);
@@ -73,7 +73,9 @@ public class YoutubeService
         var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url);
 
         var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
-        var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4").OrderBy(x => x.VideoResolution.Area);
+        var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
+            .GroupBy(x => x.VideoResolution.Area)
+            .Select(g => g.OrderByDescending(s => s.Bitrate).First()).Reverse();
         videoData.AudioStreams = audioStreams;
         videoData.VideoStreams = videoStreams;
         return videoData;
