@@ -24,6 +24,8 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _getVideoData = null!;
         private ICommand _downloadVideo = null!;
         private double _progress;
+        private long _viewCount;
+        private string _date;
 
         public ControlStateHandler StateHandler { get; set; }
         public string Url
@@ -74,6 +76,26 @@ namespace YoutubeDownloader.ViewModels
                 if (_duration == value) return;
                 _duration = value;
                 OnPropertyChanged(nameof(Duration));
+            }
+        }
+        public string Date
+        {
+            get => _date;
+            set
+            {
+                if (_date == value) return;
+                _date = value;
+                OnPropertyChanged(nameof(Date));
+            }
+        }
+        public long ViewCount
+        {
+            get => _viewCount;
+            set
+            {
+                if (_viewCount == value) return;
+                _viewCount = value;
+                OnPropertyChanged(nameof(ViewCount));
             }
         }
         public double Progress
@@ -166,6 +188,8 @@ namespace YoutubeDownloader.ViewModels
             Title = videoData.Title;
             ChannelName = videoData.ChannelName;
             Duration = videoData.Duration;
+            ViewCount = videoData.ViewCount;
+            Date = videoData.Date;
             _previousValidUrl = Url;
         }
 

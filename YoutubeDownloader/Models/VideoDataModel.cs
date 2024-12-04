@@ -12,5 +12,7 @@ namespace YoutubeDownloader.Models
         public string ErrorMessage { get; set; } = string.Empty;
         public IEnumerable<VideoOnlyStreamInfo> VideoStreams { get; set; } = [];
         public IEnumerable<AudioOnlyStreamInfo> AudioStreams { get; set; } = [];
+        public long ViewCount { get; internal set; }
+        public string Date { get; internal set; }
     }
 }

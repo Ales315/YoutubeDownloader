@@ -1,6 +1,7 @@
 ﻿namespace YoutubeDownloader.Services;
 
 using System;
+using Humanizer;
 using YoutubeDownloader.Models;
 using YoutubeExplode;
 using YoutubeExplode.Videos.Streams;
@@ -46,7 +47,8 @@ public class YoutubeService
         videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
         videoData.ChannelName = video.Author.ChannelTitle;
         videoData.ThumbnailUrl = video.Thumbnails[0].Url;
-        
+        videoData.ViewCount = video.Engagement.ViewCount;
+        videoData.Date = video.UploadDate.Humanize(DateTime.Now, culture: System.Globalization.CultureInfo.CurrentCulture);
 
         return videoData;
     }

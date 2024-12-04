@@ -4,11 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YoutubeDownloader.UserControls"
-             xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels" d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+             xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels" xmlns:converter="clr-namespace:YoutubeDownloader.Converters" d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
              Name="VideoCard"
              mc:Ignorable="d" Height="auto"
              Background="Transparent" Width="auto"
              TextOptions.TextRenderingMode="ClearType">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
+        <converter:NumberFormatterConverter x:Key="NumberFormatterConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -24,19 +29,19 @@
             <Border.Background>
                 <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
             </Border.Background>
-            <Border Background="Black" Opacity="0.85" Width="auto" Height="auto" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+            <Border Background="Black" Opacity="0.82" Width="auto" Height="auto" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     CornerRadius="4"
-                    Margin="0,0,4,4">
+                    Margin="0,0,6,6">
                 <TextBlock Name="tbDuration" Text="{Binding Duration}" Opacity="1" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                            Foreground="White"
                            Background="Transparent"
                            Width="auto"
                            FontSize="15"
-                           Margin="5,0,5,0"
-                           Padding="2,0,2,1"
+                           Margin="6,0,6,0"
+                           Padding="1,0,3,1"
                            FontWeight="DemiBold"/>
             </Border>
-            
+
         </Border>
 
         <!--Video Info-->
@@ -68,6 +73,25 @@
                            Background="Transparent"
                            FontSize="16"
                            Margin="0,8,0,0"/>
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom">
+                    <TextBlock Name="tbViewCount" VerticalAlignment="Center"
+                               Foreground="#222124"
+                               Background="Transparent"
+                               FontSize="16"
+                               Margin="0,0,0,0">
+                        <Run Text="{Binding ViewCount, Converter={StaticResource NumberFormatterConverter}}"/>
+                        <Run Text=" Views"/>
+                    </TextBlock>
+                    <Ellipse Width="4" Height="4" Fill="DarkSlateGray" VerticalAlignment="Center" Margin="20,0,0,-3"/>
+                    <TextBlock Name="tbDate" HorizontalAlignment="Right" VerticalAlignment="Center"
+                               Foreground="#222124"
+                               Background="Transparent"
+                               FontSize="16"
+                               Margin="8,0,0,0">
+                        <Run Text="{Binding Date}"/>
+                    </TextBlock>
+                </StackPanel>
+                
             </Grid>
         </Grid>
     </Grid>
