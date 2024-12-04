@@ -9,42 +9,40 @@
              mc:Ignorable="d" Height="auto"
              Background="Transparent" Width="auto"
              TextOptions.TextRenderingMode="ClearType">
-    <Grid Margin="0,0,0,0">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="1.7*"></ColumnDefinition>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="1.7*"/>
         </Grid.ColumnDefinitions>
 
-        <!--Thumbnail, Duration, DownloadType Selection Video/ExtractAudio-->
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="45"/>
-            </Grid.RowDefinitions>
-            <Border Grid.Row="1" Width="240" Height="135" Margin="10,10,10,10" CornerRadius="8" BorderThickness="1" BorderBrush="LightGray"
-                    VerticalAlignment="Center">
-                <Border.Background>
-                    <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
-                </Border.Background>
-                <TextBlock Name="tbDuration" Text="{Binding Duration}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                           Foreground="White" 
-                           Background="Black"
+        <!--Thumbnail with Duration-->
+        <Border Grid.Row="1" Width="224" Height="126" Margin="10,10,10,10" CornerRadius="8" BorderThickness="1" BorderBrush="LightGray"
+        VerticalAlignment="Center">
+            <Border.Background>
+                <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
+            </Border.Background>
+            <Border Background="Black" Opacity="0.85" Width="auto" Height="auto" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    CornerRadius="4"
+                    Margin="0,0,4,4">
+                <TextBlock Name="tbDuration" Text="{Binding Duration}" Opacity="1" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                           Foreground="White"
+                           Background="Transparent"
                            Width="auto"
-                           FontSize="14"
-                           Margin="10,0,10,0"
+                           FontSize="15"
+                           Margin="5,0,5,0"
+                           Padding="2,0,2,1"
                            FontWeight="DemiBold"/>
             </Border>
-        </Grid>
+            
+        </Border>
 
-        
         <!--Video Info-->
-        <Grid Grid.Column="1" Width="auto" Background="Transparent">
+        <Grid Grid.Column="1" Width="auto" Background="Transparent" MinWidth="300">
             <Grid.RowDefinitions>
-                <RowDefinition Height="55"/>
+                <RowDefinition Height="15"/>
                 <RowDefinition Height="115"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -54,24 +52,23 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Name="tbTitle" Text="{Binding Title}" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0,0,30,0" MaxHeight="45"
+                <TextBlock Name="tbTitle" Text="{Binding Title}" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0,0,30,0" MaxHeight="55"
                            TextWrapping="WrapWithOverflow" 
                            Foreground="#222124" 
-                           Background="Azure"
-                           FontSize="16" 
+                           Background="Transparent"
+                           FontSize="18" 
                            FontWeight="DemiBold"
                            TextTrimming="WordEllipsis"
                            ToolTip="{Binding Title}"/>
                 <TextBlock Name="tbAuthor" Grid.Column="0" Grid.Row="2" Text="{Binding ChannelName}" VerticalAlignment="Top" 
                            Foreground="#222124"
-                           Background="Azure"
-                           FontSize="14"/>
-                
+                           Background="Transparent"
+                           FontSize="16"
+                           Margin="0,8,0,0"/>
             </Grid>
-
         </Grid>
     </Grid>
 </UserControl>

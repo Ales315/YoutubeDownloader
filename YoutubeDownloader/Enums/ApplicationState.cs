@@ -5,8 +5,10 @@
         FirstOpening,
         AnalyzingUrl,
         VideoFound,
+        VideoStreamsFound,
         VideoNotFound,
         Downloading,
-        DownloadCompleted
+        DownloadCompleted,
+        AnalyzingStreams
     }
 }

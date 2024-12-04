@@ -195,8 +195,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition/>
+            <RowDefinition Height="65"/>
         </Grid.RowDefinitions>
         <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
+        <Border Grid.Row="2" Background="#fbfbfe"></Border>
 
 
         <!--Titlebar-->

@@ -130,18 +130,24 @@ namespace YoutubeDownloader.ViewModels
                 StateHandler.SetUI(AppState.AnalyzingUrl);
 
                 var videoData = await _ytService.GetVideoAsync(Url);
+                UpdateVideoData(videoData);
+                StateHandler.SetUI(AppState.VideoFound);
+
+                var streamData = await _ytService.GetStreamData(videoData);
+                UpdateVideoStreamData(streamData);
+                StateHandler.SetUI(AppState.VideoStreamsFound);
+
                 if (videoData.ErrorMessage != string.Empty)
                     throw new Exception(videoData.ErrorMessage);
-
-                UpdateVideoData(videoData);
-
-                StateHandler.SetUI(AppState.VideoFound);
+                
             }
             catch (Exception)
             {
                 StateHandler.SetUI(AppState.VideoNotFound);
             }
         }
+
+        
 
         private bool CanProcessRequest()
         {
@@ -172,6 +178,10 @@ namespace YoutubeDownloader.ViewModels
             bitmap.EndInit();
             Thumbnail = bitmap;
         }
+        private void UpdateVideoStreamData(object streamData)
+        {
+            //todo: implementare gli stream
+        }
 
         //Download video
         public async Task Download()
@@ -199,6 +209,8 @@ namespace YoutubeDownloader.ViewModels
         private bool _isDownloaded;
         private bool _isAnalizingError;
         private bool _isFirstOpening;
+        private bool _isVideoStreamsFound;
+        private bool _isAnalizingStreams;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public bool IsFirstOpening 
@@ -221,6 +233,16 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(IsVideoFound)); 
             } 
         }
+        public bool IsVideoStreamsFound
+        {
+            get => _isVideoStreamsFound;
+            set
+            {
+                if (_isVideoStreamsFound == value) return;
+                _isVideoStreamsFound = value;
+                OnPropertyChanged(nameof(IsVideoStreamsFound));
+            }
+        }
         public bool IsAnalizing 
         { 
             get => _isAnalizing; 
@@ -230,6 +252,16 @@ namespace YoutubeDownloader.ViewModels
                 _isAnalizing = value; 
                 OnPropertyChanged(nameof(IsAnalizing)); 
             } 
+        }
+        public bool IsAnalizingStreams
+        {
+            get => _isAnalizingStreams;
+            set
+            {
+                if (_isAnalizingStreams == value) return;
+                _isAnalizingStreams = value;
+                OnPropertyChanged(nameof(IsAnalizingStreams));
+            }
         }
         public bool IsAnalizingError 
         { 
@@ -272,7 +304,9 @@ namespace YoutubeDownloader.ViewModels
         {
             IsFirstOpening = false;
             IsAnalizing = false;
+            IsAnalizingStreams = false;
             IsVideoFound = false;
+            IsVideoStreamsFound = false;
             IsAnalizingError = false;
             IsDownloaded = false;
             IsDownloading = false;
@@ -285,9 +319,21 @@ namespace YoutubeDownloader.ViewModels
 
                 case AppState.AnalyzingUrl:
                     IsAnalizing = true;
+                    IsAnalizingStreams = true;
+                    break;
+
+                case AppState.AnalyzingStreams:
+                    IsVideoFound = true;
+                    IsAnalizingStreams = true;
                     break;
 
                 case AppState.VideoFound:
+                    IsVideoFound = true;
+                    IsAnalizingStreams = true;
+                    break;
+
+                case AppState.VideoStreamsFound:
+                    IsVideoStreamsFound = true;
                     IsVideoFound = true;
                     break;
 

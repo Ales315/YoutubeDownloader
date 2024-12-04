@@ -20,6 +20,24 @@ namespace YoutubeDownloader.Views
             textboxInputUrl.GotFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Blue);
             textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.DarkSlateGray);
             textboxInputUrl.KeyDown += OnTextboxInputUrlKeyDown;
+            imgLoadingGifVideo.IsVisibleChanged += (s,e) => SetGifPlaybackFramePosition(s);
+            imgLoadingGifStreams.IsVisibleChanged += (s, e) => SetGifPlaybackFramePosition(s);
+        }
+
+        private static void SetGifPlaybackFramePosition(object sender)
+        {
+            var img = sender as Image;
+            var controller = ImageBehavior.GetAnimationController(img);
+            if (controller == null) return;
+            if (img?.Visibility == Visibility.Hidden || img?.Visibility == Visibility.Collapsed)
+            {
+                controller.Pause();
+                controller.GotoFrame(1);
+            }
+            else
+            {
+                controller.Play();
+            }
         }
 
         //Search with Enter key
@@ -38,16 +56,11 @@ namespace YoutubeDownloader.Views
             textboxInputUrl.Select(textboxInputUrl.Text.Length, 0);
         }
 
-        private void buttonDownload_Click(object sender, RoutedEventArgs e)
-        {
-            //todo: da togliere
-        }
-
         //Loading gif play parameters
-        private void imgLoadingGif_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void imgLoadingGifVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var img = sender as Image;
-            var controller = ImageBehavior.GetAnimationController(imgLoadingGif);
+            var controller = ImageBehavior.GetAnimationController(imgLoadingGifVideo);
             if (controller == null) return;
             if (img?.Visibility == Visibility.Hidden || img?.Visibility == Visibility.Collapsed)
             {

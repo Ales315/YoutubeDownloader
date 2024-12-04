@@ -38,10 +38,7 @@ public class YoutubeService
     private async Task<VideoDataModel> GetVideoMetadataAsync(string url)
     {
         var video = await _youtube.Videos.GetAsync(url);
-        var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(url);
-
-        var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
-        var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4").OrderBy(x => x.VideoResolution.Area);
+        
 
         VideoDataModel videoData = new VideoDataModel();
         videoData.Url = url;
@@ -49,8 +46,7 @@ public class YoutubeService
         videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
         videoData.ChannelName = video.Author.ChannelTitle;
         videoData.ThumbnailUrl = video.Thumbnails[0].Url;
-        videoData.AudioStreams = audioStreams;
-        videoData.VideoStreams = videoStreams;
+        
 
         return videoData;
     }
@@ -68,5 +64,16 @@ public class YoutubeService
         var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4").OrderBy(x => x.VideoResolution.Area);
         var streamInfo = new IStreamInfo[] { audioStreams.First(), videoStreams.First() };
         //await _youtube.Videos.DownloadAsync(streamInfo,);
+    }
+
+    public async Task<VideoDataModel> GetStreamData(VideoDataModel videoData)
+    {
+        var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url);
+
+        var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
+        var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4").OrderBy(x => x.VideoResolution.Area);
+        videoData.AudioStreams = audioStreams;
+        videoData.VideoStreams = videoStreams;
+        return videoData;
     }
 }
