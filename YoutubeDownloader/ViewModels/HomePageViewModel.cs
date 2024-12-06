@@ -32,6 +32,8 @@ namespace YoutubeDownloader.ViewModels
         private IEnumerable<AudioOnlyStreamInfo> _audioStreams;
         private VideoOnlyStreamInfo _videoStreamSelected;
         private AudioOnlyStreamInfo _audioStreamSelected;
+        private DownloadOptions _downloadOptionSelected;
+        private AudioFormats _audioFormatSelected;
 
         public ControlStateHandler StateHandler { get; set; }
         public string Url
@@ -167,6 +169,27 @@ namespace YoutubeDownloader.ViewModels
             }
         }
 
+        public DownloadOptions DownloadOptionSelected
+        {
+            get => _downloadOptionSelected;
+            set
+            {
+                if (_downloadOptionSelected == value) return;
+                _downloadOptionSelected = value;
+                OnPropertyChanged(nameof(DownloadOptionSelected));
+            }
+        }
+        public AudioFormats AudioFormatSelected
+        {
+            get => _audioFormatSelected;
+            set
+            {
+                if (_audioFormatSelected == value) return;
+                _audioFormatSelected = value;
+                OnPropertyChanged(nameof(AudioFormatSelected));
+            }
+        }
+
         public ICommand GetVideoData
         {
             get
@@ -295,7 +318,6 @@ namespace YoutubeDownloader.ViewModels
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
