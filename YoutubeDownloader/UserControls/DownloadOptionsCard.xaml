@@ -25,7 +25,7 @@
                         Grid.ColumnSpan="2"
                         CornerRadius="8"
                         Background="White"
-                        BorderBrush="Blue"
+                        BorderBrush="LightGray"
                         BorderThickness="2" />
                 <Border Grid.Column="0"
                         CornerRadius="8" 
@@ -54,6 +54,7 @@
             <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
             <Setter Property="MinWidth" Value="120"/>
             <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="DarkSlateGray"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -214,5 +215,12 @@
                 <Image Source="/Resources/Images/download24.png" Height="24"/>
             </Button>
         </StackPanel>
+        <!--Download Progess-->
+        <TextBlock Grid.Row="2" Grid.Column="2" TextWrapping="NoWrap" VerticalAlignment="Center"
+                   Foreground="Red"
+                   Margin="0,0,10,0">
+            <Run Text="Progress: "/>
+            <Run Text="{Binding Progress}"/>
+        </TextBlock>
     </Grid>
 </UserControl>

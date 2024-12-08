@@ -1,4 +1,5 @@
-﻿using YoutubeExplode.Videos.Streams;
+﻿using System.ComponentModel;
+using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeDownloader.Models
 {
@@ -10,9 +11,9 @@ namespace YoutubeDownloader.Models
         public string ChannelName { get; set; } = string.Empty;
         public string ThumbnailUrl { get; set; } = string.Empty;
         public string ErrorMessage { get; set; } = string.Empty;
+        public string Date { get; set; } = string.Empty;
+        public long ViewCount { get; set; } = 0;
         public IEnumerable<VideoOnlyStreamInfo> VideoStreams { get; set; } = [];
         public IEnumerable<AudioOnlyStreamInfo> AudioStreams { get; set; } = [];
-        public long ViewCount { get; internal set; }
-        public string Date { get; internal set; }
     }
 }

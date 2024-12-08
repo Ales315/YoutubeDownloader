@@ -1,6 +1,6 @@
 ﻿namespace YoutubeDownloader.Enums
 {
-    public enum DownloadOptions
+    public enum DownloadOption
     {
         VideoWithAudio,
         VideoOnly,

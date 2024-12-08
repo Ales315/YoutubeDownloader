@@ -24,7 +24,7 @@ namespace YoutubeDownloader.UserControls
         public DownloadOptionsCard()
         {
             InitializeComponent();
-            cbDownloadType.ItemsSource = Enum.GetValues(typeof(DownloadOptions));
+            cbDownloadType.ItemsSource = Enum.GetValues(typeof(DownloadOption));
             cbAudioFormat.ItemsSource = Enum.GetValues(typeof(AudioFormats));
             cbDownloadType.SelectionChanged += OnDownloadTypeSelectionChanged;
         }
@@ -34,17 +34,17 @@ namespace YoutubeDownloader.UserControls
             var selectedItem = cbDownloadType.SelectedItem;
             switch (selectedItem)
             {
-                case DownloadOptions.VideoOnly:
+                case DownloadOption.VideoOnly:
                     cbAudioQuality.Visibility = Visibility.Collapsed;
                     cbVideoQuality.Visibility = Visibility.Visible;
                     break;
 
-                case DownloadOptions.AudioOnly:
+                case DownloadOption.AudioOnly:
                     cbAudioQuality.Visibility = Visibility.Visible;
                     cbVideoQuality.Visibility = Visibility.Collapsed;
                     break;
 
-                case DownloadOptions.VideoWithAudio:
+                case DownloadOption.VideoWithAudio:
                     cbAudioQuality.Visibility = Visibility.Visible;
                     cbVideoQuality.Visibility = Visibility.Visible;
                     break;

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -12,30 +13,34 @@ namespace YoutubeDownloader.ViewModels
 {
     class HomePageViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        private YoutubeService _ytService = new YoutubeService();
+        private string _previousValidUrl = string.Empty;
+        public ControlStateHandler StateHandler { get; set; }
+        public ObservableCollection<VideoDownloadModel> VideoDownloadsList { get; set; } = new ObservableCollection<VideoDownloadModel>();
+
         #region FIELDS
-        
+        //Video stats
         private string _url = string.Empty;
         private string _title = string.Empty;
         private string _channelName = string.Empty;
         private string _duration = string.Empty;
+        private string _date = string.Empty;
+        private string _downloadSize = string.Empty;
+        private long _viewCount = 0;
         private ImageSource _thumbnail = null!;
 
-        private YoutubeService _ytService = new YoutubeService();
-        private string _previousValidUrl = string.Empty;
+        //Download
+        private VideoOnlyStreamInfo _videoStreamSelected = null!;
+        private AudioOnlyStreamInfo _audioStreamSelected = null!;
+        private IEnumerable<VideoOnlyStreamInfo> _videoStreams = null!;
+        private IEnumerable<AudioOnlyStreamInfo> _audioStreams = null!;
+        private DownloadOption _downloadOptionSelected;
+        private AudioFormats _audioFormatSelected;
+
         private ICommand _getVideoData = null!;
         private ICommand _downloadVideo = null!;
         private double _progress;
-        private long _viewCount;
-        private string _date;
-        private string _downloadSize;
-        private IEnumerable<VideoOnlyStreamInfo> _videoStreams;
-        private IEnumerable<AudioOnlyStreamInfo> _audioStreams;
-        private VideoOnlyStreamInfo _videoStreamSelected;
-        private AudioOnlyStreamInfo _audioStreamSelected;
-        private DownloadOptions _downloadOptionSelected;
-        private AudioFormats _audioFormatSelected;
-
-        public ControlStateHandler StateHandler { get; set; }
+        
         public string Url
         {
             get => _url;
@@ -169,7 +174,7 @@ namespace YoutubeDownloader.ViewModels
             }
         }
 
-        public DownloadOptions DownloadOptionSelected
+        public DownloadOption DownloadOptionSelected
         {
             get => _downloadOptionSelected;
             set
@@ -177,6 +182,7 @@ namespace YoutubeDownloader.ViewModels
                 if (_downloadOptionSelected == value) return;
                 _downloadOptionSelected = value;
                 OnPropertyChanged(nameof(DownloadOptionSelected));
+                CalculateDownloadSize();
             }
         }
         public AudioFormats AudioFormatSelected
@@ -224,7 +230,7 @@ namespace YoutubeDownloader.ViewModels
             };
         }
 
-        #region METHODS
+        #region GET METADATA
         //Get video metadata
         public async Task GetVideoMetadata()
         {
@@ -259,9 +265,6 @@ namespace YoutubeDownloader.ViewModels
                 GC.Collect();
             }
         }
-
-        
-
         private bool CanProcessRequest()
         {
             if(StateHandler.IsAnalizing || StateHandler.IsDownloading)
@@ -272,7 +275,6 @@ namespace YoutubeDownloader.ViewModels
                 return false;
             return true;
         }
-
         private void UpdateVideoData(VideoDataModel videoData)
         {
             LoadThumbnail(videoData.ThumbnailUrl);
@@ -283,7 +285,6 @@ namespace YoutubeDownloader.ViewModels
             Date = videoData.Date;
             _previousValidUrl = Url;
         }
-
         private void LoadThumbnail(string thumbnailUrl)
         {
             BitmapImage bitmap = new BitmapImage();
@@ -305,16 +306,44 @@ namespace YoutubeDownloader.ViewModels
         {
             var videoSizeBytes = VideoStreamSelected == null ? 0 : VideoStreamSelected.Size.Bytes;
             var audioSizeBytes = AudioStreamSelected == null ? 0 : AudioStreamSelected.Size.Bytes;
-            DownloadSize = $"{new FileSize(videoSizeBytes + audioSizeBytes)}";
+            var totalSizeBytes = videoSizeBytes + audioSizeBytes;
+
+            if(DownloadOptionSelected == DownloadOption.VideoOnly) 
+                totalSizeBytes -= audioSizeBytes;
+            else if(DownloadOptionSelected == DownloadOption.AudioOnly)
+                totalSizeBytes -= videoSizeBytes;
+
+            //todo: calcolo in base al formato
+            //if(format == wav)
+            //{
+            //    long totalSeconds = ((long)TimeSpan.Parse(Duration).TotalSeconds);
+            //    totalSizeBytes = totalSeconds * 44100 * 16bitdepth * 2channels / 8;
+            //}
+                
+
+            DownloadSize = $"{new FileSize(totalSizeBytes)}";
         }
 
+        #endregion
+
+
+        #region DOWNLOAD
         //Download video
         public async Task Download()
         {
             try
             {
-                var progress = new Progress<double>(p=> Progress = p);
-                await _ytService.DownloadVideo(_url, progress, VideoStreamSelected, AudioStreamSelected);
+                VideoDownloadModel newVideoDownload = new VideoDownloadModel();
+                newVideoDownload.Title = Title;
+                newVideoDownload.Thumbnail = Thumbnail;
+                newVideoDownload.Duration = Duration;
+                newVideoDownload.AudioStream = AudioStreamSelected;
+                newVideoDownload.VideoStream = VideoStreamSelected;
+                VideoDownloadsList.Add(newVideoDownload);
+                var progress = new Progress<double>(p=> newVideoDownload.Progress = p);
+                StateHandler.SetUI(AppState.Downloading);
+                await _ytService.DownloadVideo(_url, progress, VideoStreamSelected, AudioStreamSelected, DownloadOptionSelected);
+                StateHandler.SetUI(AppState.DownloadCompleted);
             }
             catch (Exception)
             {
@@ -335,6 +364,7 @@ namespace YoutubeDownloader.ViewModels
         private bool _isFirstOpening;
         private bool _isVideoStreamsFound;
         private bool _isAnalizingStreams;
+        private bool _isSearchOpen;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public bool IsFirstOpening 
@@ -346,6 +376,16 @@ namespace YoutubeDownloader.ViewModels
                 _isFirstOpening = value; 
                 OnPropertyChanged(nameof(IsFirstOpening)); 
             } 
+        }
+        public bool IsSearchOpen
+        {
+            get => _isSearchOpen;
+            set
+            {
+                if (_isSearchOpen == value) return;
+                _isSearchOpen = value;
+                OnPropertyChanged(nameof(IsSearchOpen));
+            }
         }
         public bool IsVideoFound 
         { 
@@ -427,6 +467,7 @@ namespace YoutubeDownloader.ViewModels
         public void SetUI(AppState state)
         {
             IsFirstOpening = false;
+            IsSearchOpen = false;
             IsAnalizing = false;
             IsAnalizingStreams = false;
             IsVideoFound = false;
@@ -442,26 +483,31 @@ namespace YoutubeDownloader.ViewModels
                     break;
 
                 case AppState.AnalyzingUrl:
+                    IsSearchOpen = true;
                     IsAnalizing = true;
                     IsAnalizingStreams = true;
                     break;
 
                 case AppState.AnalyzingStreams:
+                    IsSearchOpen = true;
                     IsVideoFound = true;
                     IsAnalizingStreams = true;
                     break;
 
                 case AppState.VideoFound:
+                    IsSearchOpen = true;
                     IsVideoFound = true;
                     IsAnalizingStreams = true;
                     break;
 
                 case AppState.VideoStreamsFound:
+                    IsSearchOpen = true;
                     IsVideoStreamsFound = true;
                     IsVideoFound = true;
                     break;
 
                 case AppState.VideoNotFound:
+                    IsSearchOpen = true;
                     IsAnalizingError = true;
                     break;
 

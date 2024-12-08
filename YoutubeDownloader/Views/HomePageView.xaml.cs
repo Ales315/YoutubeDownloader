@@ -20,7 +20,7 @@ namespace YoutubeDownloader.Views
             textboxInputUrl.GotFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Blue);
             textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.DarkSlateGray);
 #if DEBUG
-            textboxInputUrl.Text = "https://www.youtube.com/watch?v=43ll4CG5OO0";
+            textboxInputUrl.Text = "https://www.youtube.com/watch?v=HQmmM_qwG4k";
 #endif
             textboxInputUrl.KeyDown += OnTextboxInputUrlKeyDown;
             imgLoadingGifVideo.IsVisibleChanged += (s,e) => SetGifPlaybackFramePosition(s);

@@ -2,8 +2,10 @@
 
 using System;
 using Humanizer;
+using YoutubeDownloader.Enums;
 using YoutubeDownloader.Models;
 using YoutubeExplode;
+using YoutubeExplode.Converter;
 using YoutubeExplode.Videos.Streams;
 
 public class YoutubeService
@@ -39,7 +41,7 @@ public class YoutubeService
     private async Task<VideoDataModel> GetVideoMetadataAsync(string url)
     {
         var video = await _youtube.Videos.GetAsync(url);
-        
+
 
         VideoDataModel videoData = new VideoDataModel();
         videoData.Url = url;
@@ -58,14 +60,40 @@ public class YoutubeService
         throw new NotImplementedException();
     }
 
-    public async Task DownloadVideo(string url, Progress<double> progress, VideoOnlyStreamInfo videoStream, AudioOnlyStreamInfo audioStream)
+    public async Task DownloadVideo(string url, Progress<double> progress, VideoOnlyStreamInfo videoStream, AudioOnlyStreamInfo audioStream, DownloadOption downloadOption)
     {
 #warning TODO: Download video
-        var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(url);
-        var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
-        var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4").OrderBy(x => x.VideoResolution.Area);
-        var streamInfo = new IStreamInfo[] { audioStreams.First(), videoStreams.First() };
-        //await _youtube.Videos.DownloadAsync(streamInfo,);
+        //var streamInfo = new IStreamInfo[] { audioStream, videoStream };
+        IStreamInfo[] streamInfo = [];
+        ConversionRequestBuilder conversionBuilder;
+        string format = string.Empty;
+        switch (downloadOption)
+        {
+            case DownloadOption.VideoWithAudio:
+                streamInfo = [audioStream, videoStream];
+                format = "mp4";
+                conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
+                conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
+                await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
+                break;
+
+            case DownloadOption.AudioOnly:
+                streamInfo = [audioStream];
+                format = "wav";
+                conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
+                conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.VerySlow);
+                await _youtube.Videos.DownloadAsync(streamInfo,conversionBuilder.Build(), progress);
+                break;
+
+            case DownloadOption.VideoOnly:
+                streamInfo = [videoStream];
+                format = "mp4";
+                conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
+                conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
+                await _youtube.Videos.DownloadAsync(streamInfo, new ConversionRequestBuilder("test.mp4").SetPreset(ConversionPreset.Medium).Build(), progress);
+                break;
+        }
+        ((IProgress<double>)progress).Report(1.0);
     }
 
     public async Task<VideoDataModel> GetStreamData(VideoDataModel videoData)

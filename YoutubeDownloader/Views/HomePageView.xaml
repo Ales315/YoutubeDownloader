@@ -220,7 +220,7 @@
         </Grid>
 
         <!--Video Card, Download Options-->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Visibility="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="150"/>
@@ -260,8 +260,7 @@
                 <Image x:Name="imgLoadingGifVideo"  Width="62" 
                        gif:ImageBehavior.AnimatedSource="/Resources/Images/Loading.gif" gif:ImageBehavior.AnimationSpeedRatio="1.3" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
                        Visibility="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                <TextBlock Text="Searching Video..."
+                <TextBlock Text="Loading video data..."
                            Visibility="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"
                            Foreground="#64627a" FontSize="16" FontWeight="Bold"/>
             </StackPanel>
@@ -282,6 +281,21 @@
                 <TextBlock Text="Video non trovato"
                        Foreground="#64627a" FontSize="18" FontWeight="DemiBold"/>
             </StackPanel>
+        </Grid>
+        
+        <!--Download List-->
+        <Grid Grid.Row="1" Visibility="{Binding StateHandler.IsSearchOpen, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+            <ListView ItemsSource="{Binding VideoDownloadsList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="{Binding Title}" Width="auto" />
+                            <TextBlock Text="{Binding Progress}" Width="auto" Margin="50,0,0,0"/>
+                            <ProgressBar Value="{Binding Progress}" Width="200" Margin="50,0,0,0" Maximum="1"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </UserControl>
