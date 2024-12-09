@@ -186,7 +186,8 @@
             </Border>
             <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                      Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="White" BorderBrush="Transparent"
-                     Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{x:Null}"/>
 
             <Button x:Name="buttonPaste" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,52,0"  Click="buttonPaste_Click" 
                     Style="{StaticResource PasteButton}"
@@ -270,17 +271,16 @@
         
         <!--Download List-->
         <Grid Grid.Row="1" Visibility="{Binding StateHandler.IsSearchOpen, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-            <ListView ItemsSource="{Binding VideoDownloadsList}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <TextBlock Text="{Binding Title}" Width="auto" />
-                            <TextBlock Text="{Binding Progress}" Width="auto" Margin="50,0,0,0"/>
-                            <ProgressBar Value="{Binding Progress}" Width="200" Margin="50,0,0,0" Maximum="1"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Border Margin="10,10,10,10">
+                <ListView ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" Style="{StaticResource MaterialDesignCardsListBox}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <uc:VideoDownloadCard HorizontalAlignment="Stretch" Margin="10,0,10,0"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Border>
+            
         </Grid>
     </Grid>
 </UserControl>

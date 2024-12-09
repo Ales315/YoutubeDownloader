@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
-
+        <!--
         <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -137,8 +137,10 @@
             <Style.Triggers>
             </Style.Triggers>
         </Style>
-
+-->
+        
         <!-- SimpleStyles: ComboBoxItem -->
+        <!--
         <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
             <Setter Property="SnapsToDevicePixels" Value="true"/>
             <Setter Property="Foreground" Value="DarkSlateGray"/>
@@ -163,12 +165,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        -->
     </UserControl.Resources>
     
-    <Grid MinWidth="700" MinHeight="50">
+    <Grid MinWidth="700" MinHeight="80">
         <Grid.RowDefinitions>
             <RowDefinition Height="12"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="55"/>
             <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -181,36 +184,54 @@
         <!--DownloadOptions-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <!--Binding to DownloadType, AudioFormats enums in code behind with visibility update-->
-            <ComboBox Name="cbDownloadType" SelectedIndex="2" Margin="0,0,10,0" Width="auto"
+            <ComboBox Name="cbDownloadType" SelectedIndex="2" Margin="0,0,10,0" Width="auto" Height="40" Style="{StaticResource MaterialDesignFilledComboBox}"
+                      Foreground="DarkSlateGray"
+                      FontSize="14"
+                      VerticalContentAlignment="Center"
+                      Padding="10,10,10,10"
                       SelectedItem="{Binding DownloadOptionSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="."/>
-            <ComboBox Name="cbVideoQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="80"
+            <ComboBox Name="cbVideoQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="80" Height="40" Style="{StaticResource MaterialDesignFilledComboBox}"
+                      Foreground="DarkSlateGray"
+                      FontSize="14"
+                      VerticalContentAlignment="Center"
+                      Padding="10,10,10,10"
                       ItemsSource="{Binding VideoStreams}" 
                       SelectedItem="{Binding VideoStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="VideoQuality"/>
-            <ComboBox Name="cbAudioQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="105"
+            <ComboBox Name="cbAudioQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="105" Height="40" Style="{StaticResource MaterialDesignFilledComboBox}"
+                      Foreground="DarkSlateGray"
+                      FontSize="14"
+                      VerticalContentAlignment="Center"
+                      Padding="10,10,10,10"
                       ItemsSource="{Binding AudioStreams}" 
                       SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="Bitrate"/>
-            <ComboBox Name="cbAudioFormat" SelectedIndex="0" Margin="0,0,10,0" MinWidth="60"
+            <ComboBox Name="cbAudioFormat" SelectedIndex="0" Margin="0,0,10,0" MinWidth="60" Height="40" Style="{StaticResource MaterialDesignFilledComboBox}"
+                      Foreground="DarkSlateGray"
+                      FontSize="14"
+                      VerticalContentAlignment="Center"
+                      Padding="10,10,10,10"
                       SelectedItem="{Binding AudioFormatSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="."/>
             
         </StackPanel>
         <!--Download Button and total size-->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" Margin="-35,0,0,0">
-            <CheckBox x:Name="checkBoxSavePreset" VerticalAlignment="Center" Margin="0,0,20,0"
+            <!--
+            <CheckBox x:Name="checkBoxSavePreset" VerticalAlignment="Center" Margin="0,0,20,0" Style="{x:Null}"
                       Content="Save Preset"
                       Foreground="DarkSlateGray"
                       FontSize="14"
                       Padding="5,0,0,0"
                       Background="Transparent"/>
+            -->
             <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
                        Foreground="DarkSlateGray"
                        Margin="0,0,10,0">
                 <Run Text="{Binding DownloadSize}"/>
             </TextBlock>
-            <Button x:Name="buttonDownload" Style="{StaticResource ActionButton}" Height="auto" Width="45" HorizontalAlignment="Right" Margin="0,0,0,0"
+            <Button x:Name="buttonDownload" Style="{StaticResource ActionButton}" Height="45" Width="45" HorizontalAlignment="Right" Margin="0,0,0,0"
                     Command="{Binding DownloadVideo}">
                 <Image Source="/Resources/Images/download24.png" Height="24"/>
             </Button>
