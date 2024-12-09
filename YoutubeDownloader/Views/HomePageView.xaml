@@ -170,7 +170,7 @@
         </Grid.RowDefinitions>
         <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
         <Border Grid.Row="0" Background="#fbfbfe"></Border>
-        <Border Grid.Row="1" Background="#dedcff"></Border>
+        <Border Grid.Row="1" Background="DarkSlateGray"></Border>
         <Border Grid.Row="2" Background="#dedcff"></Border>
 
         <!--URL Bar-->
@@ -272,7 +272,7 @@
         <!--Download List-->
         <Grid Grid.Row="1" Visibility="{Binding StateHandler.IsSearchOpen, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
             <Border Margin="10,10,10,10">
-                <ListView ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" Style="{StaticResource MaterialDesignCardsListBox}">
+                <ListView ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" Style="{StaticResource MaterialDesignCardsListBox}" Background="DarkSlateGray">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <uc:VideoDownloadCard HorizontalAlignment="Stretch" Margin="10,0,10,0"/>

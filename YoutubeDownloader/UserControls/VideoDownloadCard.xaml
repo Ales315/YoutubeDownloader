@@ -12,6 +12,8 @@
              TextOptions.TextRenderingMode="ClearType">
     <UserControl.Resources>
         <converter:DoubleToPercentageConverter x:Key="DoubleToPercentageConverter"/>
+        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
 
     <Grid MinWidth="700" MinHeight="50">
@@ -21,7 +23,7 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="75"/>
             <ColumnDefinition Width="100"/>
@@ -60,11 +62,18 @@
             </TextBlock>
             
             <!-- Progress Ring -->
-            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Value="{Binding Progress}" IsIndeterminate="False" Maximum="1">
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource InvertedBoolToVisibilityConverter}, ConverterParameter=Hidden}"
+                         Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="Blue">
                 <ProgressBar.LayoutTransform>
                     <ScaleTransform CenterX="0.8" CenterY="0.8" ScaleX="1.5" ScaleY="1.5" />
                 </ProgressBar.LayoutTransform>
             </ProgressBar>
         </StackPanel>
+        <Line X1="22" X2="30" Y1="22" Y2="29" Grid.Column="3" Grid.Row="1" Margin="53,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
+              StrokeThickness="4" 
+              Stroke="Green"/>
+        <Line X1="42" X2="28" Y1="15" Y2="30" Grid.Column="3" Grid.Row="1" Margin="53,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
+              StrokeThickness="4" 
+              Stroke="Green" />
     </Grid>
 </UserControl>
