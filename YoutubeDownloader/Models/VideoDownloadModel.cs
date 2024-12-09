@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Windows.Media;
+using YoutubeDownloader.Enums;
 using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeDownloader.Models
 {
-    internal class VideoDownloadModel : INotifyPropertyChanged
+    public class VideoDownloadModel : INotifyPropertyChanged
     {
         private double _progress;
         private bool _isCompleted;
@@ -22,6 +23,7 @@ namespace YoutubeDownloader.Models
                 OnPropertyChanged(nameof(Progress));
             }
         }
+        public DownloadOption DownloadOption;
         public VideoOnlyStreamInfo VideoStream { get; set; } = null!;
         public AudioOnlyStreamInfo AudioStream { get; set; } = null!;
 

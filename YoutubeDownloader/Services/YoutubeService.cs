@@ -1,6 +1,8 @@
 ﻿namespace YoutubeDownloader.Services;
 
 using System;
+using System.Collections.Concurrent;
+using System.Windows;
 using Humanizer;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Models;
@@ -12,10 +14,14 @@ public class YoutubeService
 {
     private YoutubeClient _youtube;
     private VideoDataModel _video = null!;
+    private ConcurrentQueue<VideoDownloadModel> _downloadQueue;
+    private bool _busy;
+    private readonly object _lock = new();
 
     public YoutubeService()
     {
         _youtube = new YoutubeClient();
+        _downloadQueue = new ConcurrentQueue<VideoDownloadModel>();
     }
     public async Task<VideoDataModel> GetVideoAsync(string url)
     {
@@ -59,18 +65,51 @@ public class YoutubeService
     {
         throw new NotImplementedException();
     }
-
-    public async Task DownloadVideo(string url, Progress<double> progress, VideoOnlyStreamInfo videoStream, AudioOnlyStreamInfo audioStream, DownloadOption downloadOption)
+    public void EnqueueDownload(VideoDownloadModel video)
     {
-#warning TODO: Download video
-        //var streamInfo = new IStreamInfo[] { audioStream, videoStream };
+        _downloadQueue.Enqueue(video);
+        StartDownloads();
+    }
+
+    private void StartDownloads()
+    {
+        lock (_lock)
+        {
+            if(_busy)
+                return;
+            _busy = true;
+        }
+        Task.Run(async () => 
+        {
+            while(_downloadQueue.TryDequeue(out var videoDownload))
+            {
+                try
+                {
+                    await DownloadVideo(videoDownload);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Errore Download");
+                }
+            }
+            lock (_lock)
+            {
+                _busy = false;
+            }
+                
+        });
+    }
+
+    public async Task DownloadVideo(VideoDownloadModel video)
+    {
         IStreamInfo[] streamInfo = [];
         ConversionRequestBuilder conversionBuilder;
         string format = string.Empty;
-        switch (downloadOption)
+        Progress<double> progress = new Progress<double>(p => video.Progress = p);
+        switch (video.DownloadOption)
         {
             case DownloadOption.VideoWithAudio:
-                streamInfo = [audioStream, videoStream];
+                streamInfo = [video.AudioStream, video.VideoStream];
                 format = "mp4";
                 conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
@@ -78,7 +117,7 @@ public class YoutubeService
                 break;
 
             case DownloadOption.AudioOnly:
-                streamInfo = [audioStream];
+                streamInfo = [video.AudioStream];
                 format = "wav";
                 conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.VerySlow);
@@ -86,7 +125,7 @@ public class YoutubeService
                 break;
 
             case DownloadOption.VideoOnly:
-                streamInfo = [videoStream];
+                streamInfo = [video.VideoStream];
                 format = "mp4";
                 conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);

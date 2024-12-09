@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -207,7 +208,13 @@ namespace YoutubeDownloader.ViewModels
         {
             get
             {
-                return _downloadVideo ?? (_downloadVideo = new RelayCommandAsync(Download, (c) => true));
+                if (_downloadVideo == null)
+                {
+                    _downloadVideo = new RelayCommand(
+                        param => this.Download()
+                    );
+                }
+                return _downloadVideo;
             }
         }
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -267,7 +274,7 @@ namespace YoutubeDownloader.ViewModels
         }
         private bool CanProcessRequest()
         {
-            if(StateHandler.IsAnalizing || StateHandler.IsDownloading)
+            if(StateHandler.IsAnalizing)
                 return false;
             if (string.IsNullOrWhiteSpace(Url)) 
                 return false;
@@ -329,7 +336,7 @@ namespace YoutubeDownloader.ViewModels
 
         #region DOWNLOAD
         //Download video
-        public async Task Download()
+        public void Download()
         {
             try
             {
@@ -340,14 +347,13 @@ namespace YoutubeDownloader.ViewModels
                 newVideoDownload.AudioStream = AudioStreamSelected;
                 newVideoDownload.VideoStream = VideoStreamSelected;
                 VideoDownloadsList.Add(newVideoDownload);
-                var progress = new Progress<double>(p=> newVideoDownload.Progress = p);
+                _ytService.EnqueueDownload(newVideoDownload);
                 StateHandler.SetUI(AppState.Downloading);
-                await _ytService.DownloadVideo(_url, progress, VideoStreamSelected, AudioStreamSelected, DownloadOptionSelected);
-                StateHandler.SetUI(AppState.DownloadCompleted);
+                
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion
