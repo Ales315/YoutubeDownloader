@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using YoutubeExplode.Videos.Streams;
+﻿using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeDownloader.Models
 {

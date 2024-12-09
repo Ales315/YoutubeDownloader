@@ -8,7 +8,6 @@ namespace YoutubeDownloader.Models
     public class VideoDownloadModel : INotifyPropertyChanged
     {
         private double _progress;
-        private bool _isCompleted;
 
         public ImageSource Thumbnail { get; set; } = null!;
         public string Title { get; set; } = string.Empty;
@@ -23,9 +22,9 @@ namespace YoutubeDownloader.Models
                 OnPropertyChanged(nameof(Progress));
             }
         }
-        public DownloadOption DownloadOption;
         public VideoOnlyStreamInfo VideoStream { get; set; } = null!;
         public AudioOnlyStreamInfo AudioStream { get; set; } = null!;
+        public DownloadOption DownloadOption;
 
 
         public event PropertyChangedEventHandler? PropertyChanged;

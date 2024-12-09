@@ -215,12 +215,5 @@
                 <Image Source="/Resources/Images/download24.png" Height="24"/>
             </Button>
         </StackPanel>
-        <!--Download Progess-->
-        <TextBlock Grid.Row="2" Grid.Column="2" TextWrapping="NoWrap" VerticalAlignment="Center"
-                   Foreground="Red"
-                   Margin="0,0,10,0">
-            <Run Text="Progress: "/>
-            <Run Text="{Binding Progress}"/>
-        </TextBlock>
     </Grid>
 </UserControl>

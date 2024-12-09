@@ -3,7 +3,10 @@
     public enum AudioFormats
     {
         MP3,
-        AAX,
-        WAV
+        FLAC,
+        WAV,
+        AIFF,
+        OGG,
+        WEBM
     }
 }

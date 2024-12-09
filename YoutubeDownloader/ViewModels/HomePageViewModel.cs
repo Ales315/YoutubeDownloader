@@ -41,7 +41,7 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _getVideoData = null!;
         private ICommand _downloadVideo = null!;
         private double _progress;
-        
+
         public string Url
         {
             get => _url;
@@ -241,7 +241,7 @@ namespace YoutubeDownloader.ViewModels
         //Get video metadata
         public async Task GetVideoMetadata()
         {
-            if(!CanProcessRequest()) return;
+            if (!CanProcessRequest()) return;
             try
             {
                 StateHandler.SetUI(AppState.AnalyzingUrl);
@@ -256,7 +256,7 @@ namespace YoutubeDownloader.ViewModels
 
                 if (videoData.ErrorMessage != string.Empty)
                     throw new Exception(videoData.ErrorMessage);
-                
+
             }
             catch (Exception)
             {
@@ -274,11 +274,11 @@ namespace YoutubeDownloader.ViewModels
         }
         private bool CanProcessRequest()
         {
-            if(StateHandler.IsAnalizing)
+            if (StateHandler.IsAnalizing)
                 return false;
-            if (string.IsNullOrWhiteSpace(Url)) 
+            if (string.IsNullOrWhiteSpace(Url))
                 return false;
-            if (Url == _previousValidUrl && StateHandler.IsVideoFound) 
+            if (Url == _previousValidUrl && StateHandler.IsVideoFound)
                 return false;
             return true;
         }
@@ -315,9 +315,9 @@ namespace YoutubeDownloader.ViewModels
             var audioSizeBytes = AudioStreamSelected == null ? 0 : AudioStreamSelected.Size.Bytes;
             var totalSizeBytes = videoSizeBytes + audioSizeBytes;
 
-            if(DownloadOptionSelected == DownloadOption.VideoOnly) 
+            if (DownloadOptionSelected == DownloadOption.VideoOnly)
                 totalSizeBytes -= audioSizeBytes;
-            else if(DownloadOptionSelected == DownloadOption.AudioOnly)
+            else if (DownloadOptionSelected == DownloadOption.AudioOnly)
                 totalSizeBytes -= videoSizeBytes;
 
             //todo: calcolo in base al formato
@@ -326,7 +326,7 @@ namespace YoutubeDownloader.ViewModels
             //    long totalSeconds = ((long)TimeSpan.Parse(Duration).TotalSeconds);
             //    totalSizeBytes = totalSeconds * 44100 * 16bitdepth * 2channels / 8;
             //}
-                
+
 
             DownloadSize = $"{new FileSize(totalSizeBytes)}";
         }
@@ -349,7 +349,7 @@ namespace YoutubeDownloader.ViewModels
                 VideoDownloadsList.Add(newVideoDownload);
                 _ytService.EnqueueDownload(newVideoDownload);
                 StateHandler.SetUI(AppState.Downloading);
-                
+
             }
             catch (Exception ex)
             {
@@ -373,15 +373,15 @@ namespace YoutubeDownloader.ViewModels
         private bool _isSearchOpen;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public bool IsFirstOpening 
-        { 
-            get => _isFirstOpening; 
-            set 
-            { 
+        public bool IsFirstOpening
+        {
+            get => _isFirstOpening;
+            set
+            {
                 if (_isFirstOpening == value) return;
-                _isFirstOpening = value; 
-                OnPropertyChanged(nameof(IsFirstOpening)); 
-            } 
+                _isFirstOpening = value;
+                OnPropertyChanged(nameof(IsFirstOpening));
+            }
         }
         public bool IsSearchOpen
         {
@@ -393,15 +393,15 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(IsSearchOpen));
             }
         }
-        public bool IsVideoFound 
-        { 
-            get => _isVideoFound; 
-            set 
-            { 
+        public bool IsVideoFound
+        {
+            get => _isVideoFound;
+            set
+            {
                 if (_isVideoFound == value) return;
-                _isVideoFound = value; 
-                OnPropertyChanged(nameof(IsVideoFound)); 
-            } 
+                _isVideoFound = value;
+                OnPropertyChanged(nameof(IsVideoFound));
+            }
         }
         public bool IsVideoStreamsFound
         {
@@ -413,15 +413,15 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(IsVideoStreamsFound));
             }
         }
-        public bool IsAnalizing 
-        { 
-            get => _isAnalizing; 
-            set 
-            { 
+        public bool IsAnalizing
+        {
+            get => _isAnalizing;
+            set
+            {
                 if (_isAnalizing == value) return;
-                _isAnalizing = value; 
-                OnPropertyChanged(nameof(IsAnalizing)); 
-            } 
+                _isAnalizing = value;
+                OnPropertyChanged(nameof(IsAnalizing));
+            }
         }
         public bool IsAnalizingStreams
         {
@@ -433,35 +433,35 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(IsAnalizingStreams));
             }
         }
-        public bool IsAnalizingError 
-        { 
-            get => _isAnalizingError; 
-            set 
-            { 
+        public bool IsAnalizingError
+        {
+            get => _isAnalizingError;
+            set
+            {
                 if (_isAnalizingError == value) return;
-                _isAnalizingError = value; 
-                OnPropertyChanged(nameof(IsAnalizingError)); 
-            } 
+                _isAnalizingError = value;
+                OnPropertyChanged(nameof(IsAnalizingError));
+            }
         }
-        public bool IsDownloading 
-        { 
-            get => _isDownloading; 
-            set 
-            { 
+        public bool IsDownloading
+        {
+            get => _isDownloading;
+            set
+            {
                 if (_isDownloading == value) return;
-                _isDownloading = value; 
-                OnPropertyChanged(nameof(IsDownloading)); 
-            } 
+                _isDownloading = value;
+                OnPropertyChanged(nameof(IsDownloading));
+            }
         }
-        public bool IsDownloaded 
-        { 
-            get => _isDownloaded; 
-            set 
-            { 
+        public bool IsDownloaded
+        {
+            get => _isDownloaded;
+            set
+            {
                 if (_isDownloaded == value) return;
-                _isDownloaded = value; 
-                OnPropertyChanged(nameof(IsDownloaded)); 
-            } 
+                _isDownloaded = value;
+                OnPropertyChanged(nameof(IsDownloaded));
+            }
         }
 
         public void OnPropertyChanged(string propertyName)

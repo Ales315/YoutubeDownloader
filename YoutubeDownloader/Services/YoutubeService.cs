@@ -60,11 +60,19 @@ public class YoutubeService
 
         return videoData;
     }
-
-    private void GetPlaylist(string url)
+    public async Task<VideoDataModel> GetStreamData(VideoDataModel videoData)
     {
-        throw new NotImplementedException();
+        var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url);
+
+        var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
+        var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
+            .GroupBy(x => x.VideoResolution.Area)
+            .Select(g => g.OrderByDescending(s => s.Bitrate).First()).Reverse();
+        videoData.AudioStreams = audioStreams;
+        videoData.VideoStreams = videoStreams;
+        return videoData;
     }
+
     public void EnqueueDownload(VideoDownloadModel video)
     {
         _downloadQueue.Enqueue(video);
@@ -89,7 +97,7 @@ public class YoutubeService
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Errore Download");
+                    MessageBox.Show(ex.Message, "Download Error");
                 }
             }
             lock (_lock)
@@ -133,18 +141,5 @@ public class YoutubeService
                 break;
         }
         ((IProgress<double>)progress).Report(1.0);
-    }
-
-    public async Task<VideoDataModel> GetStreamData(VideoDataModel videoData)
-    {
-        var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url);
-
-        var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
-        var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
-            .GroupBy(x => x.VideoResolution.Area)
-            .Select(g => g.OrderByDescending(s => s.Bitrate).First()).Reverse();
-        videoData.AudioStreams = audioStreams;
-        videoData.VideoStreams = videoStreams;
-        return videoData;
     }
 }
