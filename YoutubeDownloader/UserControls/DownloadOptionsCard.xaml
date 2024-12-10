@@ -207,12 +207,11 @@
                       ItemsSource="{Binding AudioStreams}" 
                       SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="Bitrate"/>
-            <ComboBox Name="cbAudioFormat" SelectedIndex="0" Margin="0,0,10,0" MinWidth="60" Height="40" Style="{StaticResource MaterialDesignFilledComboBox}"
+            <ComboBox Name="cbDownloadFormat" SelectedIndex="0" Margin="0,0,10,0" MinWidth="60" Height="40" Style="{StaticResource MaterialDesignFilledComboBox}"
                       Foreground="DarkSlateGray"
                       FontSize="14"
                       VerticalContentAlignment="Center"
                       Padding="10,10,10,10"
-                      SelectedItem="{Binding AudioFormatSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="."/>
             
         </StackPanel>

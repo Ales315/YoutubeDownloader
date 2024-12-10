@@ -35,7 +35,9 @@ namespace YoutubeDownloader.Models
         }
         public VideoOnlyStreamInfo VideoStream { get; set; } = null!;
         public AudioOnlyStreamInfo AudioStream { get; set; } = null!;
+
         public DownloadOption DownloadOption;
+        public DownloadFormat DownloadFormat;
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
