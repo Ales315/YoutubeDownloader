@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows.Data;
 
 namespace YoutubeDownloader.Converters
@@ -16,7 +11,7 @@ namespace YoutubeDownloader.Converters
             {
                 if (number >= 1000000)
                     return $"{number / 1000000}Mln";
-                else if(number >= 1000000000)
+                else if (number >= 1000000000)
                     return $"{number / 1000000000}Mrd";
                 return number.ToString("N0", CultureInfo.CurrentCulture);
             }
