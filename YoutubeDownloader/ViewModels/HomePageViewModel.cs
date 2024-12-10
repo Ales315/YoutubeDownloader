@@ -346,6 +346,7 @@ namespace YoutubeDownloader.ViewModels
                 newVideoDownload.Duration = Duration;
                 newVideoDownload.AudioStream = AudioStreamSelected;
                 newVideoDownload.VideoStream = VideoStreamSelected;
+                newVideoDownload.DownloadFormat = FormatSelected;
                 VideoDownloadsList.Add(newVideoDownload);
                 _ytService.EnqueueDownload(newVideoDownload);
                 StateHandler.SetUI(AppState.Downloading);

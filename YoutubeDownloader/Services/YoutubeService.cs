@@ -112,32 +112,30 @@ public class YoutubeService
     {
         IStreamInfo[] streamInfo = [];
         ConversionRequestBuilder conversionBuilder;
-        string format = string.Empty;
+        string format = (Enum.GetName(typeof(DownloadFormat), video.DownloadFormat) ?? "WEBM").ToLower();
+        string fileName = $"{video.Title}.{format}";
         Progress<double> progress = new Progress<double>(p => video.Progress = p);
         switch (video.DownloadOption)
         {
             case DownloadOption.VideoWithAudio:
                 streamInfo = [video.AudioStream, video.VideoStream];
-                format = "mp4";
-                conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
+                conversionBuilder = new ConversionRequestBuilder($"dw\\{fileName}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
                 await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
                 break;
 
             case DownloadOption.AudioOnly:
                 streamInfo = [video.AudioStream];
-                format = "wav";
-                conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
+                conversionBuilder = new ConversionRequestBuilder($"dw\\{fileName}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.VerySlow);
                 await _youtube.Videos.DownloadAsync(streamInfo,conversionBuilder.Build(), progress);
                 break;
 
             case DownloadOption.VideoOnly:
                 streamInfo = [video.VideoStream];
-                format = "mp4";
-                conversionBuilder = new ConversionRequestBuilder($"dw\\test.{format}");
+                conversionBuilder = new ConversionRequestBuilder($"dw\\{fileName}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
-                await _youtube.Videos.DownloadAsync(streamInfo, new ConversionRequestBuilder("test.mp4").SetPreset(ConversionPreset.Medium).Build(), progress);
+                await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
                 break;
         }
         ((IProgress<double>)progress).Report(1.0);
