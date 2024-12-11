@@ -233,7 +233,12 @@ namespace YoutubeDownloader.ViewModels
                 IsDownloaded = false,
                 IsDownloading = false,
                 IsAnalizingError = false,
-                IsFirstOpening = true
+                IsDownloadListEmpty = true
+            };
+
+            VideoDownloadsList.CollectionChanged += (s, e) => 
+            { 
+                StateHandler.IsDownloadListEmpty = VideoDownloadsList.Count == 0; 
             };
         }
 
@@ -368,20 +373,20 @@ namespace YoutubeDownloader.ViewModels
         private bool _isDownloading;
         private bool _isDownloaded;
         private bool _isAnalizingError;
-        private bool _isFirstOpening;
+        private bool _isDownloadListEmpty;
         private bool _isVideoStreamsFound;
         private bool _isAnalizingStreams;
         private bool _isSearchOpen;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public bool IsFirstOpening
+        public bool IsDownloadListEmpty
         {
-            get => _isFirstOpening;
+            get => _isDownloadListEmpty;
             set
             {
-                if (_isFirstOpening == value) return;
-                _isFirstOpening = value;
-                OnPropertyChanged(nameof(IsFirstOpening));
+                if (_isDownloadListEmpty == value) return;
+                _isDownloadListEmpty = value;
+                OnPropertyChanged(nameof(IsDownloadListEmpty));
             }
         }
         public bool IsSearchOpen
@@ -473,7 +478,6 @@ namespace YoutubeDownloader.ViewModels
 
         public void SetUI(AppState state)
         {
-            IsFirstOpening = false;
             IsSearchOpen = false;
             IsAnalizing = false;
             IsAnalizingStreams = false;
@@ -485,10 +489,6 @@ namespace YoutubeDownloader.ViewModels
 
             switch (state)
             {
-                case AppState.FirstOpening:
-                    IsFirstOpening = true;
-                    break;
-
                 case AppState.AnalyzingUrl:
                     IsSearchOpen = true;
                     IsAnalizing = true;
