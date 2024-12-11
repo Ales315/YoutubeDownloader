@@ -23,20 +23,36 @@ namespace YoutubeDownloader.UserControls
             };
 
             InitializeComponent();
+            this.IsVisibleChanged += OnVisibleChanged;
             cbDownloadType.ItemsSource = _downloadOptions;
             cbDownloadType.DisplayMemberPath = "Value";
             cbDownloadType.SelectedValuePath = "Key";
-            cbDownloadType.SelectedIndex = 0;
 
-            var binding = new Binding("DownloadOptionSelected")
+            var bindingDownloadType = new Binding("DownloadOptionSelected")
             {
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
                 Mode = BindingMode.TwoWay
             };
-            cbDownloadType.SetBinding(ComboBox.SelectedValueProperty, binding);
+            cbDownloadType.SetBinding(ComboBox.SelectedValueProperty, bindingDownloadType);
+
+            var bindingDownloadFormat = new Binding("FormatSelected")
+            {
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            cbDownloadFormat.SetBinding(ComboBox.SelectedValueProperty, bindingDownloadFormat);
 
             cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
             cbDownloadType.SelectionChanged += OnDownloadTypeSelectionChanged;
+            cbDownloadFormat.SelectedIndex = 0;
+            cbDownloadType.SelectedIndex = 0;
+        }
+
+        private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            //todo: load saved preset
+            cbDownloadFormat.SelectedIndex = 0;
+            var selection = cbDownloadFormat.SelectedIndex;
         }
 
         private void OnDownloadTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
