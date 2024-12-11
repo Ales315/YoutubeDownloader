@@ -193,7 +193,7 @@
     </WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="65"/>
         </Grid.RowDefinitions>
@@ -203,7 +203,7 @@
 
         <!--Titlebar-->
         <StackPanel Panel.ZIndex="3" WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="buttonMinimize" Background="Transparent" Width="30" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0">
+            <Button x:Name="buttonMinimize" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="LightBlue" />
@@ -215,7 +215,7 @@
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="DarkSlateGray" TargetName="Border" />
+                                            <Setter Property="Background" Value="lightGray" TargetName="Border" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -223,9 +223,9 @@
                         </Setter>
                     </Style>
                 </Button.Style>
-                <Image Source="/Resources/Images/minimize24.png" Margin="0,0,0,-1"/>
+                <Image x:Name="imgMinimize" Source="/Resources/Images/minimizeDark24.png" Margin="0,0,0,0"/>
             </Button>
-            <Button x:Name="buttonClose" Background="Transparent" Width="30" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0">
+            <Button x:Name="buttonClose" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="LightBlue" />
@@ -245,15 +245,26 @@
                         </Setter>
                     </Style>
                 </Button.Style>
-                <Image Source="/Resources/Images/close24.png" Margin="0,0,0,0"/>
+                <Image x:Name="imgClose" Source="/Resources/Images/closeDark24.png" Margin="0,0,0,0"/>
             </Button>
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
-            <Image Source="/Resources/Images/icon.png" Width="24"></Image>
-            <TextBlock Text="Youtube Downloader" Foreground="DarkSlateGray" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"/>
+            <Image Source="/Resources/Images/favicon.png" Width="24"></Image>
+            <TextBlock Text="Youtube Downloader" Foreground="DarkSlateGray" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"
+                       FontSize="14"/>
         </StackPanel>
-        
+
+        <!--Titlebar dropshadow-->
+        <Rectangle Panel.ZIndex="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="12" Opacity="0.05">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#00131313" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
         <!--Current Page-->
         <ContentControl Content="{Binding CurrentPageViewModel}" Grid.Row="1"/>
     </Grid>
