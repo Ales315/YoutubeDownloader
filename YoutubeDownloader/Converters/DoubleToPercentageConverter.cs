@@ -12,6 +12,8 @@ namespace YoutubeDownloader.Converters
                 doubleValue *= 100;
                 if (doubleValue == 100)
                     return $"Done";
+                else if (doubleValue == -100)
+                    return "Failed!";
                 return $"{doubleValue:0.0}%";
             }
             return string.Empty;

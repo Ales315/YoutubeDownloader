@@ -62,18 +62,22 @@
             </TextBlock>
             
             <!-- Progress Ring -->
-            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource InvertedBoolToVisibilityConverter}, ConverterParameter=Hidden}"
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Hidden}"
                          Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="Blue">
                 <ProgressBar.LayoutTransform>
                     <ScaleTransform CenterX="0.8" CenterY="0.8" ScaleX="1.5" ScaleY="1.5" />
                 </ProgressBar.LayoutTransform>
             </ProgressBar>
         </StackPanel>
+        <!--Download success icon-->
         <Line X1="22" X2="30" Y1="22" Y2="29" Grid.Column="3" Grid.Row="1" Margin="53,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
               StrokeThickness="4" 
               Stroke="Green"/>
         <Line X1="42" X2="28" Y1="15" Y2="30" Grid.Column="3" Grid.Row="1" Margin="53,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
               StrokeThickness="4" 
               Stroke="Green" />
+        <!--Download fail icon-->
+        <Image Grid.Column="3" Grid.Row="1" Source="/Resources/Images/error24.png"  Margin="69,0,0,0" 
+               Visibility="{Binding IsDownloadFailed, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

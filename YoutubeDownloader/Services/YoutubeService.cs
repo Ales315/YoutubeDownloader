@@ -2,12 +2,14 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Windows;
 using Humanizer;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Models;
 using YoutubeExplode;
 using YoutubeExplode.Converter;
+using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 public class YoutubeService
@@ -93,11 +95,17 @@ public class YoutubeService
             {
                 try
                 {
+                    videoDownload.IsDownloading = true;
                     await DownloadVideo(videoDownload);
+                    videoDownload.IsDownloading = false;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Download Error");
+                    videoDownload.IsDownloadFailed = true;
+                    videoDownload.IsDownloading = false;
+                    Progress<double> progress = new Progress<double>(p => videoDownload.Progress = p);
+                    ((IProgress<double>)progress).Report(-1.0);
+                    MessageBox.Show(ex.Message, "Download Failed!");
                 }
             }
             lock (_lock)

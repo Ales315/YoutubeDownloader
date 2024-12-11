@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Resources\Images\close24.png" />
     <None Remove="Resources\Images\download24.png" />
+    <None Remove="Resources\Images\error24.png" />
     <None Remove="Resources\Images\favicon.png" />
     <None Remove="Resources\Images\icon.png" />
     <None Remove="Resources\Images\Loading.gif" />
@@ -35,6 +36,7 @@
     <Resource Include="Resources\Images\close24.png" />
     <Resource Include="Resources\Images\closeDark24.png" />
     <Resource Include="Resources\Images\download24.png" />
+    <Resource Include="Resources\Images\error24.png" />
     <Resource Include="Resources\Images\favicon.png" />
     <Resource Include="Resources\Images\icon.png" />
     <Resource Include="Resources\Images\Loading.gif" />
