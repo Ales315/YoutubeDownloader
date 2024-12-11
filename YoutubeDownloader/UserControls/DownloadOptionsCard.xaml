@@ -184,12 +184,12 @@
         <!--DownloadOptions-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <!--Binding to DownloadType, AudioFormats enums in code behind with visibility update-->
-            <ComboBox Name="cbDownloadType" SelectedIndex="2" Margin="0,0,10,0" Width="auto" Height="40" Style="{StaticResource MaterialDesignFilledComboBox}"
+            <ComboBox Name="cbDownloadType" SelectedIndex="2" Margin="0,0,10,0" Width="auto" Height="40" 
+                      Style="{StaticResource MaterialDesignFilledComboBox}"
                       Foreground="DarkSlateGray"
                       FontSize="14"
                       VerticalContentAlignment="Center"
                       Padding="10,10,10,10"
-                      SelectedItem="{Binding DownloadOptionSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="."/>
             <ComboBox Name="cbVideoQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="80" Height="40" Style="{StaticResource MaterialDesignFilledComboBox}"
                       Foreground="DarkSlateGray"

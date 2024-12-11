@@ -1,6 +1,8 @@
-﻿using System.Reflection.Metadata;
+﻿using System.CodeDom;
+using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using YoutubeDownloader.Enums;
 
 namespace YoutubeDownloader.UserControls
@@ -10,18 +12,37 @@ namespace YoutubeDownloader.UserControls
     /// </summary>
     public partial class DownloadOptionsCard : UserControl
     {
+        private Dictionary<DownloadOption, string> _downloadOptions;
         public DownloadOptionsCard()
         {
+            _downloadOptions = new Dictionary<DownloadOption, string>()
+            {
+                { DownloadOption.VideoWithAudio, "Video with Audio"},
+                { DownloadOption.AudioOnly, "Audio Only"},
+                { DownloadOption.VideoOnly, "Video Only"}
+            };
+
             InitializeComponent();
-            cbDownloadType.ItemsSource = Enum.GetValues(typeof(DownloadOption));
+            cbDownloadType.ItemsSource = _downloadOptions;
+            cbDownloadType.DisplayMemberPath = "Value";
+            cbDownloadType.SelectedValuePath = "Key";
+            cbDownloadType.SelectedIndex = 0;
+
+            var binding = new Binding("DownloadOptionSelected")
+            {
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            cbDownloadType.SetBinding(ComboBox.SelectedValueProperty, binding);
+
             cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
             cbDownloadType.SelectionChanged += OnDownloadTypeSelectionChanged;
         }
 
         private void OnDownloadTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = cbDownloadType.SelectedItem;
-            switch (selectedItem)
+            var selectedItem = ((KeyValuePair<DownloadOption, string>)cbDownloadType.SelectedItem);
+            switch (selectedItem.Key)
             {
                 case DownloadOption.VideoOnly:
                     cbAudioQuality.Visibility = Visibility.Collapsed;

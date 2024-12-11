@@ -351,7 +351,6 @@ namespace YoutubeDownloader.ViewModels
                 VideoDownloadsList.Add(newVideoDownload);
                 _ytService.EnqueueDownload(newVideoDownload);
                 StateHandler.SetUI(AppState.Downloading);
-
             }
             catch (Exception ex)
             {
