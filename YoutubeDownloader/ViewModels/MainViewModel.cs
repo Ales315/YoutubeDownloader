@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
+using YoutubeDownloader.Services;
 
 namespace YoutubeDownloader.ViewModels
 {
@@ -9,10 +10,11 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _changePageCommand = null!;
         private ViewModelBase _currentPageViewModel = null!;
         private List<ViewModelBase> _pageViewModels = null!;
+
         public MainViewModel()
         {
-            PageViewModels.Add(new HomePageViewModel());
-            PageViewModels.Add(new SettingsViewModel());
+            PageViewModels.Add(new HomePageViewModel(ServiceProvider.SettingsService));
+            PageViewModels.Add(new SettingsViewModel(ServiceProvider.SettingsService));
             CurrentPageViewModel = PageViewModels[0];
         }
 

@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using YoutubeDownloader.Helpers;
+using YoutubeDownloader.Services;
 
 namespace YoutubeDownloader
 {
@@ -7,6 +9,11 @@ namespace YoutubeDownloader
     /// </summary>
     public partial class App : Application
     {
-    }
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
 
+            FFmpeg.CheckFFmpegInstallation();
+        }
+    }
 }

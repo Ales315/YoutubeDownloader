@@ -15,7 +15,10 @@ namespace YoutubeDownloader.ViewModels
     class HomePageViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private YoutubeService _ytService = new YoutubeService();
+        private SettingsService _settingsService;
         private string _previousValidUrl = string.Empty;
+        
+
         public ControlStateHandler StateHandler { get; set; }
         public ObservableCollection<VideoDownloadModel> VideoDownloadsList { get; set; } = new ObservableCollection<VideoDownloadModel>();
 
@@ -224,8 +227,9 @@ namespace YoutubeDownloader.ViewModels
         }
         #endregion
 
-        public HomePageViewModel()
+        public HomePageViewModel(SettingsService settingsService)
         {
+            _settingsService = settingsService;
             StateHandler = new ControlStateHandler()
             {
                 IsVideoFound = false,

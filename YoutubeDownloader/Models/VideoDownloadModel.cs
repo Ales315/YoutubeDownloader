@@ -45,7 +45,6 @@ namespace YoutubeDownloader.Models
                 OnPropertyChanged(nameof(IsDownloadCompleted));
             }
         }
-
         public bool IsDownloadFailed
         {
             get => _isDownloadFailed;
@@ -59,9 +58,9 @@ namespace YoutubeDownloader.Models
         public VideoOnlyStreamInfo VideoStream { get; set; } = null!;
         public AudioOnlyStreamInfo AudioStream { get; set; } = null!;
 
-        public DownloadOption DownloadOption;
-        public DownloadFormat DownloadFormat;
-        
+        public DownloadOption DownloadOption { get; set; }
+        public DownloadFormat DownloadFormat { get; set; }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
