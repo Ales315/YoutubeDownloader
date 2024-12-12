@@ -127,21 +127,21 @@ public class YoutubeService
         {
             case DownloadOption.VideoWithAudio:
                 streamInfo = [video.AudioStream, video.VideoStream];
-                conversionBuilder = new ConversionRequestBuilder($"dw\\{fileName}");
+                conversionBuilder = new ConversionRequestBuilder($"{fileName}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
                 await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
                 break;
 
             case DownloadOption.AudioOnly:
                 streamInfo = [video.AudioStream];
-                conversionBuilder = new ConversionRequestBuilder($"dw\\{fileName}");
+                conversionBuilder = new ConversionRequestBuilder($"{fileName}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.VerySlow);
                 await _youtube.Videos.DownloadAsync(streamInfo,conversionBuilder.Build(), progress);
                 break;
 
             case DownloadOption.VideoOnly:
                 streamInfo = [video.VideoStream];
-                conversionBuilder = new ConversionRequestBuilder($"dw\\{fileName}");
+                conversionBuilder = new ConversionRequestBuilder($"{fileName}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
                 await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
                 break;

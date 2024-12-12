@@ -23,13 +23,14 @@ public class SettingsService
             {
                 string json = File.ReadAllText(_settingsFilename);
                 _settings = JsonConvert.DeserializeObject<Settings>(json) ?? new Settings();
+                return;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Failed to load user preferences.", ex.Message);
-                _settings = new Settings();
             }
         }
+        _settings = new Settings();
     }
 
     public void Save()
