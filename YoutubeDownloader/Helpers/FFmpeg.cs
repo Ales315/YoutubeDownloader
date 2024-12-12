@@ -10,7 +10,7 @@ namespace YoutubeDownloader.Helpers
         {
             ProcessStartInfo info = new("cmd.exe")
             {
-                Arguments = "/c ffmpe -version",
+                Arguments = "/c ffmpeg -version",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true,
