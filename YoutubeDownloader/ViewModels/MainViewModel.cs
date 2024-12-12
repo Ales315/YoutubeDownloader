@@ -13,8 +13,8 @@ namespace YoutubeDownloader.ViewModels
 
         public MainViewModel()
         {
-            PageViewModels.Add(new HomePageViewModel(ServiceProvider.SettingsService));
-            PageViewModels.Add(new SettingsViewModel(ServiceProvider.SettingsService));
+            PageViewModels.Add(new HomePageViewModel());
+            PageViewModels.Add(new SettingsViewModel());
             CurrentPageViewModel = PageViewModels[0];
         }
 

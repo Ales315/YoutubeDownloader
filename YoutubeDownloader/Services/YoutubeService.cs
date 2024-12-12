@@ -121,7 +121,7 @@ public class YoutubeService
         IStreamInfo[] streamInfo = [];
         ConversionRequestBuilder conversionBuilder;
         string format = (Enum.GetName(typeof(DownloadFormat), video.DownloadFormat) ?? "WEBM").ToLower();
-        string fileName = $"{video.Title}.{format}";
+        string fileName = $"{ServiceProvider.SettingsService.GetOutputPath()}\\{video.Title}.{format}";
         Progress<double> progress = new Progress<double>(p => video.Progress = p);
         switch (video.DownloadOption)
         {

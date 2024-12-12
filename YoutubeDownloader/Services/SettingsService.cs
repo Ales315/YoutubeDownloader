@@ -45,4 +45,9 @@ public class SettingsService
         }
 
     }
+
+    public string GetOutputPath()
+    {
+        return _settings.OutputPath;
+    }
 }

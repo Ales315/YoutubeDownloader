@@ -5,14 +5,15 @@ namespace YoutubeDownloader.Helpers
 {
     public static class FFmpeg
     {
-        public static void CheckFFmpegInstallation()
+        private static string _outputData = string.Empty;
+        public static bool CheckFFmpegInstallation()
         {
             ProcessStartInfo info = new("cmd.exe")
             {
-                Arguments = "/c ffmpeg -version",
+                Arguments = "/c ffmpe -version",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = false,
+                CreateNoWindow = true,
                 UseShellExecute = false
             };
             Process process = new();
@@ -21,8 +22,11 @@ namespace YoutubeDownloader.Helpers
             process.BeginOutputReadLine();
             process.OutputDataReceived += (s, e) =>
             {
-                var output = e.Data;
+                _outputData = e.Data ?? string.Empty;
+                process.Close();
             };
+            process.WaitForExit();
+            return _outputData.Contains("ffmpeg version");
         }
 
         public static bool InstallFFmpeg()

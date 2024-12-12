@@ -12,8 +12,8 @@ namespace YoutubeDownloader
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            FFmpeg.CheckFFmpegInstallation();
+            if (!FFmpeg.CheckFFmpegInstallation())
+                MessageBox.Show("This application uses FFmpeg. Please install latest version before proceeding", "FFmpeg not found!");
         }
     }
 }
