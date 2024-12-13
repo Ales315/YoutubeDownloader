@@ -235,7 +235,18 @@ namespace YoutubeDownloader.ViewModels
             { 
                 StateHandler.IsDownloadListEmpty = VideoDownloadsList.Count == 0; 
             };
-            StateHandler.SetUI(AppState.FirstOpening);
+            if (StateHandler.IsVideoFound)
+                LoadLastVideoData();
+        }
+
+        private void LoadLastVideoData()
+        {
+            var data = ServiceProvider.YoutubeService.GetLastVideoData();
+            if (data == null)
+                return;
+            UpdateVideoData(data);
+            if (UpdateVideoStreamData(data) == false)
+                StateHandler.SetUI(AppState.FirstOpening);
         }
 
         #region GET METADATA
@@ -285,7 +296,7 @@ namespace YoutubeDownloader.ViewModels
         }
         private void UpdateVideoData(VideoDataModel videoData)
         {
-            LoadThumbnail(videoData.ThumbnailUrl);
+            Thumbnail = videoData.Thumbnail;
             Title = videoData.Title;
             ChannelName = videoData.ChannelName;
             Duration = videoData.Duration;
@@ -293,21 +304,17 @@ namespace YoutubeDownloader.ViewModels
             Date = videoData.Date;
             _previousValidUrl = Url;
         }
-        private void LoadThumbnail(string thumbnailUrl)
-        {
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(thumbnailUrl, uriKind: UriKind.Absolute);
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            Thumbnail = bitmap;
-        }
-        private void UpdateVideoStreamData(VideoDataModel streamData)
+        private bool UpdateVideoStreamData(VideoDataModel streamData)
         {
             AudioStreams = streamData.AudioStreams;
             VideoStreams = streamData.VideoStreams;
+
+            if(AudioStreams.Count() == 0 || AudioStreams.Count() == 0)
+                return false;
+
             VideoStreamSelected = VideoStreams.Last();
             AudioStreamSelected = AudioStreams.Last();
+            return true;
         }
 
         private void CalculateDownloadSize()
@@ -372,8 +379,10 @@ namespace YoutubeDownloader.ViewModels
         private bool _isVideoStreamsFound;
         private bool _isAnalizingStreams;
         private bool _isSearchOpen;
+        private AppState _currentState;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler<AppState>? CurrentStateChanged;
         public bool IsDownloadListEmpty
         {
             get => _isDownloadListEmpty;
@@ -465,6 +474,17 @@ namespace YoutubeDownloader.ViewModels
             }
         }
 
+        public AppState CurrentState
+        {
+            get => _currentState;
+            set
+            {
+                if (_currentState == value) return;
+                _currentState = value;
+                CurrentStateChanged?.Invoke(null,value);
+            }
+        }
+
         public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -534,6 +554,7 @@ namespace YoutubeDownloader.ViewModels
                     IsDownloaded = true;
                     break;
             }
+            CurrentState = state;
         }
     }
 }

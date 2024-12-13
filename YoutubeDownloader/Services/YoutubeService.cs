@@ -6,8 +6,10 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Humanizer;
 using YoutubeDownloader.Enums;
+using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
 using YoutubeExplode;
+using YoutubeExplode.Common;
 using YoutubeExplode.Converter;
 using YoutubeExplode.Videos.Streams;
 
@@ -17,6 +19,7 @@ public class YoutubeService
     private VideoDataModel _video = null!;
     private ConcurrentQueue<VideoDownloadModel> _downloadQueue;
     private bool _busy;
+    private VideoDataModel? _videoData;
     private readonly object _lock = new();
 
     public ObservableCollection<VideoDownloadModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadModel>();
@@ -50,18 +53,22 @@ public class YoutubeService
     private async Task<VideoDataModel> GetVideoMetadataAsync(string url)
     {
         var video = await _youtube.Videos.GetAsync(url);
+        _videoData = new();
 
+        Thumbnail thumbnail = ThumbnailExtensions.TryGetWithHighestResolution(video.Thumbnails)!;
+        if (thumbnail == null)
+            thumbnail = video.Thumbnails[0];
+        
+        _videoData = new VideoDataModel();
+        _videoData.Thumbnail = ThumbnailHelper.ThumbnailUrlToBitmapImage(thumbnail.Url);
+        _videoData.Url = url;
+        _videoData.Title = video.Title;
+        _videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
+        _videoData.ChannelName = video.Author.ChannelTitle;
+        _videoData.ViewCount = video.Engagement.ViewCount;
+        _videoData.Date = video.UploadDate.Humanize(DateTime.Now, culture: System.Globalization.CultureInfo.CurrentCulture);
 
-        VideoDataModel videoData = new VideoDataModel();
-        videoData.Url = url;
-        videoData.Title = video.Title;
-        videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
-        videoData.ChannelName = video.Author.ChannelTitle;
-        videoData.ThumbnailUrl = video.Thumbnails[0].Url;
-        videoData.ViewCount = video.Engagement.ViewCount;
-        videoData.Date = video.UploadDate.Humanize(DateTime.Now, culture: System.Globalization.CultureInfo.CurrentCulture);
-
-        return videoData;
+        return _videoData;
     }
     public async Task<VideoDataModel> GetStreamData(VideoDataModel videoData)
     {
@@ -71,6 +78,13 @@ public class YoutubeService
         var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
             .GroupBy(x => x.VideoResolution.Area)
             .Select(g => g.OrderByDescending(s => s.Bitrate).First()).Reverse();
+
+        if(_videoData != null)
+        {
+            _videoData.AudioStreams = audioStreams;
+            _videoData.VideoStreams = videoStreams;
+        }
+
         videoData.AudioStreams = audioStreams;
         videoData.VideoStreams = videoStreams;
         return videoData;
@@ -148,5 +162,10 @@ public class YoutubeService
                 break;
         }
         ((IProgress<double>)progress).Report(1.0);
+    }
+
+    internal VideoDataModel GetLastVideoData()
+    {
+        return _videoData!;
     }
 }

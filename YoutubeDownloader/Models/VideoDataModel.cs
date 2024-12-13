@@ -1,4 +1,5 @@
-﻿using YoutubeExplode.Videos.Streams;
+﻿using System.Windows.Media.Imaging;
+using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeDownloader.Models
 {
@@ -14,5 +15,6 @@ namespace YoutubeDownloader.Models
         public long ViewCount { get; set; } = 0;
         public IEnumerable<VideoOnlyStreamInfo> VideoStreams { get; set; } = [];
         public IEnumerable<AudioOnlyStreamInfo> AudioStreams { get; set; } = [];
+        public BitmapImage Thumbnail { get; internal set; }
     }
 }
