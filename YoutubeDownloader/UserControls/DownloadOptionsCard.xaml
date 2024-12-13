@@ -184,14 +184,14 @@
         <!--DownloadOptions-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <!--Binding to DownloadType and AudioFormats in code behind with visibility update-->
-            <ComboBox Name="cbDownloadType" SelectedIndex="0" Margin="0,0,10,0" Width="auto" Height="40" 
+            <ComboBox Name="cbDownloadType" Margin="0,0,10,0" Width="auto" Height="40" 
                       Style="{StaticResource MaterialDesignFilledComboBox}"
                       Foreground="DarkSlateGray"
                       FontSize="14"
                       VerticalContentAlignment="Center"
                       Padding="10,10,10,10"
                       DisplayMemberPath="."/>
-            <ComboBox Name="cbVideoQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="80" Height="40" 
+            <ComboBox Name="cbVideoQuality" Margin="0,0,10,0" MinWidth="80" Height="40" 
                       Style="{StaticResource MaterialDesignFilledComboBox}"
                       Foreground="DarkSlateGray"
                       FontSize="14"
@@ -200,7 +200,7 @@
                       ItemsSource="{Binding VideoStreams}" 
                       SelectedItem="{Binding VideoStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="VideoQuality"/>
-            <ComboBox Name="cbAudioQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="105" Height="40" 
+            <ComboBox Name="cbAudioQuality" Margin="0,0,10,0" MinWidth="105" Height="40" 
                       Style="{StaticResource MaterialDesignFilledComboBox}"
                       Foreground="DarkSlateGray"
                       FontSize="14"
@@ -209,7 +209,7 @@
                       ItemsSource="{Binding AudioStreams}" 
                       SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="Bitrate"/>
-            <ComboBox Name="cbDownloadFormat" SelectedIndex="0" Margin="0,0,10,0" MinWidth="60" Height="40" 
+            <ComboBox Name="cbDownloadFormat" Margin="0,0,10,0" MinWidth="60" Height="40" 
                       Style="{StaticResource MaterialDesignFilledComboBox}"
                       Foreground="DarkSlateGray"
                       FontSize="14"

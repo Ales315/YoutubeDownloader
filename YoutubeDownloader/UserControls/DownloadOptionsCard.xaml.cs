@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using YoutubeDownloader.Enums;
+using YoutubeDownloader.Services;
 
 namespace YoutubeDownloader.UserControls
 {
@@ -31,7 +32,7 @@ namespace YoutubeDownloader.UserControls
             var bindingDownloadType = new Binding("DownloadOptionSelected")
             {
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = BindingMode.TwoWay
+                Mode = BindingMode.OneWayToSource
             };
             cbDownloadType.SetBinding(ComboBox.SelectedValueProperty, bindingDownloadType);
 
@@ -44,18 +45,21 @@ namespace YoutubeDownloader.UserControls
 
             cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
             cbDownloadType.SelectionChanged += OnDownloadTypeSelectionChanged;
-            cbDownloadFormat.SelectedIndex = 0;
-            cbDownloadType.SelectedIndex = 0;
+            cbDownloadType.SelectedItem = _contentTypeDictionary.Where(x => x.Key == ServiceProvider.SettingsService.UserPreferences.MediaTypePreference).FirstOrDefault();
         }
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             //todo: load saved preset
-            cbDownloadFormat.SelectedIndex = 0;
-            var selection = cbDownloadFormat.SelectedIndex;
+            RefreshComboboxes();
         }
 
         private void OnDownloadTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshComboboxes();
+        }
+
+        private void RefreshComboboxes()
         {
             var selectedItem = ((KeyValuePair<DownloadMediaType, string>)cbDownloadType.SelectedItem);
             switch (selectedItem.Key)
@@ -64,21 +68,21 @@ namespace YoutubeDownloader.UserControls
                     cbAudioQuality.Visibility = Visibility.Collapsed;
                     cbVideoQuality.Visibility = Visibility.Visible;
                     cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
-                    cbDownloadFormat.SelectedIndex = 0;
+                    cbDownloadFormat.SelectedValue = ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
                     break;
 
                 case DownloadMediaType.AudioOnly:
                     cbAudioQuality.Visibility = Visibility.Visible;
                     cbVideoQuality.Visibility = Visibility.Collapsed;
                     cbDownloadFormat.ItemsSource = GetFormatsByCategory("Audio");
-                    cbDownloadFormat.SelectedIndex = 0;
+                    cbDownloadFormat.SelectedValue = ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference;
                     break;
 
                 case DownloadMediaType.VideoWithAudio:
                     cbAudioQuality.Visibility = Visibility.Visible;
                     cbVideoQuality.Visibility = Visibility.Visible;
                     cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
-                    cbDownloadFormat.SelectedIndex = 0;
+                    cbDownloadFormat.SelectedValue = ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
                     break;
             }
         }
