@@ -2,14 +2,13 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using System.Windows;
 using Humanizer;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Models;
 using YoutubeExplode;
 using YoutubeExplode.Converter;
-using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 public class YoutubeService
@@ -19,6 +18,8 @@ public class YoutubeService
     private ConcurrentQueue<VideoDownloadModel> _downloadQueue;
     private bool _busy;
     private readonly object _lock = new();
+
+    public ObservableCollection<VideoDownloadModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadModel>();
 
     public YoutubeService()
     {
@@ -85,13 +86,13 @@ public class YoutubeService
     {
         lock (_lock)
         {
-            if(_busy)
+            if (_busy)
                 return;
             _busy = true;
         }
-        Task.Run(async () => 
+        Task.Run(async () =>
         {
-            while(_downloadQueue.TryDequeue(out var videoDownload))
+            while (_downloadQueue.TryDequeue(out var videoDownload))
             {
                 try
                 {
@@ -112,7 +113,7 @@ public class YoutubeService
             {
                 _busy = false;
             }
-                
+
         });
     }
 
@@ -136,7 +137,7 @@ public class YoutubeService
                 streamInfo = [video.AudioStream];
                 conversionBuilder = new ConversionRequestBuilder($"{fileName}");
                 conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.VerySlow);
-                await _youtube.Videos.DownloadAsync(streamInfo,conversionBuilder.Build(), progress);
+                await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
                 break;
 
             case DownloadMediaType.VideoOnly:

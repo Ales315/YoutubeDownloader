@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
@@ -14,12 +15,8 @@ namespace YoutubeDownloader.ViewModels
 {
     class HomePageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private YoutubeService _ytService = new YoutubeService();
         private string _previousValidUrl = string.Empty;
-        
-
-        public ControlStateHandler StateHandler { get; set; }
-        public ObservableCollection<VideoDownloadModel> VideoDownloadsList { get; set; } = new ObservableCollection<VideoDownloadModel>();
+        public ControlStateHandler StateHandler { get => ServiceProvider.StateHandler; }
 
         #region FIELDS
         //Video stats
@@ -43,7 +40,12 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _getVideoData = null!;
         private ICommand _downloadVideo = null!;
         private double _progress;
+        
 
+        public ObservableCollection<VideoDownloadModel> VideoDownloadsList
+        {
+            get => ServiceProvider.YoutubeService.DownloadList;
+        }
         public string Url
         {
             get => _url;
@@ -219,6 +221,7 @@ namespace YoutubeDownloader.ViewModels
                 return _downloadVideo;
             }
         }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
@@ -228,20 +231,11 @@ namespace YoutubeDownloader.ViewModels
 
         public HomePageViewModel()
         {
-            StateHandler = new ControlStateHandler()
-            {
-                IsVideoFound = false,
-                IsAnalizing = false,
-                IsDownloaded = false,
-                IsDownloading = false,
-                IsAnalizingError = false,
-                IsDownloadListEmpty = true
-            };
-
             VideoDownloadsList.CollectionChanged += (s, e) => 
             { 
                 StateHandler.IsDownloadListEmpty = VideoDownloadsList.Count == 0; 
             };
+            StateHandler.SetUI(AppState.FirstOpening);
         }
 
         #region GET METADATA
@@ -253,11 +247,11 @@ namespace YoutubeDownloader.ViewModels
             {
                 StateHandler.SetUI(AppState.AnalyzingUrl);
 
-                var videoData = await _ytService.GetVideoAsync(Url);
+                var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
                 UpdateVideoData(videoData);
                 StateHandler.SetUI(AppState.VideoFound);
 
-                var streamData = await _ytService.GetStreamData(videoData);
+                var streamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
                 UpdateVideoStreamData(streamData);
                 StateHandler.SetUI(AppState.VideoStreamsFound);
 
@@ -340,7 +334,6 @@ namespace YoutubeDownloader.ViewModels
 
         #endregion
 
-
         #region DOWNLOAD
         //Download video
         public void Download()
@@ -356,7 +349,7 @@ namespace YoutubeDownloader.ViewModels
                 newVideoDownload.DownloadOption = DownloadOptionSelected;
                 newVideoDownload.DownloadFormat = FormatSelected;
                 VideoDownloadsList.Add(newVideoDownload);
-                _ytService.EnqueueDownload(newVideoDownload);
+                ServiceProvider.YoutubeService.EnqueueDownload(newVideoDownload);
                 StateHandler.SetUI(AppState.Downloading);
             }
             catch (Exception ex)
@@ -477,6 +470,19 @@ namespace YoutubeDownloader.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        public ControlStateHandler()
+        {
+            IsSearchOpen = false;
+            IsAnalizing = false;
+            IsAnalizingStreams = false;
+            IsVideoFound = false;
+            IsVideoStreamsFound = false;
+            IsAnalizingError = false;
+            IsDownloaded = false;
+            IsDownloading = false;
+            IsDownloadListEmpty = true;
+        }
 
         public void SetUI(AppState state)
         {
