@@ -4,10 +4,104 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YoutubeDownloader.Views"
+             xmlns:uc="clr-namespace:YoutubeDownloader.UserControls"
+             xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
+             xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="Beige">
+             Background="White">
+    <UserControl.DataContext>
+        <vm:SettingsViewModel/>
+    </UserControl.DataContext>
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="15"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{StaticResource MaterialDesignCardGroupBox}" FontSize="14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="15"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <Border Name="PathTextboxBorder" Panel.ZIndex="3" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
+                        CornerRadius="8" BorderThickness="1" BorderBrush="DarkSlateGray">
+                </Border>
+                <TextBox Name="textboxDownloadPath" Panel.ZIndex="2" Grid.Column="1" Grid.Row="1"   TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                         Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="White" BorderBrush="Transparent"
+                         Text="{Binding OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{x:Null}"/>
+                <Button x:Name="buttonBrowse" Panel.ZIndex="3" Grid.Column="1" Grid.Row="1"  Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                        Click="buttonBrowse_Click"
+                        Style="{StaticResource PasteButton}" 
+                        ToolTip="Search">
+                    <Image Source="/Resources/Images/searchDark24.png" Width="24"></Image>
+                </Button>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="2" Grid.Column="1" Header="Download Preferences" Style="{StaticResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,50,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="15"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                    <ComboBox Name="cbDownloadType" SelectedIndex="0" Margin="0,0,10,0" Width="auto" Height="40" 
+                              Style="{StaticResource MaterialDesignFilledComboBox}"
+                              Foreground="DarkSlateGray"
+                              FontSize="14"
+                              VerticalContentAlignment="Center"
+                              Padding="10,10,10,10"
+                              DisplayMemberPath="."/>
+                    <ComboBox Name="cbVideoQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="80" Height="40" 
+                              Style="{StaticResource MaterialDesignFilledComboBox}"
+                              Foreground="DarkSlateGray"
+                              FontSize="14"
+                              VerticalContentAlignment="Center"
+                              Padding="10,10,10,10"
+                              ItemsSource="{Binding VideoStreams}" 
+                              SelectedItem="{Binding VideoStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
+                              DisplayMemberPath="VideoQuality"/>
+                    <ComboBox Name="cbAudioQuality" SelectedIndex="0" Margin="0,0,10,0" MinWidth="105" Height="40" 
+                              Style="{StaticResource MaterialDesignFilledComboBox}"
+                              Foreground="DarkSlateGray"
+                              FontSize="14"
+                              VerticalContentAlignment="Center"
+                              Padding="10,10,10,10"
+                              ItemsSource="{Binding AudioStreams}" 
+                              SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
+                              DisplayMemberPath="Bitrate"/>
+                    <ComboBox Name="cbDownloadFormat" SelectedIndex="0" Margin="0,0,10,0" MinWidth="60" Height="40" 
+                              Style="{StaticResource MaterialDesignFilledComboBox}"
+                              Foreground="DarkSlateGray"
+                              FontSize="14"
+                              VerticalContentAlignment="Center"
+                              Padding="10,10,10,10"
+                              DisplayMemberPath="."/>
+                </StackPanel>
+                
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>

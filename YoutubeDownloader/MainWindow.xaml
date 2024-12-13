@@ -266,7 +266,24 @@
         </Rectangle>
 
         <!--Current Page-->
-        <ContentControl Content="{Binding CurrentPageViewModel}" Grid.Row="1"/>
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}" />
+
+        <ItemsControl ItemsSource="{Binding PageViewModels}" Grid.Row="2" HorizontalAlignment="Center">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Name}"
+                            Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding }"
+                            Margin="2,5"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
     </Grid>
 
 </Window>

@@ -7,7 +7,7 @@ namespace YoutubeDownloader.Services;
 
 public class SettingsService
 {
-    private Settings _settings = null!;
+    public Settings UserPreferences = null!;
     private string _settingsFilename { get; set; } = "settings.json";
 
     public SettingsService()
@@ -22,7 +22,7 @@ public class SettingsService
             try
             {
                 string json = File.ReadAllText(_settingsFilename);
-                _settings = JsonConvert.DeserializeObject<Settings>(json) ?? new Settings();
+                UserPreferences = JsonConvert.DeserializeObject<Settings>(json) ?? new Settings();
                 return;
             }
             catch (Exception ex)
@@ -30,14 +30,14 @@ public class SettingsService
                 MessageBox.Show("Failed to load user preferences.", ex.Message);
             }
         }
-        _settings = new Settings();
+        UserPreferences = new Settings();
     }
 
     public void Save()
     {
         try
         {
-            string json = JsonConvert.SerializeObject(_settings, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(UserPreferences, Formatting.Indented);
             File.WriteAllText(_settingsFilename, json);
         }
         catch (Exception ex)
@@ -49,6 +49,6 @@ public class SettingsService
 
     public string GetOutputPath()
     {
-        return _settings.OutputPath;
+        return UserPreferences.OutputPath;
     }
 }

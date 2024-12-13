@@ -8,6 +8,6 @@ namespace YoutubeDownloader.ViewModels
 {
     class ViewModelBase
     {
-
+        public string Name { get; set; } = string.Empty;
     }
 }

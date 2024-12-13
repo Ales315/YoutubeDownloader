@@ -13,8 +13,8 @@ namespace YoutubeDownloader.ViewModels
 
         public MainViewModel()
         {
-            PageViewModels.Add(new HomePageViewModel());
-            PageViewModels.Add(new SettingsViewModel());
+            PageViewModels.Add(new HomePageViewModel() { Name = "Home"});
+            PageViewModels.Add(new SettingsViewModel() { Name = "Settings"});
             CurrentPageViewModel = PageViewModels[0];
         }
 
@@ -56,6 +56,7 @@ namespace YoutubeDownloader.ViewModels
         {
             if (!PageViewModels.Contains(viewModel))
                 PageViewModels.Add(viewModel);
+            CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel) ?? throw new Exception("Error");
         }
     }
 }

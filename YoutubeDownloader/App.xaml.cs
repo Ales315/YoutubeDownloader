@@ -14,6 +14,7 @@ namespace YoutubeDownloader
             base.OnStartup(e);
             if (!FFmpeg.CheckFFmpegInstallation())
                 MessageBox.Show("This application uses FFmpeg. Please install latest version before proceeding", "FFmpeg not found!");
+            //todo: prompt user for auto install
         }
     }
 }
