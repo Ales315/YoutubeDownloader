@@ -8,8 +8,8 @@ namespace YoutubeDownloader.Models
         public string FFmpegPath { get; set; } = string.Empty;
         public string OutputPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
 
-        public DownloadOption DownloadOptionPreference { get; set; }
-        public DownloadFormat AudioFormatPreference { get; set; }
-        public DownloadFormat VideoFormatPreference { get; set; }
+        public DownloadMediaType MediaTypePreference { get; set; } = DownloadMediaType.VideoWithAudio;
+        public DownloadFormat AudioFormatPreference { get; set; } = DownloadFormat.MP3;
+        public DownloadFormat VideoFormatPreference { get; set; } = DownloadFormat.MP4;
     }
 }

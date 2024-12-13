@@ -37,7 +37,7 @@ namespace YoutubeDownloader.ViewModels
         private AudioOnlyStreamInfo _audioStreamSelected = null!;
         private IEnumerable<VideoOnlyStreamInfo> _videoStreams = null!;
         private IEnumerable<AudioOnlyStreamInfo> _audioStreams = null!;
-        private DownloadOption _downloadOptionSelected;
+        private DownloadMediaType _downloadOptionSelected;
         private DownloadFormat _formatSelected;
 
         private ICommand _getVideoData = null!;
@@ -177,7 +177,7 @@ namespace YoutubeDownloader.ViewModels
             }
         }
 
-        public DownloadOption DownloadOptionSelected
+        public DownloadMediaType DownloadOptionSelected
         {
             get => _downloadOptionSelected;
             set
@@ -322,9 +322,9 @@ namespace YoutubeDownloader.ViewModels
             var audioSizeBytes = AudioStreamSelected == null ? 0 : AudioStreamSelected.Size.Bytes;
             var totalSizeBytes = videoSizeBytes + audioSizeBytes;
 
-            if (DownloadOptionSelected == DownloadOption.VideoOnly)
+            if (DownloadOptionSelected == DownloadMediaType.VideoOnly)
                 totalSizeBytes -= audioSizeBytes;
-            else if (DownloadOptionSelected == DownloadOption.AudioOnly)
+            else if (DownloadOptionSelected == DownloadMediaType.AudioOnly)
                 totalSizeBytes -= videoSizeBytes;
 
             //todo: calcolo in base al formato

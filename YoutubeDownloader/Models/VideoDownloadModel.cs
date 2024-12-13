@@ -58,7 +58,7 @@ namespace YoutubeDownloader.Models
         public VideoOnlyStreamInfo VideoStream { get; set; } = null!;
         public AudioOnlyStreamInfo AudioStream { get; set; } = null!;
 
-        public DownloadOption DownloadOption { get; set; }
+        public DownloadMediaType DownloadOption { get; set; }
         public DownloadFormat DownloadFormat { get; set; }
 
 

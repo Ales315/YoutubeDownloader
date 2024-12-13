@@ -12,19 +12,19 @@ namespace YoutubeDownloader.UserControls
     /// </summary>
     public partial class DownloadOptionsCard : UserControl
     {
-        private Dictionary<DownloadOption, string> _downloadOptions;
+        private Dictionary<DownloadMediaType, string> _contentTypeDictionary;
         public DownloadOptionsCard()
         {
-            _downloadOptions = new Dictionary<DownloadOption, string>()
+            _contentTypeDictionary = new Dictionary<DownloadMediaType, string>()
             {
-                { DownloadOption.VideoWithAudio, "Video with Audio"},
-                { DownloadOption.AudioOnly, "Audio Only"},
-                { DownloadOption.VideoOnly, "Video Only"}
+                { DownloadMediaType.VideoWithAudio, "Video with Audio"},
+                { DownloadMediaType.AudioOnly, "Audio Only"},
+                { DownloadMediaType.VideoOnly, "Video Only"}
             };
 
             InitializeComponent();
             this.IsVisibleChanged += OnVisibleChanged;
-            cbDownloadType.ItemsSource = _downloadOptions;
+            cbDownloadType.ItemsSource = _contentTypeDictionary;
             cbDownloadType.DisplayMemberPath = "Value";
             cbDownloadType.SelectedValuePath = "Key";
 
@@ -57,24 +57,24 @@ namespace YoutubeDownloader.UserControls
 
         private void OnDownloadTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = ((KeyValuePair<DownloadOption, string>)cbDownloadType.SelectedItem);
+            var selectedItem = ((KeyValuePair<DownloadMediaType, string>)cbDownloadType.SelectedItem);
             switch (selectedItem.Key)
             {
-                case DownloadOption.VideoOnly:
+                case DownloadMediaType.VideoOnly:
                     cbAudioQuality.Visibility = Visibility.Collapsed;
                     cbVideoQuality.Visibility = Visibility.Visible;
                     cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
                     cbDownloadFormat.SelectedIndex = 0;
                     break;
 
-                case DownloadOption.AudioOnly:
+                case DownloadMediaType.AudioOnly:
                     cbAudioQuality.Visibility = Visibility.Visible;
                     cbVideoQuality.Visibility = Visibility.Collapsed;
                     cbDownloadFormat.ItemsSource = GetFormatsByCategory("Audio");
                     cbDownloadFormat.SelectedIndex = 0;
                     break;
 
-                case DownloadOption.VideoWithAudio:
+                case DownloadMediaType.VideoWithAudio:
                     cbAudioQuality.Visibility = Visibility.Visible;
                     cbVideoQuality.Visibility = Visibility.Visible;
                     cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
