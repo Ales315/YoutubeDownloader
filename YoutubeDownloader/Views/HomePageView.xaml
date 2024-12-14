@@ -169,7 +169,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
-        <Border Grid.Row="0" Background="#fbfbfe"></Border>
+        <Border Grid.Row="0" Background="#dedcff"></Border>
         <Border Grid.Row="1" Background="#dedcff"></Border>
         <Border Grid.Row="2" Background="#dedcff"></Border>
 
@@ -181,11 +181,14 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border Name="UrlBarBorder" Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
-                CornerRadius="8" BorderThickness="0.5" BorderBrush="DarkSlateGray">
+            <Border Name="UrlBarBorder" Panel.ZIndex="0" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
+                CornerRadius="8" BorderThickness="0" BorderBrush="Transparent" Background="#fbfbfe">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="5" Opacity="0.3" Direction="250"/>
+                </Border.Effect>
             </Border>
             <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                     Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="White" BorderBrush="Transparent"
+                     Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
                      Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Style="{x:Null}"/>
 
@@ -201,7 +204,7 @@
                     ToolTip="Search">
                 <Image Source="/Resources/Images/searchDark24.png" Width="24"></Image>
             </Button>
-            <Label Name="textBlockURLHint" Content="Paste an URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="DarkSlateGray" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="3,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
+            <Label Name="textBlockURLHint" Content="Paste an URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="DarkSlateGray" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
             <Rectangle Panel.ZIndex="4" Fill="Gray" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
         </Grid>
 

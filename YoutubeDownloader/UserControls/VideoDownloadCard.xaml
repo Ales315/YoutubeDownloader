@@ -63,6 +63,13 @@
             <!--Download fail icon-->
             <Image Grid.Column="3" Grid.Row="1" Source="/Resources/Images/error24.png"  Margin="0,0,0,0" Width="24"
                    Visibility="{Binding IsDownloadFailed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"/>
+            <!--Download success icon-->
+            <Line X1="22" X2="30" Y1="22" Y2="29" Grid.Column="3" Grid.Row="1" Margin="-15,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
+                  StrokeThickness="4" 
+                  Stroke="Green"/>
+            <Line X1="42" X2="28" Y1="15" Y2="30" Grid.Column="3" Grid.Row="1" Margin="-31.2,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
+                  StrokeThickness="4" 
+                  Stroke="Green" />
             <!-- Progress Ring -->
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
                          Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
@@ -72,13 +79,7 @@
                 </ProgressBar.LayoutTransform>
             </ProgressBar>
         </StackPanel>
-        <!--Download success icon-->
-        <Line X1="22" X2="30" Y1="22" Y2="29" Grid.Column="3" Grid.Row="1" Margin="53,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
-              StrokeThickness="4" 
-              Stroke="Green"/>
-        <Line X1="42" X2="28" Y1="15" Y2="30" Grid.Column="3" Grid.Row="1" Margin="53,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
-              StrokeThickness="4" 
-              Stroke="Green" />
+        
         <!--Download cancel button-->
         <Button Name="buttonCancelDownload" Grid.Column="3" Grid.Row="1" Margin="65,0,0,0" Style="{StaticResource ActionButton}"
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="center"

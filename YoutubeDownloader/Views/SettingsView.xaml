@@ -21,12 +21,12 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="15"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="200"/>
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{StaticResource MaterialDesignCardGroupBox}" FontSize="14">
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{StaticResource MaterialDesignCardGroupBox}" FontSize="14" Background="AliceBlue">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15"/>
@@ -34,15 +34,19 @@
                     <ColumnDefinition Width="15"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="1"/>
                     <RowDefinition/>
-                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="1"/>
                 </Grid.RowDefinitions>
-                <Border Name="PathTextboxBorder" Panel.ZIndex="3" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
-                        CornerRadius="8" BorderThickness="1" BorderBrush="DarkSlateGray">
+                <Border Name="PathTextboxBorder" Panel.ZIndex="0" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="40"
+                        CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Background="White"
+                        IsHitTestVisible="False">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="5" Direction="250" Opacity="0.2"/>
+                    </Border.Effect>
                 </Border>
                 <TextBox Name="textboxDownloadPath" Panel.ZIndex="2" Grid.Column="1" Grid.Row="1"   TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                         Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="White" BorderBrush="Transparent"
+                         Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
                          Text="{Binding OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Style="{x:Null}"/>
                 <Button x:Name="buttonBrowse" Panel.ZIndex="3" Grid.Column="1" Grid.Row="1"  Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
