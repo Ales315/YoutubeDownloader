@@ -75,6 +75,8 @@ namespace YoutubeDownloader.Models
             }
         }
 
+        public string FileName { get; set; } = string.Empty;    
+
         private void CancelDownload()
         {
             CancellationToken.Cancel();

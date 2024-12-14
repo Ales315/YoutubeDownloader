@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using Humanizer;
 using YoutubeDownloader.Enums;
@@ -11,6 +12,7 @@ using YoutubeDownloader.Models;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Converter;
+using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 public class YoutubeService
@@ -112,6 +114,10 @@ public class YoutubeService
                 {
                     videoDownload.IsDownloading = true;
                     videoDownload.CancellationToken = new CancellationTokenSource();
+
+                    string format = (Enum.GetName(typeof(DownloadFormat), videoDownload.DownloadFormat) ?? "WEBM").ToLower();
+                    videoDownload.FileName = $"{ServiceProvider.SettingsService.GetOutputPath()}\\{videoDownload.Title}.{format}";
+
                     await DownloadVideo(videoDownload, videoDownload.CancellationToken.Token);
                     videoDownload.IsDownloading = false;
                 }
@@ -120,6 +126,8 @@ public class YoutubeService
                     videoDownload.IsDownloading = false;
                     Progress<double> progress = new Progress<double>(p => videoDownload.Progress = p);
                     ((IProgress<double>)progress).Report(-0.5);
+                    if (File.Exists(videoDownload.FileName))
+                        File.Delete(videoDownload.FileName);
                 }
                 catch (Exception ex)
                 {
@@ -143,7 +151,6 @@ public class YoutubeService
         IStreamInfo[] streamInfo = [];
         ConversionRequestBuilder conversionBuilder;
         string format = (Enum.GetName(typeof(DownloadFormat), video.DownloadFormat) ?? "WEBM").ToLower();
-        string fileName = $"{ServiceProvider.SettingsService.GetOutputPath()}\\{video.Title}.{format}";
         Progress<double> progress = new Progress<double>(p => video.Progress = p);
         switch (video.DownloadOption)
         {
@@ -159,7 +166,7 @@ public class YoutubeService
                 streamInfo = [video.VideoStream];
                 break;
         }
-        conversionBuilder = new ConversionRequestBuilder($"{fileName}");
+        conversionBuilder = new ConversionRequestBuilder($"{video.FileName}");
         conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
         await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress, cancellationToken);
         ((IProgress<double>)progress).Report(1.0);
