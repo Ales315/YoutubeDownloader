@@ -111,8 +111,15 @@ public class YoutubeService
                 try
                 {
                     videoDownload.IsDownloading = true;
-                    await DownloadVideo(videoDownload);
+                    videoDownload.CancellationToken = new CancellationTokenSource();
+                    await DownloadVideo(videoDownload, videoDownload.CancellationToken.Token);
                     videoDownload.IsDownloading = false;
+                }
+                catch(OperationCanceledException)
+                {
+                    videoDownload.IsDownloading = false;
+                    Progress<double> progress = new Progress<double>(p => videoDownload.Progress = p);
+                    ((IProgress<double>)progress).Report(-0.5);
                 }
                 catch (Exception ex)
                 {
@@ -131,7 +138,7 @@ public class YoutubeService
         });
     }
 
-    public async Task DownloadVideo(VideoDownloadModel video)
+    public async Task DownloadVideo(VideoDownloadModel video, CancellationToken cancellationToken)
     {
         IStreamInfo[] streamInfo = [];
         ConversionRequestBuilder conversionBuilder;
@@ -142,25 +149,19 @@ public class YoutubeService
         {
             case DownloadMediaType.VideoWithAudio:
                 streamInfo = [video.AudioStream, video.VideoStream];
-                conversionBuilder = new ConversionRequestBuilder($"{fileName}");
-                conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
-                await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
                 break;
 
             case DownloadMediaType.AudioOnly:
                 streamInfo = [video.AudioStream];
-                conversionBuilder = new ConversionRequestBuilder($"{fileName}");
-                conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.VerySlow);
-                await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
                 break;
 
             case DownloadMediaType.VideoOnly:
                 streamInfo = [video.VideoStream];
-                conversionBuilder = new ConversionRequestBuilder($"{fileName}");
-                conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
-                await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress);
                 break;
         }
+        conversionBuilder = new ConversionRequestBuilder($"{fileName}");
+        conversionBuilder.SetContainer(format).SetPreset(ConversionPreset.Medium);
+        await _youtube.Videos.DownloadAsync(streamInfo, conversionBuilder.Build(), progress, cancellationToken);
         ((IProgress<double>)progress).Report(1.0);
     }
 

@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
+using System.Windows.Input;
 using System.Windows.Media;
 using YoutubeDownloader.Enums;
+using YoutubeDownloader.Helpers;
 using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeDownloader.Models
@@ -11,6 +13,8 @@ namespace YoutubeDownloader.Models
         private bool _isDownloading = false;
         private bool _isDownloadCompleted = false;
         private bool _isDownloadFailed = false;
+        private ICommand _cancelDownloadCommand = null!;
+
         public ImageSource Thumbnail { get; set; } = null!;
         public string Title { get; set; } = string.Empty;
         public string Duration { get; set; } = string.Empty;
@@ -60,7 +64,21 @@ namespace YoutubeDownloader.Models
 
         public DownloadMediaType DownloadOption { get; set; }
         public DownloadFormat DownloadFormat { get; set; }
+        public CancellationTokenSource CancellationToken { get; internal set; } = null!;
+        public ICommand CancelDownloadCommand 
+        {
+            get
+            {
+                if (_cancelDownloadCommand == null)
+                    return new RelayCommand(p => CancelDownload());
+                return _cancelDownloadCommand;
+            }
+        }
 
+        private void CancelDownload()
+        {
+            CancellationToken.Cancel();
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
