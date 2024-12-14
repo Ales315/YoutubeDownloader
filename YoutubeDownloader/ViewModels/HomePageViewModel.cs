@@ -246,7 +246,7 @@ namespace YoutubeDownloader.ViewModels
                 return;
             UpdateVideoData(data);
             if (UpdateVideoStreamData(data) == false)
-                StateHandler.SetUI(AppState.FirstOpening);
+                StateHandler.SetUI(AppState.Home);
         }
 
         #region GET METADATA
@@ -270,6 +270,19 @@ namespace YoutubeDownloader.ViewModels
                     throw new Exception(videoData.ErrorMessage);
 
             }
+            catch (OperationCanceledException)
+            {
+                StateHandler.SetUI(AppState.Home);
+                Thumbnail = null!;
+                Title = null!;
+                ChannelName = null!;
+                ViewCount = 0;
+                Date = null!;
+                AudioStreams = null!;
+                VideoStreams = null!;
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+            }
             catch (Exception)
             {
                 StateHandler.SetUI(AppState.VideoNotFound);
@@ -283,6 +296,7 @@ namespace YoutubeDownloader.ViewModels
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
             }
+            
         }
         private bool CanProcessRequest()
         {
@@ -302,6 +316,8 @@ namespace YoutubeDownloader.ViewModels
             Duration = videoData.Duration;
             ViewCount = videoData.ViewCount;
             Date = videoData.Date;
+            FormatSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference ==  DownloadMediaType.AudioOnly ? 
+                ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
             _previousValidUrl = Url;
         }
         private bool UpdateVideoStreamData(VideoDataModel streamData)

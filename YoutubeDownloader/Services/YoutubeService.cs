@@ -38,17 +38,10 @@ public class YoutubeService
             _video = await GetVideoMetadataAsync(url);
             return _video;
         }
-        catch (Exception ex)
-        {
-            VideoDataModel videoData = new VideoDataModel();
-            videoData.ErrorMessage = ex.Message;
-            videoData.Title = string.Empty;
-            videoData.Duration = string.Empty;
-            videoData.ChannelName = string.Empty;
-            videoData.ThumbnailUrl = string.Empty;
-
+        catch (Exception)
+        { 
             _video = null!;
-            return videoData;
+            throw;
         }
     }
 

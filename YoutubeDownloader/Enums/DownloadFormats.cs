@@ -32,9 +32,6 @@
         [FormatCategory("Video")]
         MOV,
 
-        [FormatCategory("Video")]
-        WMV,
-
         [FormatCategory("AudioVideo")]
         WEBM
     }

@@ -2,7 +2,7 @@
 {
     public enum AppState
     {
-        FirstOpening,
+        Home,
         AnalyzingUrl,
         VideoFound,
         VideoStreamsFound,
