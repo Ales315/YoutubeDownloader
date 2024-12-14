@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WpfAnimatedGif;
+using YoutubeDownloader.Services;
 using YoutubeDownloader.ViewModels;
 
 namespace YoutubeDownloader;
@@ -31,5 +32,10 @@ public partial class MainWindow : Window
     private void OnButtonCloseMouseEnter(object sender, MouseEventArgs e)
     {
         imgClose.Source = new BitmapImage(new Uri(@"/Resources/Images/close24.png", UriKind.Relative));
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        ServiceProvider.YoutubeService.CancellationToken.Cancel();
     }
 }

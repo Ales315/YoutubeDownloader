@@ -12,7 +12,6 @@ using YoutubeDownloader.Models;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Converter;
-using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 public class YoutubeService
@@ -23,6 +22,7 @@ public class YoutubeService
     private bool _busy;
     private VideoDataModel? _videoData;
     private readonly object _lock = new();
+    public CancellationTokenSource CancellationToken;
 
     public ObservableCollection<VideoDownloadModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadModel>();
 
@@ -54,13 +54,14 @@ public class YoutubeService
 
     private async Task<VideoDataModel> GetVideoMetadataAsync(string url)
     {
-        var video = await _youtube.Videos.GetAsync(url);
+        CancellationToken = new CancellationTokenSource();
+        var video = await _youtube.Videos.GetAsync(url, CancellationToken.Token);
         _videoData = new();
 
         Thumbnail thumbnail = ThumbnailExtensions.TryGetWithHighestResolution(video.Thumbnails)!;
         if (thumbnail == null)
             thumbnail = video.Thumbnails[0];
-        
+
         _videoData = new VideoDataModel();
         _videoData.Thumbnail = ThumbnailHelper.ThumbnailUrlToBitmapImage(thumbnail.Url);
         _videoData.Url = url;
@@ -74,14 +75,15 @@ public class YoutubeService
     }
     public async Task<VideoDataModel> GetStreamData(VideoDataModel videoData)
     {
-        var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url);
+        CancellationToken = new CancellationTokenSource();
+        var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, CancellationToken.Token);
 
         var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
         var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
             .GroupBy(x => x.VideoResolution.Area)
             .Select(g => g.OrderByDescending(s => s.Bitrate).First()).Reverse();
 
-        if(_videoData != null)
+        if (_videoData != null)
         {
             _videoData.AudioStreams = audioStreams;
             _videoData.VideoStreams = videoStreams;
@@ -121,7 +123,7 @@ public class YoutubeService
                     await DownloadVideo(videoDownload, videoDownload.CancellationToken.Token);
                     videoDownload.IsDownloading = false;
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     videoDownload.IsDownloading = false;
                     Progress<double> progress = new Progress<double>(p => videoDownload.Progress = p);
