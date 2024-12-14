@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using YoutubeDownloader.Enums;
@@ -14,6 +17,8 @@ namespace YoutubeDownloader.Models
         private bool _isDownloadCompleted = false;
         private bool _isDownloadFailed = false;
         private ICommand _cancelDownloadCommand = null!;
+        private ICommand _playCommand = null!;
+        private ICommand _openDownloadFolderCommand = null!;
 
         public ImageSource Thumbnail { get; set; } = null!;
         public string Title { get; set; } = string.Empty;
@@ -65,7 +70,7 @@ namespace YoutubeDownloader.Models
         public DownloadMediaType DownloadOption { get; set; }
         public DownloadFormat DownloadFormat { get; set; }
         public CancellationTokenSource CancellationToken { get; internal set; } = null!;
-        public ICommand CancelDownloadCommand 
+        public ICommand CancelDownloadCommand
         {
             get
             {
@@ -74,18 +79,55 @@ namespace YoutubeDownloader.Models
                 return _cancelDownloadCommand;
             }
         }
-
-        public string FileName { get; set; } = string.Empty;    
-
-        private void CancelDownload()
+        public ICommand PlayCommand
         {
-            CancellationToken.Cancel();
+            get
+            {
+                if (_playCommand == null)
+                    return new RelayCommand(p => Play());
+                return _playCommand;
+            }
         }
+        public ICommand OpenFolderCommand
+        {
+            get
+            {
+                if (_openDownloadFolderCommand == null)
+                    return new RelayCommand(p => OpenDownloadFolder());
+                return _openDownloadFolderCommand;
+            }
+        }
+        public string FileName { get; set; } = string.Empty;
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        private void CancelDownload()
+        {
+            CancellationToken?.Cancel();
+        }
+        private void OpenDownloadFolder()
+        {
+            if (!File.Exists(FileName))
+            {
+                MessageBox.Show("File spostato o mancante", "File non trovato");
+                return;
+            }
+            Process.Start("explorer.exe", Path.GetDirectoryName(FileName) ?? string.Empty);
+        }
+        private void Play()
+        {
+            if (!File.Exists(FileName))
+            {
+                MessageBox.Show("File spostato o mancante", "File non trovato");
+                return;
+            }
+            Process.Start("explorer.exe", FileName);
         }
     }
 }

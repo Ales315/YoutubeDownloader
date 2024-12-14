@@ -26,10 +26,11 @@
             <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="75"/>
+            <ColumnDefinition Width="75"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="25"/>
         </Grid.ColumnDefinitions>
-        <Border Panel.ZIndex="-1" Background="White" Grid.ColumnSpan="5" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"></Border>
+        <Border Panel.ZIndex="-1" Background="White" Grid.ColumnSpan="6" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"></Border>
         <!--Video download status-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <Border Grid.Row="1" Width="80" Height="45" CornerRadius="4" BorderThickness="1" BorderBrush="LightGray"
@@ -52,8 +53,28 @@
             <Run Text="{Binding Duration}"/>
         </TextBlock>
         
+        <!--Download completed buttons-->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="3" Margin="0,0,-10,0">
+            <Button Name="buttonOpenFolder" Grid.Column="4" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
+                    Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="center"
+                    Width="40" Height="40" Cursor="Hand" ToolTip="Open download folder" Click="buttonOpenFolder_Click"
+                    Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Command="{Binding OpenFolderCommand}">
+                <Image x:Name="imgOpenFolder" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Margin="0,0,0,0"
+                       Source="/Resources/Images/folderOpen24.png"/>
+            </Button>
+            <Button Name="buttonPlay" Grid.Column="4" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
+                    Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="center"
+                    Width="40" Height="40" Cursor="Hand" ToolTip="Play" Click="buttonPlay_Click"
+                    Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Command="{Binding PlayCommand}">
+                <Image x:Name="imgPlay" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Margin="0,0,0,0"
+                        Source="/Resources/Images/playArrow24.png"/>
+            </Button>
+        </StackPanel>
+        
         <!--Download progress-->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="3" Margin="-35,0,0,0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="4" Margin="-35,0,0,0">
             <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
                        Foreground="DarkSlateGray"
                        FontSize="14"
@@ -81,7 +102,7 @@
         </StackPanel>
         
         <!--Download cancel button-->
-        <Button Name="buttonCancelDownload" Grid.Column="3" Grid.Row="1" Margin="65,0,0,0" Style="{StaticResource ActionButton}"
+        <Button Name="buttonCancelDownload" Grid.Column="4" Grid.Row="1" Margin="65,0,0,0" Style="{StaticResource ActionButton}"
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="center"
                 Width="40" Height="40"
                 Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}}"

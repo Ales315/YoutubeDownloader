@@ -72,11 +72,11 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBox Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                 Height="45" FontSize="16" Foreground="DarkSlateGray" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
-                                 Text="Default media type"
-                                 Style="{x:Null}"/>
-                        <ComboBox Name="cbMediaType" SelectedIndex="0" Width="auto" Height="40" Margin="12,0,0,0"
+                        <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
+                                   Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
+                                   Text="Default media type"
+                                   Style="{x:Null}"/>
+                        <ComboBox Name="cbMediaType" SelectedIndex="0" Width="auto" Height="40" Margin="13,0,0,0"
                                   Style="{StaticResource MaterialDesignFilledComboBox}"
                                   Foreground="DarkSlateGray"
                                   FontSize="14"
@@ -85,8 +85,8 @@
                                   DisplayMemberPath="."/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBox Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                 Height="45" FontSize="16" Foreground="DarkSlateGray" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
+                        <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
+                                 Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
                                  Text="Default video format"
                                  Style="{x:Null}"/>
                         <ComboBox Name="cbVideoFormat" SelectedIndex="0" MinWidth="80" Height="40" 
@@ -98,10 +98,10 @@
                                   DisplayMemberPath="."/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBox Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                 Height="45" FontSize="16" Foreground="DarkSlateGray" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
-                                 Text="Default audio format"
-                                 Style="{x:Null}"/>
+                        <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
+                                   Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
+                                   Text="Default audio format"
+                                   Style="{x:Null}"/>
                         <ComboBox Name="cbAudioFormat" SelectedIndex="0" MinWidth="105" Height="40" Margin="-1,0,0,0"
                                   Style="{StaticResource MaterialDesignFilledComboBox}"
                                   Foreground="DarkSlateGray"

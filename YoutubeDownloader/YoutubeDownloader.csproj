@@ -14,12 +14,14 @@
     <None Remove="Resources\Images\download24.png" />
     <None Remove="Resources\Images\error24.png" />
     <None Remove="Resources\Images\favicon.png" />
+    <None Remove="Resources\Images\folderOpen24.png" />
     <None Remove="Resources\Images\icon.png" />
     <None Remove="Resources\Images\Loading.gif" />
     <None Remove="Resources\Images\minimize24.png" />
     <None Remove="Resources\Images\minimizeDark24.png" />
     <None Remove="Resources\Images\paste24.png" />
     <None Remove="Resources\Images\pasteDark24.png" />
+    <None Remove="Resources\Images\playArrow24.png" />
     <None Remove="Resources\Images\searchDark24.png" />
     <None Remove="Resources\Images\settings24.png" />
   </ItemGroup>
@@ -41,12 +43,14 @@
     <Resource Include="Resources\Images\download24.png" />
     <Resource Include="Resources\Images\error24.png" />
     <Resource Include="Resources\Images\favicon.png" />
+    <Resource Include="Resources\Images\folderOpen24.png" />
     <Resource Include="Resources\Images\icon.png" />
     <Resource Include="Resources\Images\Loading.gif" />
     <Resource Include="Resources\Images\minimize24.png" />
     <Resource Include="Resources\Images\minimizeDark24.png" />
     <Resource Include="Resources\Images\paste24.png" />
     <Resource Include="Resources\Images\pasteDark24.png" />
+    <Resource Include="Resources\Images\playArrow24.png" />
     <Resource Include="Resources\Images\searchDark24.png" />
     <Resource Include="Resources\Images\settings24.png" />
   </ItemGroup>
