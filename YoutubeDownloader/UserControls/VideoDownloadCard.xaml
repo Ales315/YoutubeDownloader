@@ -60,9 +60,12 @@
                        Margin="0,0,5,0">
                 <Run Text="{Binding Progress, Converter={StaticResource DoubleToPercentageConverter}}"/>
             </TextBlock>
-            
+            <!--Download fail icon-->
+            <Image Grid.Column="3" Grid.Row="1" Source="/Resources/Images/error24.png"  Margin="0,0,0,0" Width="24"
+                   Visibility="{Binding IsDownloadFailed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"/>
             <!-- Progress Ring -->
-            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Hidden}"
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
+                         Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
                          Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="Blue">
                 <ProgressBar.LayoutTransform>
                     <ScaleTransform CenterX="0.8" CenterY="0.8" ScaleX="1.5" ScaleY="1.5" />
@@ -76,6 +79,7 @@
         <Line X1="42" X2="28" Y1="15" Y2="30" Grid.Column="3" Grid.Row="1" Margin="53,0,0,0" Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
               StrokeThickness="4" 
               Stroke="Green" />
+        <!--Download cancel button-->
         <Button Name="buttonCancelDownload" Grid.Column="3" Grid.Row="1" Margin="65,0,0,0" Style="{StaticResource ActionButton}"
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="center"
                 Width="40" Height="40"
@@ -83,8 +87,6 @@
                 Command="{Binding CancelDownloadCommand}">
             <Image x:Name="imgCancel" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Margin="0,0,0,0"/>
         </Button>
-        <!--Download fail icon-->
-        <Image Grid.Column="3" Grid.Row="1" Source="/Resources/Images/error24.png"  Margin="69,0,0,0" 
-               Visibility="{Binding IsDownloadFailed, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        
     </Grid>
 </UserControl>

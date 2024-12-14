@@ -13,7 +13,7 @@ namespace YoutubeDownloader.Converters
                 if (doubleValue == 100)
                     return $"Done";
                 else if (doubleValue == -100)
-                    return "Failed!";
+                    return "Failed";
                 else if (doubleValue == -50)
                     return "Cancelled";
                 return $"{doubleValue:0.0}%";
