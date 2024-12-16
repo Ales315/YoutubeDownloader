@@ -30,24 +30,24 @@
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="25"/>
         </Grid.ColumnDefinitions>
-        <Border Panel.ZIndex="-1" Background="White" Grid.ColumnSpan="6" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"></Border>
+        <Border Panel.ZIndex="-1" Background="{DynamicResource MaterialDesignBackground}" Grid.ColumnSpan="6" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"></Border>
         <!--Video download status-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-            <Border Grid.Row="1" Width="80" Height="45" CornerRadius="4" BorderThickness="1" BorderBrush="LightGray"
+            <Border Grid.Row="1" Width="80" Height="45" CornerRadius="4" BorderThickness="1" BorderBrush="Transparent"
                     VerticalAlignment="Center">
                 <Border.Background>
                     <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
                 </Border.Background>
             </Border>
             <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center" MaxWidth="500" TextTrimming="WordEllipsis"
-                       Foreground="DarkSlateGray"
+                       Foreground="{DynamicResource MaterialDesignBody}"
                        FontSize="14"
                        Margin="10,0,0,0">
                 <Run Text="{Binding Title}"/>
             </TextBlock>
         </StackPanel>
         <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2"
-                   Foreground="DarkSlateGray"
+                   Foreground="{DynamicResource MaterialDesignBody}"
                    FontSize="14"
                    Margin="0,0,0,0">
             <Run Text="{Binding Duration}"/>
@@ -76,7 +76,7 @@
         <!--Download progress-->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="4" Margin="-35,0,0,0">
             <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
-                       Foreground="DarkSlateGray"
+                       Foreground="{DynamicResource MaterialDesignBody}"
                        FontSize="14"
                        Margin="0,0,5,0">
                 <Run Text="{Binding Progress, Converter={StaticResource DoubleToPercentageConverter}}"/>

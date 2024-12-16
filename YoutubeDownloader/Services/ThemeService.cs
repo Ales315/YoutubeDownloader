@@ -40,6 +40,7 @@ namespace YoutubeDownloader.Services
 
             LightTheme.SetPrimaryColor(PrimaryLight);
             LightTheme.SetSecondaryColor(SecondaryLight);
+            LightTheme.PrimaryLight = PrimaryLight;
 
             Application.Current.Resources["MaterialDesignBody"] = new SolidColorBrush(OnSecondaryLight);
             Application.Current.Resources["MaterialDesignCardBackground"] = new SolidColorBrush(BackgroundLight);
@@ -53,6 +54,7 @@ namespace YoutubeDownloader.Services
 
             DarkTheme.SetPrimaryColor(PrimaryLight);
             DarkTheme.SetSecondaryColor(SecondaryLight);
+            LightTheme.PrimaryDark = PrimaryDark;
             DarkTheme.ComboBoxes.FilledBackground = SurfaceDark;
             Application.Current.Resources["MaterialDesignBody"] = new SolidColorBrush(OnSecondaryDark);
             Application.Current.Resources["MaterialDesignCardBackground"] = new SolidColorBrush(BackgroundDark);
