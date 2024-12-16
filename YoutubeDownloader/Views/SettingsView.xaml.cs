@@ -2,7 +2,10 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using Microsoft.Win32;
+using Microsoft.Windows.Themes;
 using YoutubeDownloader.Enums;
+using YoutubeDownloader.Helpers;
+using YoutubeDownloader.Services;
 
 namespace YoutubeDownloader.Views
 {
@@ -23,6 +26,24 @@ namespace YoutubeDownloader.Views
             };
             InitializeComponent();
             SetupComboboxes();
+            cbTheme.SelectionChanged += OnCbSelectionChanged;
+            checkboxNotifications.Checked += (s, e) => ServiceProvider.SettingsService.UserPreferences.UseNotifications = true;
+            checkboxNotifications.Unchecked += (s, e) => ServiceProvider.SettingsService.UserPreferences.UseNotifications = false;
+            checkboxNotifications.IsChecked = ServiceProvider.SettingsService.UserPreferences.UseNotifications;
+        }
+
+        private void OnCbSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbTheme.SelectedIndex == 0)
+            {
+                ServiceProvider.ThemeService.SetSystemTheme();
+                return;
+            }
+
+            if(ServiceProvider.ThemeService.IsLightTheme)
+                ServiceProvider.ThemeService.SetDarkTheme();
+            else
+                ServiceProvider.ThemeService.SetLightTheme();
         }
 
         private void SetupComboboxes()
@@ -47,7 +68,7 @@ namespace YoutubeDownloader.Views
                 Mode = BindingMode.TwoWay
             };
             cbAudioFormat.SetBinding(ComboBox.SelectedValueProperty, bindingAudioFormat);
-            
+
 
             cbVideoFormat.ItemsSource = GetFormatsByCategory("Video");
             var bindingVideoFormat = new Binding("VideoFormatPreference")
@@ -56,7 +77,15 @@ namespace YoutubeDownloader.Views
                 Mode = BindingMode.TwoWay
             };
             cbVideoFormat.SetBinding(ComboBox.SelectedValueProperty, bindingVideoFormat);
-            
+
+            //theme combobox
+            cbTheme.ItemsSource = Enum.GetValues(typeof(ThemeStyles));
+            var bindingTheme = new Binding("ThemePreference")
+            {
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            cbTheme.SetBinding(ComboBox.SelectedValueProperty, bindingTheme);
         }
         private IEnumerable<DownloadFormat> GetFormatsByCategory(string category)
         {
@@ -78,6 +107,16 @@ namespace YoutubeDownloader.Views
             if (string.IsNullOrWhiteSpace(result))
                 return;
             textboxDownloadPath.Text = result;
+        }
+
+        private void cbChangeTheme_Checked(object sender, RoutedEventArgs e)
+        {
+            ServiceProvider.ThemeService.SetLightTheme();
+        }
+
+        private void cbChangeTheme_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ServiceProvider.ThemeService.SetDarkTheme();
         }
     }
 }

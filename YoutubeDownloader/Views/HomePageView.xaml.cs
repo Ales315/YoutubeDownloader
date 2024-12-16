@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using WpfAnimatedGif;
+using YoutubeDownloader.Services;
 using YoutubeDownloader.ViewModels;
 
 namespace YoutubeDownloader.Views
@@ -17,8 +18,9 @@ namespace YoutubeDownloader.Views
         {
             InitializeComponent();
             textboxInputUrl.TextChanged += (s, e) => textBlockURLHint.Visibility = textboxInputUrl.Text.Length > 0 ? Visibility.Hidden : Visibility.Visible;
-            textboxInputUrl.GotFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Blue);
-            textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.DarkSlateGray);
+            textboxInputUrl.GotFocus += (s, e) => 
+            UrlBarBorder.BorderBrush = ServiceProvider.ThemeService.GetPrimaryColorBrush();
+            textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Gray);
 #if DEBUG
             textboxInputUrl.Text = "https://www.youtube.com/watch?v=HQmmM_qwG4k";
 #endif

@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
+using YoutubeDownloader.Services;
 
 namespace YoutubeDownloader.UserControls
 {
@@ -10,6 +12,7 @@ namespace YoutubeDownloader.UserControls
         public VideoSelectedCard()
         {
             InitializeComponent();
+            borderThumbnail.BorderBrush = ServiceProvider.ThemeService.GetPrimaryColorBrush();
         }
     }
 }

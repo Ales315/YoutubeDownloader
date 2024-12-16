@@ -3,16 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:YoutubeDownloader.Views"
              xmlns:uc="clr-namespace:YoutubeDownloader.UserControls"
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="White">
+             Background="{DynamicResource MaterialDesignPaper}">
     <UserControl.DataContext>
         <vm:SettingsViewModel/>
     </UserControl.DataContext>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15"/>
@@ -23,10 +25,11 @@
             <RowDefinition Height="15"/>
             <RowDefinition Height="100"/>
             <RowDefinition Height="260"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{StaticResource MaterialDesignCardGroupBox}" FontSize="14" Background="AliceBlue">
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15"/>
@@ -39,26 +42,23 @@
                     <RowDefinition Height="1"/>
                 </Grid.RowDefinitions>
                 <Border Name="PathTextboxBorder" Panel.ZIndex="0" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="40"
-                        CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Background="White"
+                        CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource MaterialDesignBody}" Background="{DynamicResource MaterialDesignPaper}"
                         IsHitTestVisible="False">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="5" Direction="250" Opacity="0.2"/>
-                    </Border.Effect>
                 </Border>
                 <TextBox Name="textboxDownloadPath" Panel.ZIndex="2" Grid.Column="1" Grid.Row="1"   TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                         Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
+                         Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
                          Text="{Binding OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Style="{x:Null}"/>
                 <Button x:Name="buttonBrowse" Panel.ZIndex="3" Grid.Column="1" Grid.Row="1"  Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                         Click="buttonBrowse_Click"
                         Style="{StaticResource PasteButton}" 
                         ToolTip="Search">
-                    <Image Source="/Resources/Images/folderOpen24.png" Width="24"></Image>
+                    <materialDesign:PackIcon Kind="FolderOpen" Foreground="{DynamicResource MaterialDesignBody}" Width="26" Height="26"/>
                 </Button>
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="2" Grid.Column="1" Header="Download Preferences" Style="{StaticResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0" Background="AliceBlue">
+        <GroupBox Grid.Row="2" Grid.Column="1" Header="Download Preferences" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15"/>
@@ -73,45 +73,81 @@
                 <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
-                                   Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
+                                   Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  Background="Transparent" Padding="0,10,0,0"
                                    Text="Default media type"
                                    Style="{x:Null}"/>
                         <ComboBox Name="cbMediaType" SelectedIndex="0" Width="auto" Height="40" Margin="13,0,0,0"
-                                  Style="{StaticResource MaterialDesignFilledComboBox}"
-                                  Foreground="DarkSlateGray"
-                                  FontSize="14"
+                                  Style="{DynamicResource MaterialDesignFilledComboBox}"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
+                                  Background="{DynamicResource MaterialDesignPaper}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
-                                 Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
+                                 Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  Background="Transparent" Padding="0,10,0,0"
                                  Text="Default video format"
                                  Style="{x:Null}"/>
                         <ComboBox Name="cbVideoFormat" SelectedIndex="0" MinWidth="80" Height="40" 
-                                  Style="{StaticResource MaterialDesignFilledComboBox}"
-                                  Foreground="DarkSlateGray"
-                                  FontSize="14"
+                                  Style="{DynamicResource MaterialDesignFilledComboBox}"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
+                                  Background="{DynamicResource MaterialDesignPaper}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
-                                   Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
+                                   Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  Background="Transparent" Padding="0,10,0,0"
                                    Text="Default audio format"
                                    Style="{x:Null}"/>
                         <ComboBox Name="cbAudioFormat" SelectedIndex="0" MinWidth="105" Height="40" Margin="-1,0,0,0"
-                                  Style="{StaticResource MaterialDesignFilledComboBox}"
-                                  Foreground="DarkSlateGray"
-                                  FontSize="14"
+                                  Style="{DynamicResource MaterialDesignFilledComboBox}"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
+                                  Background="{DynamicResource MaterialDesignPaper}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
                     </StackPanel>
+                    
                 </StackPanel>
                 
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="3" Grid.Column="1" Header="Application behaviour" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="15"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,50,0"
+                                   Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  Background="Transparent" Padding="0,10,0,0"
+                                   Text="Application Theme"
+                                   Style="{x:Null}"/>
+                        <ComboBox Name="cbTheme" SelectedIndex="0" MinWidth="105" Height="40" Margin="14,0,0,0"
+                                  Style="{DynamicResource MaterialDesignFilledComboBox}"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
+                                  Background="{DynamicResource MaterialDesignPaper}"
+                                  VerticalContentAlignment="Center"
+                                  Padding="10,10,10,10"
+                                  DisplayMemberPath="."/>
+                    </StackPanel>
+                    <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="50,0,10,0"
+                               Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  Background="Transparent" Padding="0,10,0,0"
+                               Text="Notification Sounds"
+                               Style="{x:Null}"/>
+                    <CheckBox x:Name="checkboxNotifications" Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" Width="42" Height="42"/>
+                </StackPanel>
             </Grid>
         </GroupBox>
     </Grid>

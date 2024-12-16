@@ -8,156 +8,19 @@
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="Transparent"
+>
     <UserControl.DataContext>
         <vm:HomePageViewModel/>
     </UserControl.DataContext>
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
-        
-        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="20" />
-                </Grid.ColumnDefinitions>
-                <Border x:Name="Border" 
-                          Grid.ColumnSpan="2"
-                          CornerRadius="8"
-                          Background="#FF3F3F3F"
-                          BorderBrush="Transparent"
-                          BorderThickness="1" />
-                <Border Grid.Column="0"
-                        CornerRadius="8" 
-                        Margin="1" 
-                        Background="#FF3F3F3F" 
-                        BorderBrush="Transparent"
-                        BorderThickness="0,0,0,0" />
-                <Path x:Name="Arrow"
-                      Grid.Column="1"     
-                      Fill="White"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"/>
-            </Grid>
-        </ControlTemplate>
-
-        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
-            <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
-        </ControlTemplate>
-
-        <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-            <Setter Property="MinWidth" Value="120"/>
-            <Setter Property="MinHeight" Value="20"/>
-            <Setter Property="Foreground" Value="LightGray"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ComboBox}">
-                        <Grid>
-                            <ToggleButton Name="ToggleButton" 
-                                      Template="{StaticResource ComboBoxToggleButton}" 
-                                      Grid.Column="2" 
-                                      Focusable="false"
-                                      IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
-                                      ClickMode="Press">
-                            </ToggleButton>
-                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}"
-                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                              Margin="3,3,23,3"
-                                              VerticalAlignment="Center"
-                                              HorizontalAlignment="Left" />
-                            <TextBox x:Name="PART_EditableTextBox"
-                                     Style="{x:Null}" 
-                                     Template="{StaticResource ComboBoxTextBox}" 
-                                     HorizontalAlignment="Left" 
-                                     VerticalAlignment="Center" 
-                                     Margin="3,3,23,3"
-                                     Focusable="True" 
-                                     Background="#FF3F3F3F"
-                                     Foreground="Green"
-                                     Visibility="Hidden"
-                                     IsReadOnly="{TemplateBinding IsReadOnly}"/>
-                            <Popup Name="Popup"
-                                   Placement="Bottom"
-                                   IsOpen="{TemplateBinding IsDropDownOpen}"
-                                   AllowsTransparency="True" 
-                                   Focusable="False"
-                                   PopupAnimation="Slide">
-
-                                <Grid Name="DropDown"
-                                      SnapsToDevicePixels="True"                
-                                      MinWidth="{TemplateBinding ActualWidth}"
-                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                    <Border x:Name="DropDownBorder"
-                                            Background="#FF3F3F3F"
-                                            CornerRadius="8"
-                                            BorderThickness="1"
-                                            BorderBrush="Transparent"/>
-                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
-                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
-                                    </ScrollViewer>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="HasItems" Value="false">
-                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="#888888"/>
-                            </Trigger>
-                            <Trigger Property="IsGrouping" Value="true">
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
-                            </Trigger>
-                            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
-                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0"/>
-                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
-                            </Trigger>
-                            <Trigger Property="IsEditable"  Value="true">
-                                <Setter Property="IsTabStop" Value="false"/>
-                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-            </Style.Triggers>
-        </Style>
-
-        <!-- SimpleStyles: ComboBoxItem -->
-        <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="Foreground" Value="LightGray"/>
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                        <Border Name="Border"
-                                Padding="2"
-                                SnapsToDevicePixels="true">
-                            <ContentPresenter />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsHighlighted" Value="true">
-                                <Setter TargetName="Border" Property="Background" Value="#FF4F4F4F"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="#888888"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
         </Style>
     </UserControl.Resources>
     
@@ -168,10 +31,10 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
-        <Border Grid.Row="0" Background="#dedcff"></Border>
-        <Border Grid.Row="1" Background="#dedcff"></Border>
-        <Border Grid.Row="2" Background="#dedcff"></Border>
+        <Border ClipToBounds="True" Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"></Border>
+        <Border Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"></Border>
+        <Border Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}"></Border>
+        <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"></Border>
 
         <!--URL Bar-->
         <Grid Grid.Row="0" Panel.ZIndex="2">
@@ -182,30 +45,30 @@
             </Grid.ColumnDefinitions>
 
             <Border Name="UrlBarBorder" Panel.ZIndex="0" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
-                CornerRadius="8" BorderThickness="0" BorderBrush="Transparent" Background="#fbfbfe">
+                CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="5" ShadowDepth="5" Opacity="0.3" Direction="250"/>
                 </Border.Effect>
             </Border>
             <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                     Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
+                     Height="45" FontSize="16" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource MaterialDesignBody}"
                      Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Style="{x:Null}"/>
 
             <Button x:Name="buttonPaste" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,52,0"  Click="buttonPaste_Click" 
                     Style="{StaticResource PasteButton}"
                     ToolTip="Paste">
-                <Image Source="/Resources/Images/pasteDark24.png" Width="24"></Image>
+                <materialDesign:PackIcon Kind="ContentPaste" Foreground="{DynamicResource MaterialDesignBody}" Width="26" Height="26"/>
             </Button>
             <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Command="{Binding GetVideoData}" 
                     Style="{StaticResource PasteButton}" 
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                     ToolTip="Search">
-                <Image Source="/Resources/Images/searchDark24.png" Width="24"></Image>
+                <materialDesign:PackIcon Kind="Search" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
             </Button>
             <Label Name="textBlockURLHint" Content="Paste an URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="DarkSlateGray" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
-            <Rectangle Panel.ZIndex="4" Fill="Gray" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
+            <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
         </Grid>
 
         <!--Video Card, Download Options-->
@@ -225,7 +88,7 @@
 
             <!--Video Card-->
             <Border Grid.Row="1" Grid.Column="1"
-                Background="#fbfbfe" CornerRadius="8"
+                Background="{DynamicResource MaterialDesignBackground}" CornerRadius="8"
                 Visibility="{Binding StateHandler.IsVideoFound, Converter={StaticResource BoolToVisibilityConverter}}">
                 <uc:VideoSelectedCard HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 <Border.Effect>
@@ -235,7 +98,7 @@
                
             <!--Download Options-->
             <Border Grid.Row="3" Grid.Column="1"
-                    Background="#fbfbfe" CornerRadius="8"
+                    Background="{DynamicResource MaterialDesignBackground}" CornerRadius="8"
                     Visibility="{Binding StateHandler.IsVideoStreamsFound, Converter={StaticResource BoolToVisibilityConverter}}">
                 <uc:DownloadOptionsCard HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <Border.Effect>
@@ -251,7 +114,7 @@
                        Visibility="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <TextBlock Text="Loading video data..."
                            Visibility="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"
-                           Foreground="#64627a" FontSize="16" FontWeight="Bold"/>
+                           FontSize="16" FontWeight="Bold"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Panel.ZIndex="2" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center">
                 <Image Name="imgLoadingGifStreams"  Width="62" 
@@ -259,20 +122,20 @@
                        Visibility="{Binding StateHandler.IsAnalizingStreams, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,0"/>
                 <TextBlock Text="Getting streams from source..."
                            Visibility="{Binding StateHandler.IsAnalizingStreams, Converter={StaticResource BoolToVisibilityConverter}}"
-                           Foreground="#64627a" FontSize="16" FontWeight="Bold"/>
+                           FontSize="16" FontWeight="Bold"/>
             </StackPanel>
             
             <StackPanel Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Visibility="{Binding StateHandler.IsAnalizingError, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Image Width="48" Source="/Resources/Images/close24.png"/>
                 <TextBlock Text="Video non trovato"
-                       Foreground="#64627a" FontSize="18" FontWeight="DemiBold"/>
+                       FontSize="18" FontWeight="DemiBold"/>
             </StackPanel>
         </Grid>
         
         <!--Download List-->
         <Grid Grid.Row="1" Visibility="{Binding StateHandler.IsSearchOpen, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
             <Border Margin="10,10,10,10">
-                <ListView ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" Style="{StaticResource MaterialDesignCardsListBox}" Background="#dedcff">
+                <ListView ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" Style="{StaticResource MaterialDesignCardsListBox}" Background="{DynamicResource MaterialDesignPaper}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <uc:VideoDownloadCard HorizontalAlignment="Stretch" Margin="10,0,10,0"/>
@@ -282,7 +145,7 @@
             </Border>
             <!--Empty list text-->
             <TextBlock Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Download list is empty, search a video to start..." 
-                       Foreground="#64627a" FontSize="18" FontWeight="DemiBold"
+                       Foreground="{DynamicResource MaterialDesignBody}" FontSize="18" FontWeight="DemiBold"
                        Visibility="{Binding StateHandler.IsDownloadListEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>
     </Grid>

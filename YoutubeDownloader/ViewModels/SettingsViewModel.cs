@@ -7,10 +7,6 @@ namespace YoutubeDownloader.ViewModels
 {
     class SettingsViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private DownloadMediaType _downloadOptionPreference;
-        private DownloadFormat _audioFormatPreference;
-        private DownloadFormat _videoFormatPreference;
-
         public DownloadMediaType MediaTypePreference
         {
             get { return ServiceProvider.SettingsService.UserPreferences.MediaTypePreference; }
@@ -36,6 +32,15 @@ namespace YoutubeDownloader.ViewModels
             {
                 ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference = value;
                 OnPropertyChanged(nameof(VideoFormatPreference));
+            }
+        }
+        public ThemeStyles ThemePreference
+        {
+            get { return ServiceProvider.SettingsService.UserPreferences.ThemePreference; }
+            set
+            {
+                ServiceProvider.SettingsService.UserPreferences.ThemePreference = value;
+                OnPropertyChanged(nameof(ThemePreference));
             }
         }
         public string OutputPath

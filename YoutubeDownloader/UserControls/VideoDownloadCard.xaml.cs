@@ -16,6 +16,7 @@ namespace YoutubeDownloader.UserControls
             InitializeComponent();
             buttonCancelDownload.MouseEnter += OnbuttonCancelDownloadMouseEnter;
             buttonCancelDownload.MouseLeave += OnbuttonCancelDownloadMouseLeave;
+            iconCheck.Foreground = ServiceProvider.ThemeService.GetPrimaryColorBrush();
         }
 
         private void OnbuttonCancelDownloadMouseLeave(object sender, MouseEventArgs e)
