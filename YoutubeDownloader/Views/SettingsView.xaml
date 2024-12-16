@@ -53,7 +53,7 @@
                         Click="buttonBrowse_Click"
                         Style="{StaticResource PasteButton}" 
                         ToolTip="Search">
-                    <Image Source="/Resources/Images/searchDark24.png" Width="24"></Image>
+                    <Image Source="/Resources/Images/folderOpen24.png" Width="24"></Image>
                 </Button>
             </Grid>
         </GroupBox>
