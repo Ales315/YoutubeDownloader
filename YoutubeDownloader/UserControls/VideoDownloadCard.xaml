@@ -61,16 +61,14 @@
                     Width="40" Height="40" Cursor="Hand" ToolTip="Open download folder" Click="buttonOpenFolder_Click"
                     Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
                     Command="{Binding OpenFolderCommand}">
-                <Image x:Name="imgOpenFolder" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Margin="0,0,0,0"
-                       Source="/Resources/Images/folderOpen24.png"/>
+                <materialDesign:PackIcon Kind="FolderOpen" Foreground="{DynamicResource MaterialDesignBody}" Width="24" Height="24"/>
             </Button>
             <Button Name="buttonPlay" Grid.Column="4" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
                     Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="center"
                     Width="40" Height="40" Cursor="Hand" ToolTip="Play" Click="buttonPlay_Click"
                     Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
                     Command="{Binding PlayCommand}">
-                <Image x:Name="imgPlay" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Margin="0,0,0,0"
-                        Source="/Resources/Images/playArrow24.png"/>
+                <materialDesign:PackIcon Kind="PlayCircleOutline" Foreground="{DynamicResource MaterialDesignBody}" Width="24" Height="24"/>
             </Button>
         </StackPanel>
         
@@ -86,7 +84,7 @@
             <materialDesign:PackIcon Kind="AlertCircleOutline" Width="28" Height="28" VerticalAlignment="Center" Foreground="Red"
                          Visibility="{Binding IsDownloadFailed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"/>
             <!--Download success icon-->
-            <materialDesign:PackIcon Name="iconCheck" Kind="Check" Width="28" Height="28" VerticalAlignment="Center" Foreground="LimeGreen"
+            <materialDesign:PackIcon Name="iconCheck" Kind="Check" Width="28" Height="28" VerticalAlignment="Center" Foreground="Green"
                                      Visibility="{Binding IsDownloadCompleted, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <!-- Progress Ring -->
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
