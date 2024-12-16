@@ -13,6 +13,7 @@
     <UserControl.DataContext>
         <vm:SettingsViewModel/>
     </UserControl.DataContext>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15"/>
@@ -22,11 +23,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="15"/>
             <RowDefinition Height="100"/>
-            <RowDefinition Height="260"/>
+            <RowDefinition Height="300"/>
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{StaticResource MaterialDesignCardGroupBox}" FontSize="14" Background="AliceBlue">
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15"/>
@@ -58,7 +59,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="2" Grid.Column="1" Header="Download Preferences" Style="{StaticResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0" Background="AliceBlue">
+        <GroupBox Grid.Row="2" Grid.Column="1" Header="Download Preferences" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15"/>
@@ -73,43 +74,41 @@
                 <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
-                                   Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
+                                   Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  Background="Transparent" Padding="0,10,0,0"
                                    Text="Default media type"
                                    Style="{x:Null}"/>
                         <ComboBox Name="cbMediaType" SelectedIndex="0" Width="auto" Height="40" Margin="13,0,0,0"
-                                  Style="{StaticResource MaterialDesignFilledComboBox}"
-                                  Foreground="DarkSlateGray"
-                                  FontSize="14"
+                                  Style="{DynamicResource MaterialDesignFilledComboBox}"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
-                                 Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
+                                 Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  Background="Transparent" Padding="0,10,0,0"
                                  Text="Default video format"
                                  Style="{x:Null}"/>
                         <ComboBox Name="cbVideoFormat" SelectedIndex="0" MinWidth="80" Height="40" 
-                                  Style="{StaticResource MaterialDesignFilledComboBox}"
-                                  Foreground="DarkSlateGray"
-                                  FontSize="14"
+                                  Style="{DynamicResource MaterialDesignFilledComboBox}"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" HorizontalAlignment="Stretch" Margin="0,0,100,0"
-                                   Height="45" FontSize="16" Foreground="DarkSlateGray"  Background="Transparent" Padding="0,10,0,0"
+                                   Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  Background="Transparent" Padding="0,10,0,0"
                                    Text="Default audio format"
                                    Style="{x:Null}"/>
                         <ComboBox Name="cbAudioFormat" SelectedIndex="0" MinWidth="105" Height="40" Margin="-1,0,0,0"
-                                  Style="{StaticResource MaterialDesignFilledComboBox}"
-                                  Foreground="DarkSlateGray"
-                                  FontSize="14"
+                                  Style="{DynamicResource MaterialDesignFilledComboBox}"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
                     </StackPanel>
+                    <CheckBox x:Name="cbChangeTheme" Content="Swaptheme" Checked="cbChangeTheme_Checked" Unchecked="cbChangeTheme_Unchecked"/>
                 </StackPanel>
                 
             </Grid>

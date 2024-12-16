@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Microsoft.Win32;
 using YoutubeDownloader.Enums;
+using YoutubeDownloader.Helpers;
+using YoutubeDownloader.Services;
 
 namespace YoutubeDownloader.Views
 {
@@ -47,7 +49,7 @@ namespace YoutubeDownloader.Views
                 Mode = BindingMode.TwoWay
             };
             cbAudioFormat.SetBinding(ComboBox.SelectedValueProperty, bindingAudioFormat);
-            
+
 
             cbVideoFormat.ItemsSource = GetFormatsByCategory("Video");
             var bindingVideoFormat = new Binding("VideoFormatPreference")
@@ -56,7 +58,7 @@ namespace YoutubeDownloader.Views
                 Mode = BindingMode.TwoWay
             };
             cbVideoFormat.SetBinding(ComboBox.SelectedValueProperty, bindingVideoFormat);
-            
+
         }
         private IEnumerable<DownloadFormat> GetFormatsByCategory(string category)
         {
@@ -78,6 +80,16 @@ namespace YoutubeDownloader.Views
             if (string.IsNullOrWhiteSpace(result))
                 return;
             textboxDownloadPath.Text = result;
+        }
+
+        private void cbChangeTheme_Checked(object sender, RoutedEventArgs e)
+        {
+            ServiceProvider.ThemeService.SetLightTheme();
+        }
+
+        private void cbChangeTheme_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ServiceProvider.ThemeService.SetDarkTheme();
         }
     }
 }
