@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using YoutubeDownloader.Enums;
+﻿using YoutubeDownloader.Enums;
 
 namespace YoutubeDownloader.Models
 {
@@ -11,5 +10,6 @@ namespace YoutubeDownloader.Models
         public DownloadMediaType MediaTypePreference { get; set; } = DownloadMediaType.VideoWithAudio;
         public DownloadFormat AudioFormatPreference { get; set; } = DownloadFormat.MP3;
         public DownloadFormat VideoFormatPreference { get; set; } = DownloadFormat.MP4;
+        public ThemeStyles ThemePreference { get; set; } = ThemeStyles.System;
     }
 }

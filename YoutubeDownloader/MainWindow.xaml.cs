@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using YoutubeDownloader.Enums;
 using YoutubeDownloader.Services;
 
 namespace YoutubeDownloader;
@@ -18,7 +19,23 @@ public partial class MainWindow : Window
         buttonClose.MouseEnter += OnButtonCloseMouseEnter;
         buttonClose.MouseLeave += OnButtonCloseMouseLeave;
         ServiceProvider.ThemeService.ThemeChanged += OnThemeChanged;
-        ServiceProvider.ThemeService.SetLightTheme();
+        SetAppTheme();
+    }
+
+    private void SetAppTheme()
+    {
+        switch (ServiceProvider.SettingsService.UserPreferences.ThemePreference)
+        {
+            case ThemeStyles.System:
+                ServiceProvider.ThemeService.SetSystemTheme();
+                break;
+            case ThemeStyles.Dark:
+                ServiceProvider.ThemeService.SetDarkTheme();
+                break;
+            case ThemeStyles.Light:
+                ServiceProvider.ThemeService.SetLightTheme();
+                break;
+        }
     }
 
     private void OnThemeChanged(object? sender, bool e)

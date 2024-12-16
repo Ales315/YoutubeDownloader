@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using Microsoft.Win32;
+using Microsoft.Windows.Themes;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Services;
@@ -25,6 +26,21 @@ namespace YoutubeDownloader.Views
             };
             InitializeComponent();
             SetupComboboxes();
+            cbTheme.SelectionChanged += OnCbSelectionChanged;
+        }
+
+        private void OnCbSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbTheme.SelectedIndex == 0)
+            {
+                ServiceProvider.ThemeService.SetSystemTheme();
+                return;
+            }
+
+            if(ServiceProvider.ThemeService.IsLightTheme)
+                ServiceProvider.ThemeService.SetDarkTheme();
+            else
+                ServiceProvider.ThemeService.SetLightTheme();
         }
 
         private void SetupComboboxes()
@@ -59,6 +75,14 @@ namespace YoutubeDownloader.Views
             };
             cbVideoFormat.SetBinding(ComboBox.SelectedValueProperty, bindingVideoFormat);
 
+            //theme combobox
+            cbTheme.ItemsSource = Enum.GetValues(typeof(ThemeStyles));
+            var bindingTheme = new Binding("ThemePreference")
+            {
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            cbTheme.SetBinding(ComboBox.SelectedValueProperty, bindingTheme);
         }
         private IEnumerable<DownloadFormat> GetFormatsByCategory(string category)
         {

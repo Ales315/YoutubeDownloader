@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 
 namespace YoutubeDownloader.Services
 {
@@ -91,9 +92,23 @@ namespace YoutubeDownloader.Services
             else return new SolidColorBrush(PrimaryDark);
         }
 
-        internal SolidColorBrush GetTextColorBrush()
+        public SolidColorBrush GetTextColorBrush()
         {
             return (SolidColorBrush)Application.Current.Resources["MaterialDesignBody"];
+        }
+
+        private bool IsSystemLightTheme()
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            var value = key?.GetValue("AppsUseLightTheme");
+            return value is int i && i > 0;
+        }
+
+        public void SetSystemTheme()
+        {
+            if(IsSystemLightTheme())
+                SetLightTheme();
+            else SetDarkTheme();
         }
     }
 }
