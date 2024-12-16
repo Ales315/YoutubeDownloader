@@ -12,7 +12,7 @@ namespace YoutubeDownloader.UserControls
         public VideoSelectedCard()
         {
             InitializeComponent();
-            borderThumbnail.BorderBrush = new SolidColorBrush(ServiceProvider.ThemeService.GetPrimary());
+            borderThumbnail.BorderBrush = ServiceProvider.ThemeService.GetPrimaryColorBrush();
         }
     }
 }

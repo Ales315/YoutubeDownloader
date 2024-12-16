@@ -24,6 +24,10 @@ namespace YoutubeDownloader.Services
         private Theme LightTheme = null!;
         private Theme DarkTheme = null!;
         public bool IsLightTheme { get; set; } = true;
+        /// <summary>
+        /// Light theme: true.  Dark theme: false
+        /// </summary>
+        public event EventHandler<bool> ThemeChanged = null!;
 
 
         public ThemeService()
@@ -68,6 +72,8 @@ namespace YoutubeDownloader.Services
             Theme theme = paletteHelper.GetTheme();
             CreateLightTheme();
             paletteHelper.SetTheme(LightTheme);
+            IsLightTheme = true;
+            ThemeChanged?.Invoke(null, true);
         }
 
         public void SetDarkTheme()
@@ -76,13 +82,20 @@ namespace YoutubeDownloader.Services
             Theme theme = paletteHelper.GetTheme();
             CreateDarkTheme();
             paletteHelper.SetTheme(DarkTheme);
+            IsLightTheme = false;
+            ThemeChanged?.Invoke(null, false);
         }
 
-        public Color GetPrimary()
+        public SolidColorBrush GetPrimaryColorBrush()
         {
-            if(IsLightTheme)
-                return PrimaryLight;
-            else return PrimaryDark;
+            if (IsLightTheme)
+                return new SolidColorBrush(PrimaryLight);
+            else return new SolidColorBrush(PrimaryDark);
+        }
+
+        internal SolidColorBrush GetTextColorBrush()
+        {
+            return (SolidColorBrush)Application.Current.Resources["MaterialDesignBody"];
         }
     }
 }

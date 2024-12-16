@@ -1,12 +1,7 @@
-﻿using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using WpfAnimatedGif;
 using YoutubeDownloader.Services;
-using YoutubeDownloader.ViewModels;
 
 namespace YoutubeDownloader;
 
@@ -22,16 +17,23 @@ public partial class MainWindow : Window
         buttonMinimize.Click += (s, e) => WindowState = WindowState.Minimized;
         buttonClose.MouseEnter += OnButtonCloseMouseEnter;
         buttonClose.MouseLeave += OnButtonCloseMouseLeave;
+        ServiceProvider.ThemeService.ThemeChanged += OnThemeChanged;
+        ServiceProvider.ThemeService.SetLightTheme();
+    }
+
+    private void OnThemeChanged(object? sender, bool e)
+    {
+        iconClose.Foreground = ServiceProvider.ThemeService.GetTextColorBrush();
     }
 
     private void OnButtonCloseMouseLeave(object sender, MouseEventArgs e)
     {
-        imgClose.Source = new BitmapImage(new Uri(@"/Resources/Images/closeDark24.png", UriKind.Relative));
+        iconClose.Foreground = !ServiceProvider.ThemeService.IsLightTheme ? new SolidColorBrush(Colors.LightGray) : new SolidColorBrush(Colors.DarkSlateGray);
     }
 
     private void OnButtonCloseMouseEnter(object sender, MouseEventArgs e)
     {
-        imgClose.Source = new BitmapImage(new Uri(@"/Resources/Images/close24.png", UriKind.Relative));
+        iconClose.Foreground = new SolidColorBrush(Colors.White);
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)

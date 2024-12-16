@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:YoutubeDownloader.Views"
              xmlns:uc="clr-namespace:YoutubeDownloader.UserControls"
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
@@ -54,7 +55,7 @@
                         Click="buttonBrowse_Click"
                         Style="{StaticResource PasteButton}" 
                         ToolTip="Search">
-                    <Image Source="/Resources/Images/folderOpen24.png" Width="24"></Image>
+                    <materialDesign:PackIcon Kind="FolderOpen" Foreground="{DynamicResource MaterialDesignBody}" Width="26" Height="26"/>
                 </Button>
             </Grid>
         </GroupBox>

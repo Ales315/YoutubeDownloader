@@ -7,7 +7,9 @@
         xmlns:local="clr-namespace:YoutubeDownloader"
         xmlns:uc="clr-namespace:YoutubeDownloader.UserControls" 
         xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
-        xmlns:gif="http://wpfanimatedgif.codeplex.com" xmlns:views="clr-namespace:YoutubeDownloader.Views"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com" 
+        xmlns:views="clr-namespace:YoutubeDownloader.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="854"
@@ -65,7 +67,7 @@
                         </Setter>
                     </Style>
                 </Button.Style>
-                <Image x:Name="imgMinimize" Source="/Resources/Images/minimizeDark24.png" Margin="0,0,0,0"/>
+                <materialDesign:PackIcon Kind="Minimize" Foreground="{DynamicResource MaterialDesignBody}" Width="26" Height="26"/>
             </Button>
             <Button x:Name="buttonClose" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0">
                 <Button.Style>
@@ -87,7 +89,7 @@
                         </Setter>
                     </Style>
                 </Button.Style>
-                <Image x:Name="imgClose" Source="/Resources/Images/closeDark24.png" Margin="0,0,0,0"/>
+                <materialDesign:PackIcon Name="iconClose" Kind="WindowClose" Width="26" Height="26"/>
             </Button>
         </StackPanel>
 
