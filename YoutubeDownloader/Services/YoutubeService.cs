@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Media;
 using System.Windows;
 using Humanizer;
 using YoutubeDownloader.Enums;
@@ -115,6 +116,7 @@ public class YoutubeService
 
                     await DownloadVideo(videoDownload, videoDownload.CancellationToken.Token);
                     videoDownload.IsDownloading = false;
+                    SystemSounds.Beep.Play();
                 }
                 catch (OperationCanceledException)
                 {
