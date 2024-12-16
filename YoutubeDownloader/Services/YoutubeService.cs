@@ -90,6 +90,13 @@ public class YoutubeService
 
     public void EnqueueDownload(VideoDownloadModel video)
     {
+        string format = (Enum.GetName(typeof(DownloadFormat), video.DownloadFormat) ?? "WEBM").ToLower();
+        video.FileName = $"{ServiceProvider.SettingsService.GetOutputPath()}\\{video.Title}.{format}";
+
+        if (!FileAlreadyExists(video.FileName))
+            return;
+    
+        DownloadList.Add(video);
         _downloadQueue.Enqueue(video);
         StartDownloads();
     }
@@ -110,10 +117,7 @@ public class YoutubeService
                 {
                     videoDownload.IsDownloading = true;
                     videoDownload.CancellationToken = new CancellationTokenSource();
-
-                    string format = (Enum.GetName(typeof(DownloadFormat), videoDownload.DownloadFormat) ?? "WEBM").ToLower();
-                    videoDownload.FileName = $"{ServiceProvider.SettingsService.GetOutputPath()}\\{videoDownload.Title}.{format}";
-
+                        
                     await DownloadVideo(videoDownload, videoDownload.CancellationToken.Token);
                     videoDownload.IsDownloading = false;
                     SystemSounds.Beep.Play();
@@ -141,6 +145,22 @@ public class YoutubeService
             }
 
         });
+    }
+    /// <summary>
+    /// Checks if filename exists, returns true if file does not exists or replace action is authorized by user
+    /// </summary>
+    /// <param name="filename"></param>
+    /// <returns></returns>
+    private bool FileAlreadyExists(string filename)
+    {
+        if (File.Exists(filename))
+        {
+            var dr = MessageBox.Show("File already exists \nDo you want to replace it?", "File exists", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (dr == MessageBoxResult.No) 
+                return false;
+            return true;
+        }
+        return true;
     }
 
     public async Task DownloadVideo(VideoDownloadModel video, CancellationToken cancellationToken)

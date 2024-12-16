@@ -371,7 +371,6 @@ namespace YoutubeDownloader.ViewModels
                 newVideoDownload.VideoStream = VideoStreamSelected;
                 newVideoDownload.DownloadOption = DownloadOptionSelected;
                 newVideoDownload.DownloadFormat = FormatSelected;
-                VideoDownloadsList.Add(newVideoDownload);
                 ServiceProvider.YoutubeService.EnqueueDownload(newVideoDownload);
                 StateHandler.SetUI(AppState.Downloading);
             }
