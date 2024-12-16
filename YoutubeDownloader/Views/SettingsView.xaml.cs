@@ -27,6 +27,9 @@ namespace YoutubeDownloader.Views
             InitializeComponent();
             SetupComboboxes();
             cbTheme.SelectionChanged += OnCbSelectionChanged;
+            checkboxNotifications.Checked += (s, e) => ServiceProvider.SettingsService.UserPreferences.UseNotifications = true;
+            checkboxNotifications.Unchecked += (s, e) => ServiceProvider.SettingsService.UserPreferences.UseNotifications = false;
+            checkboxNotifications.IsChecked = ServiceProvider.SettingsService.UserPreferences.UseNotifications;
         }
 
         private void OnCbSelectionChanged(object sender, SelectionChangedEventArgs e)

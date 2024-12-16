@@ -14,7 +14,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="854"
         WindowStyle="SingleBorderWindow"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         Background="Transparent"
         TextOptions.TextFormattingMode="Display">
     <Window.DataContext>
@@ -100,7 +100,7 @@
         </StackPanel>
 
         <!--Titlebar dropshadow-->
-        <Rectangle Panel.ZIndex="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="12" Opacity="0.05">
+        <Rectangle Panel.ZIndex="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="12" Opacity="0.1">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Color="Black" Offset="0"/>

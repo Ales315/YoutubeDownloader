@@ -8,6 +8,7 @@
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Background="Transparent"
@@ -57,17 +58,17 @@
             <Button x:Name="buttonPaste" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,52,0"  Click="buttonPaste_Click" 
                     Style="{StaticResource PasteButton}"
                     ToolTip="Paste">
-                <Image Source="/Resources/Images/pasteDark24.png" Width="24"></Image>
+                <materialDesign:PackIcon Kind="ContentPaste" Foreground="{DynamicResource MaterialDesignBody}" Width="26" Height="26"/>
             </Button>
             <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Command="{Binding GetVideoData}" 
                     Style="{StaticResource PasteButton}" 
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                     ToolTip="Search">
-                <Image Source="/Resources/Images/searchDark24.png" Width="24"></Image>
+                <materialDesign:PackIcon Kind="Search" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
             </Button>
             <Label Name="textBlockURLHint" Content="Paste an URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="DarkSlateGray" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
-            <Rectangle Panel.ZIndex="4" Fill="Gray" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
+            <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
         </Grid>
 
         <!--Video Card, Download Options-->

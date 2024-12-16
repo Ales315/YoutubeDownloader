@@ -11,5 +11,6 @@ namespace YoutubeDownloader.Models
         public DownloadFormat AudioFormatPreference { get; set; } = DownloadFormat.MP3;
         public DownloadFormat VideoFormatPreference { get; set; } = DownloadFormat.MP4;
         public ThemeStyles ThemePreference { get; set; } = ThemeStyles.System;
+        public bool UseNotifications { get; set; }
     }
 }
