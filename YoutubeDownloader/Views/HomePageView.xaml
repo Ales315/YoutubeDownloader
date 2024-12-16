@@ -9,7 +9,9 @@
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="Transparent"
+>
     <UserControl.DataContext>
         <vm:HomePageViewModel/>
     </UserControl.DataContext>
@@ -25,10 +27,10 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
-        <Border Grid.Row="0" Background="#dedcff"></Border>
-        <Border Grid.Row="1" Background="#dedcff"></Border>
-        <Border Grid.Row="2" Background="#dedcff"></Border>
+        <Border ClipToBounds="True" Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"></Border>
+        <Border Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"></Border>
+        <Border Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}"></Border>
+        <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"></Border>
 
         <!--URL Bar-->
         <Grid Grid.Row="0" Panel.ZIndex="2">
@@ -39,13 +41,13 @@
             </Grid.ColumnDefinitions>
 
             <Border Name="UrlBarBorder" Panel.ZIndex="0" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
-                CornerRadius="8" BorderThickness="0" BorderBrush="Transparent" Background="#fbfbfe">
+                CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="5" ShadowDepth="5" Opacity="0.3" Direction="250"/>
                 </Border.Effect>
             </Border>
             <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                     Height="45" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
+                     Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
                      Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Style="{x:Null}"/>
 
@@ -129,7 +131,7 @@
         <!--Download List-->
         <Grid Grid.Row="1" Visibility="{Binding StateHandler.IsSearchOpen, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
             <Border Margin="10,10,10,10">
-                <ListView ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" Style="{StaticResource MaterialDesignCardsListBox}" Background="#dedcff">
+                <ListView ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" Style="{StaticResource MaterialDesignCardsListBox}" Background="{DynamicResource MaterialDesignPaper}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <uc:VideoDownloadCard HorizontalAlignment="Stretch" Margin="10,0,10,0"/>
@@ -139,7 +141,7 @@
             </Border>
             <!--Empty list text-->
             <TextBlock Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Download list is empty, search a video to start..." 
-                       Foreground="#64627a" FontSize="18" FontWeight="DemiBold"
+                       Foreground="{DynamicResource MaterialDesignBody}" FontSize="18" FontWeight="DemiBold"
                        Visibility="{Binding StateHandler.IsDownloadListEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>
     </Grid>

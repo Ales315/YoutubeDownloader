@@ -13,7 +13,7 @@
         Title="MainWindow" Height="480" Width="854"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
-        Background="DarkSlateGray"
+        Background="Transparent"
         TextOptions.TextFormattingMode="Display">
     <Window.DataContext>
         <vm:MainViewModel />
@@ -197,8 +197,8 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="65"/>
         </Grid.RowDefinitions>
-        <Border ClipToBounds="True" Grid.Row="0" Background="#fbfbfe"></Border>
-        <Border Grid.Row="2" Background="#fbfbfe"></Border>
+        <Border ClipToBounds="True" Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"></Border>
+        <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"></Border>
 
 
         <!--Titlebar-->
@@ -251,7 +251,7 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
             <Image Source="/Resources/Images/favicon.png" Width="24"></Image>
-            <TextBlock Text="Youtube Downloader" Foreground="DarkSlateGray" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"
+            <TextBlock Text="Youtube Downloader" Foreground="{DynamicResource MaterialDesignBody}" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"
                        FontSize="14"/>
         </StackPanel>
 
@@ -266,9 +266,9 @@
         </Rectangle>
 
         <!--Current Page-->
-        <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}" />
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}" Background="{DynamicResource MaterialDesignPaper}"/>
 
-        <ItemsControl ItemsSource="{Binding PageViewModels}" Grid.Row="2" HorizontalAlignment="Center">
+        <ItemsControl ItemsSource="{Binding PageViewModels}" Grid.Row="2" HorizontalAlignment="Center" Background="{DynamicResource MaterialDesignPaper}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
