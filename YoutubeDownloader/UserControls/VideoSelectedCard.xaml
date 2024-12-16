@@ -13,6 +13,9 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
         <converter:NumberFormatterConverter x:Key="NumberFormatterConverter"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -24,7 +27,7 @@
         </Grid.ColumnDefinitions>
 
         <!--Thumbnail with Duration-->
-        <Border Grid.Row="1" Width="224" Height="126" Margin="10,10,10,10" CornerRadius="8" BorderThickness="1" BorderBrush="LightGray"
+        <Border Grid.Row="1" Width="224" Height="126" Margin="10,10,10,10" CornerRadius="8" BorderThickness="1" BorderBrush="DarkSlateGray"
         VerticalAlignment="Center">
             <Border.Background>
                 <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
@@ -34,7 +37,6 @@
                     CornerRadius="4"
                     Margin="0,0,6,6">
                 <TextBlock Name="tbDuration" Text="{Binding Duration}" Opacity="1" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                           Foreground="White"
                            Background="Transparent"
                            Width="auto"
                            FontSize="15"
@@ -62,29 +64,25 @@
                 </Grid.RowDefinitions>
                 <TextBlock Name="tbTitle" Text="{Binding Title}" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0,0,30,0" MaxHeight="55"
                            TextWrapping="WrapWithOverflow" 
-                           Foreground="#222124" 
                            Background="Transparent"
                            FontSize="18" 
                            FontWeight="DemiBold"
                            TextTrimming="WordEllipsis"
                            ToolTip="{Binding Title}"/>
                 <TextBlock Name="tbAuthor" Grid.Column="0" Grid.Row="2" Text="{Binding ChannelName}" VerticalAlignment="Top" 
-                           Foreground="#222124"
                            Background="Transparent"
                            FontSize="16"
                            Margin="0,8,0,0"/>
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom">
                     <TextBlock Name="tbViewCount" VerticalAlignment="Center"
-                               Foreground="#222124"
                                Background="Transparent"
                                FontSize="16"
                                Margin="0,0,0,0">
                         <Run Text="{Binding ViewCount, Converter={StaticResource NumberFormatterConverter}}"/>
                         <Run Text=" Views"/>
                     </TextBlock>
-                    <Ellipse Width="4" Height="4" Fill="DarkSlateGray" VerticalAlignment="Center" Margin="20,0,0,-3"/>
+                    <Ellipse Width="4" Height="4" Fill="{DynamicResource MaterialDesignBody}" VerticalAlignment="Center" Margin="20,0,0,-3"/>
                     <TextBlock Name="tbDate" HorizontalAlignment="Right" VerticalAlignment="Center"
-                               Foreground="#222124"
                                Background="Transparent"
                                FontSize="16"
                                Margin="8,0,0,0">
