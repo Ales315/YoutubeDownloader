@@ -41,11 +41,8 @@
                     <RowDefinition Height="1"/>
                 </Grid.RowDefinitions>
                 <Border Name="PathTextboxBorder" Panel.ZIndex="0" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="40"
-                        CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignPaper}"
+                        CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource MaterialDesignBody}" Background="{DynamicResource MaterialDesignPaper}"
                         IsHitTestVisible="False">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="5" Direction="250" Opacity="0.2"/>
-                    </Border.Effect>
                 </Border>
                 <TextBox Name="textboxDownloadPath" Panel.ZIndex="2" Grid.Column="1" Grid.Row="1"   TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                          Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Margin="0,0,0,0" Padding="5,0,100,0" Background="Transparent" BorderBrush="Transparent"
@@ -81,6 +78,7 @@
                         <ComboBox Name="cbMediaType" SelectedIndex="0" Width="auto" Height="40" Margin="13,0,0,0"
                                   Style="{DynamicResource MaterialDesignFilledComboBox}"
                                   Foreground="{DynamicResource MaterialDesignBody}"
+                                  Background="{DynamicResource MaterialDesignPaper}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
@@ -93,6 +91,7 @@
                         <ComboBox Name="cbVideoFormat" SelectedIndex="0" MinWidth="80" Height="40" 
                                   Style="{DynamicResource MaterialDesignFilledComboBox}"
                                   Foreground="{DynamicResource MaterialDesignBody}"
+                                  Background="{DynamicResource MaterialDesignPaper}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
@@ -105,6 +104,7 @@
                         <ComboBox Name="cbAudioFormat" SelectedIndex="0" MinWidth="105" Height="40" Margin="-1,0,0,0"
                                   Style="{DynamicResource MaterialDesignFilledComboBox}"
                                   Foreground="{DynamicResource MaterialDesignBody}"
+                                  Background="{DynamicResource MaterialDesignPaper}"
                                   VerticalContentAlignment="Center"
                                   Padding="10,10,10,10"
                                   DisplayMemberPath="."/>
