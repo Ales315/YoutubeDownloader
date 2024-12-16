@@ -84,7 +84,7 @@
 
             <!--Video Card-->
             <Border Grid.Row="1" Grid.Column="1"
-                Background="#fbfbfe" CornerRadius="8"
+                Background="{DynamicResource MaterialDesignBackground}" CornerRadius="8"
                 Visibility="{Binding StateHandler.IsVideoFound, Converter={StaticResource BoolToVisibilityConverter}}">
                 <uc:VideoSelectedCard HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 <Border.Effect>
@@ -94,7 +94,7 @@
                
             <!--Download Options-->
             <Border Grid.Row="3" Grid.Column="1"
-                    Background="#fbfbfe" CornerRadius="8"
+                    Background="{DynamicResource MaterialDesignBackground}" CornerRadius="8"
                     Visibility="{Binding StateHandler.IsVideoStreamsFound, Converter={StaticResource BoolToVisibilityConverter}}">
                 <uc:DownloadOptionsCard HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <Border.Effect>

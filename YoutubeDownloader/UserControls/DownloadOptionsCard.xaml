@@ -33,15 +33,15 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <!--Binding to DownloadType and AudioFormats in code behind with visibility update-->
             <ComboBox Name="cbDownloadType" Margin="0,0,10,0" Width="auto" Height="40" 
-                      Style="{StaticResource MaterialDesignFilledComboBox}"
-                      Foreground="DarkSlateGray"
+                      Style="{DynamicResource MaterialDesignFilledComboBox}"
+                      Foreground="{DynamicResource MaterialDesignBody}"
                       FontSize="14"
                       VerticalContentAlignment="Center"
                       Padding="10,10,10,10"
                       DisplayMemberPath="."/>
             <ComboBox Name="cbVideoQuality" Margin="0,0,10,0" MinWidth="80" Height="40" 
-                      Style="{StaticResource MaterialDesignFilledComboBox}"
-                      Foreground="DarkSlateGray"
+                      Style="{DynamicResource MaterialDesignFilledComboBox}"
+                      Foreground="{DynamicResource MaterialDesignBody}"
                       FontSize="14"
                       VerticalContentAlignment="Center"
                       Padding="10,10,10,10"
@@ -49,8 +49,8 @@
                       SelectedItem="{Binding VideoStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="VideoQuality"/>
             <ComboBox Name="cbAudioQuality" Margin="0,0,10,0" MinWidth="105" Height="40" 
-                      Style="{StaticResource MaterialDesignFilledComboBox}"
-                      Foreground="DarkSlateGray"
+                      Style="{DynamicResource MaterialDesignFilledComboBox}"
+                      Foreground="{DynamicResource MaterialDesignBody}"
                       FontSize="14"
                       VerticalContentAlignment="Center"
                       Padding="10,10,10,10"
@@ -58,8 +58,8 @@
                       SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="Bitrate"/>
             <ComboBox Name="cbDownloadFormat" Margin="0,0,10,0" MinWidth="60" Height="40" 
-                      Style="{StaticResource MaterialDesignFilledComboBox}"
-                      Foreground="DarkSlateGray"
+                      Style="{DynamicResource MaterialDesignFilledComboBox}"
+                      Foreground="{DynamicResource MaterialDesignBody}"
                       FontSize="14"
                       VerticalContentAlignment="Center"
                       Padding="10,10,10,10"
@@ -77,7 +77,7 @@
                       Background="Transparent"/>
             -->
             <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
-                       Foreground="DarkSlateGray"
+                       Foreground="{DynamicResource MaterialDesignBody}"
                        Margin="0,0,10,0">
                 <Run Text="{Binding DownloadSize}"/>
             </TextBlock>
