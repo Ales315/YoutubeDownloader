@@ -590,6 +590,7 @@ namespace YoutubeDownloader.ViewModels
                     break;
             }
             CurrentState = state;
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

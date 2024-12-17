@@ -65,7 +65,8 @@
             <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Command="{Binding GetVideoData}" 
                     Style="{StaticResource PasteButton}" 
-                    IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                    Cursor="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToCursorConverter}, ConverterParameter=true}"
+                    IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}"
                     ToolTip="Search">
                 <materialDesign:PackIcon Kind="Search" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
             </Button>
@@ -82,7 +83,7 @@
                     Command="{Binding GoHomeCommand}" 
                     Style="{StaticResource PasteButton}" 
                     Cursor="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToCursorConverter}}"
-                    IsEnabled="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToVisibilityConverter}}"
+                    IsEnabled="{Binding StateHandler.IsSearchOpen}"
                     ToolTip="Search">
                 <materialDesign:PackIcon Name="iconHome" Kind="Home" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
                                          Opacity="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter=0.4}"/>
