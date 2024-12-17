@@ -29,7 +29,7 @@
             <ColumnDefinition Width="75"/>
             <ColumnDefinition Width="75"/>
             <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
         <Border Panel.ZIndex="-1" Background="{DynamicResource MaterialDesignBackground}" Grid.ColumnSpan="6" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"></Border>
         <!--Video download status-->
@@ -97,13 +97,12 @@
         </StackPanel>
         
         <!--Download cancel button-->
-        <Button Name="buttonCancelDownload" Grid.Column="4" Grid.Row="1" Margin="65,0,0,0" Style="{StaticResource ActionButton}"
-                Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="center"
-                Width="40" Height="40"
-                Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}}"
-                Command="{Binding CancelDownloadCommand}">
-            <materialDesign:PackIcon Name="iconCancel" Kind="Close" Width="28" Height="28" VerticalAlignment="Center" Foreground="Red"/>
+        <Button Name="buttonRemoveElement" Grid.Column="5" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
+                Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Left" VerticalContentAlignment="center"
+                Width="40" Height="40" ToolTip="Remove from list"
+                Command="{Binding RemoveFromListCommand}">
+            <materialDesign:PackIcon Kind="BinOutline" Width="26" Height="26" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}"/>
         </Button>
-        
+
     </Grid>
 </UserControl>

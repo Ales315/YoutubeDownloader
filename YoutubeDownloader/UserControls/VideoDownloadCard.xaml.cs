@@ -14,23 +14,8 @@ namespace YoutubeDownloader.UserControls
         public VideoDownloadCard()
         {
             InitializeComponent();
-            buttonCancelDownload.MouseEnter += OnbuttonCancelDownloadMouseEnter;
-            buttonCancelDownload.MouseLeave += OnbuttonCancelDownloadMouseLeave;
             iconCheck.Foreground = ServiceProvider.ThemeService.GetPrimaryColorBrush();
-            iconCancel.Visibility = System.Windows.Visibility.Hidden;
         }
-
-        private void OnbuttonCancelDownloadMouseLeave(object sender, MouseEventArgs e)
-        {
-            iconCancel.Visibility = System.Windows.Visibility.Hidden;
-        }
-
-        private void OnbuttonCancelDownloadMouseEnter(object sender, MouseEventArgs e)
-        {
-            iconCancel.Visibility = System.Windows.Visibility.Visible;
-            buttonCancelDownload.Cursor = Cursors.Hand;
-        }
-
         private void buttonOpenFolder_Click(object sender, System.Windows.RoutedEventArgs e)
         {
 

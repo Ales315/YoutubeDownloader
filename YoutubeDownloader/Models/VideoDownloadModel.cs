@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
+using YoutubeDownloader.Services;
 using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeDownloader.Models
@@ -19,6 +20,7 @@ namespace YoutubeDownloader.Models
         private ICommand _cancelDownloadCommand = null!;
         private ICommand _playCommand = null!;
         private ICommand _openDownloadFolderCommand = null!;
+        private ICommand _removeFromListCommand = null!;
 
         public ImageSource Thumbnail { get; set; } = null!;
         public string Title { get; set; } = string.Empty;
@@ -97,6 +99,16 @@ namespace YoutubeDownloader.Models
                 return _openDownloadFolderCommand;
             }
         }
+        public ICommand RemoveFromListCommand
+        {
+            get
+            {
+                if (_removeFromListCommand == null)
+                    return new RelayCommand(p => RemoveFromList());
+                return _removeFromListCommand;
+            }
+        }
+
         public string FileName { get; set; } = string.Empty;
 
 
@@ -128,6 +140,12 @@ namespace YoutubeDownloader.Models
                 return;
             }
             Process.Start("explorer.exe", FileName);
+        }
+        private void RemoveFromList()
+        {
+            if (IsDownloading)
+                CancelDownload();
+            ServiceProvider.YoutubeService.DownloadList.Remove(this);
         }
     }
 }
