@@ -23,7 +23,8 @@ public class YoutubeService
     private bool _busy;
     private VideoDataModel? _videoData;
     private readonly object _lock = new();
-    public CancellationTokenSource CancellationToken;
+    public CancellationTokenSource DownloadCancellationToken;
+    public CancellationTokenSource GetMetadataCancellationToken;
 
     public ObservableCollection<VideoDownloadModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadModel>();
 
@@ -48,8 +49,8 @@ public class YoutubeService
 
     private async Task<VideoDataModel> GetVideoMetadataAsync(string url)
     {
-        CancellationToken = new CancellationTokenSource();
-        var video = await _youtube.Videos.GetAsync(url, CancellationToken.Token);
+        GetMetadataCancellationToken = new CancellationTokenSource();
+        var video = await _youtube.Videos.GetAsync(url, GetMetadataCancellationToken.Token);
         _videoData = new();
 
         Thumbnail thumbnail = ThumbnailExtensions.TryGetWithHighestResolution(video.Thumbnails)!;
@@ -69,8 +70,18 @@ public class YoutubeService
     }
     public async Task<VideoDataModel> GetStreamData(VideoDataModel videoData)
     {
-        CancellationToken = new CancellationTokenSource();
-        var streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, CancellationToken.Token);
+        GetMetadataCancellationToken = new CancellationTokenSource();
+        StreamManifest? streamManifest = null;
+        try
+        {
+            streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetMetadataCancellationToken.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            _videoData = null!;
+            throw;
+        }
+        
 
         var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
         var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
@@ -87,6 +98,8 @@ public class YoutubeService
         videoData.VideoStreams = videoStreams;
         return videoData;
     }
+
+    #region DOWNLOAD
 
     public void EnqueueDownload(VideoDownloadModel video)
     {
@@ -189,7 +202,9 @@ public class YoutubeService
         ((IProgress<double>)progress).Report(1.0);
     }
 
-    internal VideoDataModel GetLastVideoData()
+    #endregion
+
+    public VideoDataModel GetLastVideoData()
     {
         return _videoData!;
     }

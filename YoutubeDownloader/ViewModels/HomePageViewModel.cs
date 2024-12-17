@@ -39,6 +39,7 @@ namespace YoutubeDownloader.ViewModels
 
         private ICommand _getVideoData = null!;
         private ICommand _downloadVideo = null!;
+        private ICommand _goHomeCommand = null!;
         private double _progress;
         
 
@@ -220,6 +221,25 @@ namespace YoutubeDownloader.ViewModels
                 }
                 return _downloadVideo;
             }
+        }
+        public ICommand GoHomeCommand
+        {
+            get
+            {
+                if (_goHomeCommand == null)
+                {
+                    _goHomeCommand = new RelayCommand(
+                        param => this.GoHome()
+                    );
+                }
+                return _goHomeCommand;
+            }
+        }
+
+        private void GoHome()
+        {
+            ServiceProvider.YoutubeService.GetMetadataCancellationToken.Cancel();
+            StateHandler.SetUI(AppState.Home);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

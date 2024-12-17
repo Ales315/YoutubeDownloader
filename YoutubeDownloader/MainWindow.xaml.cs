@@ -55,6 +55,6 @@ public partial class MainWindow : Window
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        ServiceProvider.YoutubeService.CancellationToken?.Cancel();
+        ServiceProvider.YoutubeService.DownloadCancellationToken?.Cancel();
     }
 }
