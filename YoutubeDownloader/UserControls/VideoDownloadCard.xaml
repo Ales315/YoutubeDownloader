@@ -89,7 +89,7 @@
             <!-- Progress Ring -->
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
                          Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
-                         Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="MediumSlateBlue">
+                         Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="LimeGreen">
                 <ProgressBar.LayoutTransform>
                     <ScaleTransform CenterX="0.8" CenterY="0.8" ScaleX="1.5" ScaleY="1.5" />
                 </ProgressBar.LayoutTransform>
@@ -99,7 +99,7 @@
         <!--Download cancel button-->
         <Button Name="buttonRemoveElement" Grid.Column="5" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Left" VerticalContentAlignment="center"
-                Width="40" Height="40" ToolTip="Remove from list"
+                Width="40" Height="40" Cursor="Hand"
                 Command="{Binding RemoveFromListCommand}">
             <materialDesign:PackIcon Kind="BinOutline" Width="26" Height="26" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}"/>
         </Button>
