@@ -27,9 +27,6 @@
         MP4,
 
         [FormatCategory("Video")]
-        AVI,
-
-        [FormatCategory("Video")]
         MOV,
 
         [FormatCategory("AudioVideo")]

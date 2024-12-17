@@ -89,7 +89,7 @@
             <!-- Progress Ring -->
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
                          Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
-                         Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="Blue">
+                         Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="MediumSlateBlue">
                 <ProgressBar.LayoutTransform>
                     <ScaleTransform CenterX="0.8" CenterY="0.8" ScaleX="1.5" ScaleY="1.5" />
                 </ProgressBar.LayoutTransform>
@@ -102,7 +102,7 @@
                 Width="40" Height="40"
                 Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}}"
                 Command="{Binding CancelDownloadCommand}">
-            <Image x:Name="imgCancel" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Margin="0,0,0,0"/>
+            <materialDesign:PackIcon Name="iconCancel" Kind="Close" Width="28" Height="28" VerticalAlignment="Center" Foreground="Red"/>
         </Button>
         
     </Grid>
