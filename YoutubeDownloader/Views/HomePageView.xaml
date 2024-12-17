@@ -20,6 +20,7 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
         <converter:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
+        <converter:InvertedBoolToOpacityConverter x:Key="InvertedBoolToOpacityConverter"/>
         <converter:BoolToCursorConverter x:Key="BoolToCursorConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
@@ -68,7 +69,8 @@
                     Cursor="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToCursorConverter}, ConverterParameter=true}"
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}"
                     ToolTip="Search">
-                <materialDesign:PackIcon Kind="Search" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
+                <materialDesign:PackIcon Kind="Search" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
+                                         Opacity="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToOpacityConverter}}"/>
             </Button>
             <Label Name="textBlockURLHint" Content="Paste video URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
             <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
@@ -82,11 +84,10 @@
             <Button x:Name="buttonHome" Panel.ZIndex="3" Grid.Column="0" Width="45" Height="45" Margin="0,0,19.5,0" HorizontalAlignment="Right" VerticalAlignment="Center"
                     Command="{Binding GoHomeCommand}" 
                     Style="{StaticResource PasteButton}" 
-                    Cursor="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToCursorConverter}}"
                     IsEnabled="{Binding StateHandler.IsSearchOpen}"
-                    ToolTip="Search">
+                    ToolTip="Home">
                 <materialDesign:PackIcon Name="iconHome" Kind="Home" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
-                                         Opacity="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter=0.4}"/>
+                                         Opacity="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToOpacityConverter}}"/>
             </Button>
 
             <Border Name="buttonSettingsBorder" Panel.ZIndex="0" Grid.Column="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Left" Height="45" Width="50"
