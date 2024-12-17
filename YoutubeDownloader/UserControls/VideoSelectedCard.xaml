@@ -73,7 +73,7 @@
                            Background="Transparent"
                            FontSize="16"
                            Margin="0,8,0,0"/>
-                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.ColumnSpan="2">
                     <TextBlock Name="tbViewCount" VerticalAlignment="Center"
                                Background="Transparent"
                                FontSize="16"
@@ -81,8 +81,8 @@
                         <Run Text="{Binding ViewCount, Converter={StaticResource NumberFormatterConverter}}"/>
                         <Run Text=" Views"/>
                     </TextBlock>
-                    <Ellipse Width="4" Height="4" Fill="{DynamicResource MaterialDesignBody}" VerticalAlignment="Center" Margin="20,0,0,-3"/>
-                    <TextBlock Name="tbDate" HorizontalAlignment="Right" VerticalAlignment="Center"
+                    <Ellipse Width="4" Height="4" Fill="{DynamicResource MaterialDesignBody}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20,0,0,-3"/>
+                    <TextBlock Name="tbDate" HorizontalAlignment="Right" VerticalAlignment="Center" Width="auto"
                                Background="Transparent"
                                FontSize="16"
                                Margin="8,0,0,0">
