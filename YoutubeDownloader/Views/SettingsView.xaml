@@ -43,7 +43,7 @@
                     <RowDefinition Height="1"/>
                 </Grid.RowDefinitions>
                 <Border Name="PathTextboxBorder" Panel.ZIndex="0" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="40"
-                        CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource MaterialDesignBody}" Background="{DynamicResource MaterialDesignPaper}"
+                        CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource MaterialDesignBody}" Background="{DynamicResource MaterialDesignBackground}"
                         IsHitTestVisible="False">
                 </Border>
                 <TextBox Name="textboxDownloadPath" Panel.ZIndex="2" Grid.Column="1" Grid.Row="1"   TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 

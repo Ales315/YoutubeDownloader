@@ -59,7 +59,7 @@
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="lightGray" TargetName="Border" />
+                                            <Setter Property="Background" Value="{DynamicResource MaterialDesignBackground}" TargetName="Border" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>

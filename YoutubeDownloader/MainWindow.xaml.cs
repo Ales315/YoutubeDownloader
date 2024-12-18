@@ -19,6 +19,7 @@ public partial class MainWindow : Window
         buttonClose.MouseEnter += OnButtonCloseMouseEnter;
         buttonClose.MouseLeave += OnButtonCloseMouseLeave;
         ServiceProvider.ThemeService.ThemeChanged += OnThemeChanged;
+
         SetAppTheme();
     }
 
