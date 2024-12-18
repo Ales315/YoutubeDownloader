@@ -30,7 +30,7 @@
 
         <!--Thumbnail with Duration-->
         <Border x:Name="borderThumbnail" Grid.Row="1" Width="224" Height="126" Margin="10,10,10,10" CornerRadius="8" BorderThickness="1.5"
-        VerticalAlignment="Center">
+        VerticalAlignment="Center" HorizontalAlignment="Right">
             <Border.Background>
                 <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
             </Border.Background>
