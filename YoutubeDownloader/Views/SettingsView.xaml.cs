@@ -2,9 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using Microsoft.Win32;
-using Microsoft.Windows.Themes;
 using YoutubeDownloader.Enums;
-using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Services;
 
 namespace YoutubeDownloader.Views
@@ -40,7 +38,7 @@ namespace YoutubeDownloader.Views
                 return;
             }
 
-            if(ServiceProvider.ThemeService.IsLightTheme)
+            if (ServiceProvider.ThemeService.IsLightTheme)
                 ServiceProvider.ThemeService.SetDarkTheme();
             else
                 ServiceProvider.ThemeService.SetLightTheme();
@@ -117,6 +115,11 @@ namespace YoutubeDownloader.Views
         private void cbChangeTheme_Unchecked(object sender, RoutedEventArgs e)
         {
             ServiceProvider.ThemeService.SetDarkTheme();
+        }
+
+        private void buttonSave_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
         }
     }
 }

@@ -50,21 +50,8 @@
         <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"></Border>
         
         <!--Settings view-->
+        <local:SettingsView x:Name="settingsUserControl" Panel.ZIndex="4" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"/>
 
-        <Grid x:Name="settingsUserControl" Panel.ZIndex="3" Grid.RowSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Border Panel.ZIndex="3" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" Background="Black" Opacity="0.6"/>
-            <local:SettingsView Panel.ZIndex="4" Grid.Column="1" Grid.Row="1"/>
-        </Grid>
         <!--URL Bar-->
         <Grid Grid.Row="0" Panel.ZIndex="2">
             <Grid.ColumnDefinitions>

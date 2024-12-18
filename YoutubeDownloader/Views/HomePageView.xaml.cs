@@ -30,6 +30,7 @@ namespace YoutubeDownloader.Views
             imgLoadingGifStreams.IsVisibleChanged += (s, e) => SetGifPlaybackFramePosition(s);
 
             buttonSettings.Click += OnButtonSettingsClick;
+
             settingsUserControl.Visibility = Visibility.Hidden;
         }
 
