@@ -14,7 +14,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="854"
         WindowStyle="SingleBorderWindow"
-        ResizeMode="CanResize"
+        ResizeMode="CanResizeWithGrip"
         Background="Transparent"
         TextOptions.TextFormattingMode="Display">
     <Window.DataContext>
@@ -33,20 +33,22 @@
     </Window.Resources>
 
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="30"  GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" ResizeBorderThickness="7"/>
+        <WindowChrome CaptionHeight="35"  GlassFrameThickness="1" CornerRadius="8" UseAeroCaptionButtons="False" ResizeBorderThickness="8"/>
     </WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Name="titlebarRow" Height="35"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="65"/>
         </Grid.RowDefinitions>
-        <Border ClipToBounds="True" Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"></Border>
-        <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"></Border>
+        <Border ClipToBounds="True" Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"
+                CornerRadius="8,8,0,0"></Border>
+        <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"
+                CornerRadius="0,0,8,8"></Border>
 
 
         <!--Titlebar-->
-        <StackPanel Panel.ZIndex="3" WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Name="titlebarButtonsStackPanel" Panel.ZIndex="3" WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="buttonMinimize" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
@@ -67,7 +69,29 @@
                         </Setter>
                     </Style>
                 </Button.Style>
-                <materialDesign:PackIcon Kind="Minimize" Foreground="{DynamicResource MaterialDesignBody}" Width="26" Height="26"/>
+                <materialDesign:PackIcon Kind="Minimize" Foreground="{DynamicResource MaterialDesignBody}" Width="20" Height="20"/>
+            </Button>
+            <Button x:Name="buttonMaximize" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="LightBlue" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource MaterialDesignBackground}" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <materialDesign:PackIcon Name="iconMaximize" Foreground="{DynamicResource MaterialDesignBody}" Width="14" Height="14"/>
             </Button>
             <Button x:Name="buttonClose" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0">
                 <Button.Style>
@@ -76,7 +100,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="0,0,0,0">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                     </Border>
                                     <ControlTemplate.Triggers>
@@ -89,24 +113,19 @@
                         </Setter>
                     </Style>
                 </Button.Style>
-                <materialDesign:PackIcon Name="iconClose" Kind="WindowClose" Width="26" Height="26"/>
+                <materialDesign:PackIcon Name="iconClose" Kind="WindowClose" Width="20" Height="20"/>
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
+        <StackPanel Name="titlebarTitleStackPanel" Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
             <Image Source="/Resources/Images/favicon.png" Width="24"></Image>
             <TextBlock Text="Youtube Downloader" Foreground="{DynamicResource MaterialDesignBody}" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"
                        FontSize="14"/>
         </StackPanel>
 
         <!--Titlebar dropshadow-->
-        <Rectangle Panel.ZIndex="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="7" Opacity="0.1">
-            <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#00131313" Offset="1"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
+        <Rectangle Panel.ZIndex="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1" Opacity="0.00"
+                   Fill="{DynamicResource MaterialDesignBody}">
         </Rectangle>
 
         <!--Current Page-->

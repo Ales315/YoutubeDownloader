@@ -16,11 +16,34 @@ public partial class MainWindow : Window
         InitializeComponent();
         buttonClose.Click += (s, e) => Close();
         buttonMinimize.Click += (s, e) => WindowState = WindowState.Minimized;
+        buttonMaximize.Click += OnButtonMaximizeClick;
         buttonClose.MouseEnter += OnButtonCloseMouseEnter;
         buttonClose.MouseLeave += OnButtonCloseMouseLeave;
         ServiceProvider.ThemeService.ThemeChanged += OnThemeChanged;
-
+        this.StateChanged += OnWindowStateChanged;
         SetAppTheme();
+        iconMaximize.Kind = WindowState == WindowState.Maximized ? MaterialDesignThemes.Wpf.PackIconKind.WindowRestore : MaterialDesignThemes.Wpf.PackIconKind.Maximize;
+    }
+
+    private void OnButtonMaximizeClick(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+    }
+
+    private void OnWindowStateChanged(object? sender, EventArgs e)
+    {
+        if (this.WindowState == WindowState.Maximized)
+        {
+            titlebarButtonsStackPanel.Margin = new Thickness(0, 8, 8, 0);
+            titlebarTitleStackPanel.Margin = new Thickness(14, 8, 0, 0);
+        }
+        else
+        {
+            titlebarButtonsStackPanel.Margin = new Thickness(0);
+            titlebarTitleStackPanel.Margin = new Thickness(10, 0, 0, 0);
+        }
+        iconMaximize.Kind = WindowState == WindowState.Maximized ? MaterialDesignThemes.Wpf.PackIconKind.CheckboxMultipleBlankOutline : MaterialDesignThemes.Wpf.PackIconKind.Maximize;
+        iconMaximize.RenderTransform = new ScaleTransform(-1, -1, 7, 7);
     }
 
     private void SetAppTheme()
