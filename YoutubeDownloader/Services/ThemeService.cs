@@ -7,12 +7,12 @@ namespace YoutubeDownloader.Services
 {
     public class ThemeService
     {
-        private Color BackgroundLight = (Color)ColorConverter.ConvertFromString("#e6f3ea");
-        private Color SurfaceLight = (Color)ColorConverter.ConvertFromString("#c1e1d6");
+        private Color BackgroundLight = (Color)ColorConverter.ConvertFromString("#e9e9e9");
+        private Color SurfaceLight = (Color)ColorConverter.ConvertFromString("#fbfbfb");
         private Color PrimaryLight = (Color)ColorConverter.ConvertFromString("#4cf8be");
         private Color SecondaryLight = (Color)ColorConverter.ConvertFromString("#7fe3e8");
         private Color AccentLight = (Color)ColorConverter.ConvertFromString("#65bbe3");
-        private Color OnSecondaryLight = (Color)ColorConverter.ConvertFromString("#121212");
+        private Color OnSecondaryLight = (Color)ColorConverter.ConvertFromString("#1d1d1d");
 
         private Color BackgroundDark = (Color)ColorConverter.ConvertFromString("#121212");
         private Color SurfaceDark = (Color)ColorConverter.ConvertFromString("#282828");
@@ -20,7 +20,7 @@ namespace YoutubeDownloader.Services
         private Color SecondaryDark = (Color)ColorConverter.ConvertFromString("#0f2ba3");
         private Color AccentDark = (Color)ColorConverter.ConvertFromString("#5634ed");
         private Color OnPrimaryDark = (Color)ColorConverter.ConvertFromString("#121212");
-        private Color OnSecondaryDark = (Color)ColorConverter.ConvertFromString("#d2f8ed");
+        private Color OnSecondaryDark = (Color)ColorConverter.ConvertFromString("#e9e9e9");
 
         private Theme LightTheme = null!;
         private Theme DarkTheme = null!;
@@ -47,8 +47,10 @@ namespace YoutubeDownloader.Services
             LightTheme.SetSecondaryColor(SecondaryLight);
             LightTheme.PrimaryLight = PrimaryLight;
 
+
             Application.Current.Resources["MaterialDesignBody"] = new SolidColorBrush(OnSecondaryLight);
-            Application.Current.Resources["MaterialDesignCardBackground"] = new SolidColorBrush(BackgroundLight);
+            Application.Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(SurfaceLight);
+            Application.Current.Resources["MaterialDesignPaper"] = new SolidColorBrush(BackgroundLight);
             LightTheme.SetLightTheme();
         }
 
@@ -61,9 +63,10 @@ namespace YoutubeDownloader.Services
             DarkTheme.SetSecondaryColor(SecondaryLight);
             DarkTheme.PrimaryDark = PrimaryDark;
 
+
             Application.Current.Resources["MaterialDesignBody"] = new SolidColorBrush(OnSecondaryDark);
-            Application.Current.Resources["MaterialDesignCardBackground"] = new SolidColorBrush(BackgroundDark);
-            DarkTheme.Background = Colors.Red;
+            Application.Current.Resources["MaterialDesignPaper"] = new SolidColorBrush(BackgroundDark);
+            Application.Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(SurfaceDark);
             DarkTheme.SetDarkTheme();
         }
 

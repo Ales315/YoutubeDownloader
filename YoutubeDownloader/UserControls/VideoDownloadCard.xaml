@@ -31,9 +31,14 @@
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
-        <Border Panel.ZIndex="-1" Background="{DynamicResource MaterialDesignBackground}" Grid.ColumnSpan="6" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"></Border>
+        <Border Panel.ZIndex="-1" Grid.ColumnSpan="6" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"
+                Background="{DynamicResource MaterialDesignBackground}">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="3" ShadowDepth="1" Opacity="0.2" Direction="250"/>
+            </Border.Effect>
+        </Border>
         <!--Video download status-->
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="7,0,0,0">
             <Border Grid.Row="1" Width="80" Height="45" CornerRadius="4" BorderThickness="1" BorderBrush="Transparent"
                     VerticalAlignment="Center">
                 <Border.Background>

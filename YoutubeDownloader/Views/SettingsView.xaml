@@ -29,7 +29,8 @@
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14">
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="Downloads Folder" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14"
+                  Background="{DynamicResource MaterialDesignBackground}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15"/>
@@ -58,7 +59,8 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="2" Grid.Column="1" Header="Download Preferences" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0">
+        <GroupBox Grid.Row="2" Grid.Column="1" Header="Download Preferences" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0"
+                  Background="{DynamicResource MaterialDesignBackground}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15"/>
@@ -116,7 +118,8 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="3" Grid.Column="1" Header="Application behaviour" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0">
+        <GroupBox Grid.Row="3" Grid.Column="1" Header="Application behaviour" Style="{DynamicResource MaterialDesignCardGroupBox}" FontSize="14" Margin="0,20,0,0"
+                  Background="{DynamicResource MaterialDesignBackground}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15"/>

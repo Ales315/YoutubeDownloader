@@ -20,7 +20,7 @@ namespace YoutubeDownloader.Views
             textboxInputUrl.TextChanged += (s, e) => textBlockURLHint.Visibility = textboxInputUrl.Text.Length > 0 ? Visibility.Hidden : Visibility.Visible;
             textboxInputUrl.GotFocus += (s, e) => 
             UrlBarBorder.BorderBrush = ServiceProvider.ThemeService.GetPrimaryColorBrush();
-            textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Gray);
+            textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Transparent);
 #if DEBUG
             textboxInputUrl.Text = "https://www.youtube.com/watch?v=HQmmM_qwG4k";
 #endif

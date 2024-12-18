@@ -100,7 +100,7 @@
         </StackPanel>
 
         <!--Titlebar dropshadow-->
-        <Rectangle Panel.ZIndex="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="12" Opacity="0.1">
+        <Rectangle Panel.ZIndex="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="7" Opacity="0.1">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Color="Black" Offset="0"/>

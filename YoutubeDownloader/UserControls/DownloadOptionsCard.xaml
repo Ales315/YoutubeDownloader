@@ -26,7 +26,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="25"/>
         </Grid.ColumnDefinitions>
         
@@ -73,14 +73,6 @@
         </StackPanel>
         <!--Download Button and total size-->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" Margin="-35,0,0,0">
-            <!--
-            <CheckBox x:Name="checkBoxSavePreset" VerticalAlignment="Center" Margin="0,0,20,0" Style="{x:Null}"
-                      Content="Save Preset"
-                      Foreground="DarkSlateGray"
-                      FontSize="14"
-                      Padding="5,0,0,0"
-                      Background="Transparent"/>
-            -->
             <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
                        Foreground="{DynamicResource MaterialDesignBody}"
                        Margin="0,0,10,0">
