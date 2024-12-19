@@ -44,7 +44,7 @@
             <StackPanel>
                 <!--Download Folder-->
                 <Grid>
-                    <Border Name="PathTextboxBorder" Panel.ZIndex="0" Grid.Column="1" Grid.Row="1" 
+                    <Border Name="PathTextboxBorder" Panel.ZIndex="0" Grid.Column="1" Grid.Row="1" Margin="0,0,10,0"
                             VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="40"
                             CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource MaterialDesignBody}" 
                             Background="{DynamicResource MaterialDesignBackground}"
@@ -58,7 +58,7 @@
                              Background="Transparent" BorderBrush="Transparent"
                              Text="{Binding OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Style="{x:Null}"/>
-                    <Button x:Name="buttonBrowse" Panel.ZIndex="3" Grid.Column="1" Grid.Row="1"  Width="45" Height="45" Margin="0,0,2,0"
+                    <Button x:Name="buttonBrowse" Panel.ZIndex="3" Grid.Column="1" Grid.Row="1"  Width="45" Height="45" Margin="0,0,10,0"
                             HorizontalAlignment="Right" VerticalAlignment="Center" 
                             Click="buttonBrowse_Click"
                             Style="{StaticResource PasteButton}" 
@@ -67,7 +67,7 @@
                                      Width="26" Height="26"/>
                     </Button>
                 </Grid>
-                <Rectangle Width="auto" Height="1" Fill="{DynamicResource MaterialDesignBody}" Margin="0,15,0,0" Opacity="0.2"/>
+                <Rectangle Width="auto" Height="1" Fill="{DynamicResource MaterialDesignBody}" Margin="0,15,10,0" Opacity="0.2"/>
 
                 <!--Output format preferences-->
                 <Grid Margin="0,20,0,0">
@@ -87,7 +87,7 @@
                                Background="Transparent" Padding="0,10,0,0"
                                Text="Default media type"
                                Style="{x:Null}"/>
-                    <ComboBox Name="cbMediaType" Grid.Column="2" Grid.Row="0" SelectedIndex="0" Width="120" Height="40"
+                    <ComboBox Name="cbMediaType" Grid.Column="2" Grid.Row="0" SelectedIndex="0" Width="155" Height="40"
                               HorizontalAlignment="Left"
                               Style="{DynamicResource MaterialDesignFilledComboBox}"
                               Foreground="{DynamicResource MaterialDesignBody}"
@@ -129,7 +129,7 @@
                               FontSize="14"
                               DisplayMemberPath="."/>
                 </Grid>
-                <Rectangle Width="auto" Height="1" Fill="{DynamicResource MaterialDesignBody}" Margin="0,15,0,0" Opacity="0.2"/>
+                <Rectangle Width="auto" Height="1" Fill="{DynamicResource MaterialDesignBody}" Margin="0,15,10,0" Opacity="0.2"/>
                 <!--Application preferences-->
                 <Grid Margin="0,20,0,0">
                     <Grid.ColumnDefinitions>
@@ -160,7 +160,7 @@
                                Text="Notification Sounds"
                                Style="{x:Null}"/>
                     <CheckBox x:Name="checkboxNotifications" Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
-                              Width="42" Height="42"/>
+                              Width="42" Height="42" Cursor="Hand"/>
                 </StackPanel>
                 
             </StackPanel>
