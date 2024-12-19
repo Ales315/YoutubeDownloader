@@ -171,7 +171,8 @@
                 Margin="0,0,0,0"
                 Click="buttonSave_Click">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Save" VerticalAlignment="Center" FontSize="14" Foreground="White"/>
+                <TextBlock Text="Save" VerticalAlignment="Center" 
+                           FontSize="14" FontWeight="DemiBold" Foreground="White"/>
             </StackPanel>
             
         </Button>
