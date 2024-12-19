@@ -79,7 +79,8 @@
                 <Run Text="{Binding DownloadSize}"/>
             </TextBlock>
             <Button x:Name="buttonDownload" Style="{StaticResource ActionButton}" Height="45" Width="45" HorizontalAlignment="Right" Margin="0,0,0,0"
-                    Command="{Binding DownloadVideo}">
+                    Command="{Binding DownloadVideo}"
+                    Cursor="Hand">
                 <materialDesign:PackIcon Kind="Download" Foreground="#e9e9e9" Width="26" Height="26"/>
             </Button>
         </StackPanel>
