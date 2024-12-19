@@ -127,5 +127,12 @@ namespace YoutubeDownloader.Views
             if(this.DataContext is SettingsViewModel vm)
                 vm.IsVisible = false;
         }
+
+        private void buttonAbout_Click(object sender, RoutedEventArgs e)
+        {
+            About about = new About();
+            about.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            about.ShowDialog();
+        }
     }
 }

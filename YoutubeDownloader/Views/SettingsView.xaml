@@ -43,6 +43,12 @@
         <ScrollViewer Grid.Row="2" Grid.Column="2">
             <StackPanel>
                 <!--Download Folder-->
+                <TextBlock Panel.ZIndex="2" Grid.Column="0" Grid.Row="0" TextAlignment="Left" TextWrapping="NoWrap" 
+                           HorizontalAlignment="Stretch" Margin="0,0,0,0"
+                           Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  
+                           Background="Transparent" Padding="0,10,0,0"
+                           Text="Output folder"
+                           Style="{x:Null}"/>
                 <Grid>
                     <Border Name="PathTextboxBorder" Panel.ZIndex="0" Grid.Column="1" Grid.Row="1" Margin="0,0,10,0"
                             VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="40"
@@ -168,7 +174,7 @@
                               Width="42" Height="42" Cursor="Hand"/>
                 </Grid>
 
-                <Grid Margin="0,20,0,0">
+                <Grid Margin="0,8,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="1.5*"/>
@@ -191,18 +197,29 @@
                               Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
                               Width="42" Height="42" Cursor="Hand"/>
                 </Grid>
+                <Button x:Name="buttonAbout" Style="{StaticResource CommonButtonDark}" Grid.Row="3" Grid.Column="2"
+                        Height="35" Width="85" HorizontalAlignment="Left" 
+                        Margin="0,0,0,0"
+                        Click="buttonAbout_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="About" VerticalAlignment="Center" 
+                                   FontSize="14" FontWeight="DemiBold" Foreground="White"/>
+                        <materialDesign:PackIcon Kind="AboutCircleOutline" Foreground="White"
+                                                 HorizontalAlignment="Center" Margin="5,1,0,0"
+                                                 Width="24" Height="24"/>
+                    </StackPanel>
+                    
+                </Button>
             </StackPanel>
+            
         </ScrollViewer>
 
         <Button x:Name="buttonSave" Style="{StaticResource ActionButton}" Grid.Row="3" Grid.Column="2"
                 Height="35" Width="85" HorizontalAlignment="Center" 
                 Margin="0,0,0,0"
                 Click="buttonSave_Click">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Save" VerticalAlignment="Center" 
-                           FontSize="14" FontWeight="DemiBold" Foreground="White"/>
-            </StackPanel>
-            
+            <TextBlock Text="Save" VerticalAlignment="Center" 
+                       FontSize="14" FontWeight="DemiBold" Foreground="White"/>
         </Button>
     </Grid>
 </UserControl>
