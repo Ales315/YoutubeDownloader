@@ -102,7 +102,7 @@
             <Button x:Name="buttonSettings" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45" Margin="19.5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
                     Style="{StaticResource PasteButton}" 
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                    ToolTip="Search"
+                    ToolTip="Settings"
                     Command="{Binding DataContext.ChangeSettingsVisibilityCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                 <materialDesign:PackIcon Kind="Settings" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
             </Button>
