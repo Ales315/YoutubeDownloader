@@ -26,18 +26,19 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="75"/>
             <ColumnDefinition Width="75"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
-        <Border Panel.ZIndex="-1" Grid.ColumnSpan="6" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"
+        <Border Panel.ZIndex="-1" Grid.ColumnSpan="7" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"
                 Background="{DynamicResource MaterialDesignBackground}">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="3" ShadowDepth="1" Opacity="0.2" Direction="250"/>
             </Border.Effect>
         </Border>
-        <!--Video download status-->
+        <!--Video data-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="7,0,0,0">
             <Border Grid.Row="1" Width="80" Height="45" CornerRadius="4" BorderThickness="1" BorderBrush="Transparent"
                     VerticalAlignment="Center">
@@ -45,14 +46,25 @@
                     <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
                 </Border.Background>
             </Border>
-            <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center" MaxWidth="500" TextTrimming="WordEllipsis"
+            <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center" MaxWidth="500"
                        Foreground="{DynamicResource MaterialDesignBody}"
                        FontSize="14"
-                       Margin="10,0,0,0">
+                       Margin="10,0,0,0"
+                       TextTrimming="CharacterEllipsis">
                 <Run Text="{Binding Title}"/>
             </TextBlock>
         </StackPanel>
-        <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2"
+        <Border Background="{DynamicResource MaterialDesignBody}" Opacity="0.5" Grid.Column="2" Grid.Row="1"
+                Width="auto" Height="20" CornerRadius="4" Margin="10,0,0,0">
+            <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Foreground="{DynamicResource MaterialDesignPaper}"
+                       FontSize="12"
+                       FontWeight="DemiBold"
+                       Margin="-2,0,0,2">
+                <Run Text="{Binding DownloadFormat}"/>
+            </TextBlock>
+        </Border>
+        <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3"
                    Foreground="{DynamicResource MaterialDesignBody}"
                    FontSize="14"
                    Margin="0,0,0,0">
@@ -60,7 +72,7 @@
         </TextBlock>
         
         <!--Download completed buttons-->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="3" Margin="0,0,-10,0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="4" Margin="0,0,-10,0">
             <Button Name="buttonOpenFolder" Grid.Column="4" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
                     Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="center"
                     Width="40" Height="40" Cursor="Hand" ToolTip="Open download folder" Click="buttonOpenFolder_Click"
@@ -78,7 +90,7 @@
         </StackPanel>
         
         <!--Download progress-->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="4" Margin="-35,0,0,0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="5" Margin="-35,0,0,0">
             <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
                        Foreground="{DynamicResource MaterialDesignBody}"
                        FontSize="14"
@@ -102,14 +114,14 @@
         </StackPanel>
         
         <!--Download cancel button-->
-        <Button Name="buttonRemoveElement" Grid.Column="5" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
+        <Button Name="buttonRemoveElement" Grid.Column="6" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Left" VerticalContentAlignment="center"
                 Width="40" Height="40" Cursor="Hand"
                 Visibility="{Binding IsDownloading, Converter={StaticResource InvertedBoolToVisibilityConverter}, ConverterParameter=Collapsed}"
                 Command="{Binding RemoveFromListCommand}">
             <materialDesign:PackIcon Kind="BinOutline" Width="26" Height="26" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}"/>
         </Button>
-        <Button Name="buttonCancelDownload" Grid.Column="5" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
+        <Button Name="buttonCancelDownload" Grid.Column="6" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Left" VerticalContentAlignment="center"
                 Width="40" Height="40" Cursor="Hand"
                 Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
