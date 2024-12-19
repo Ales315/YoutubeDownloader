@@ -118,14 +118,16 @@
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Left" VerticalContentAlignment="center"
                 Width="40" Height="40" Cursor="Hand"
                 Visibility="{Binding IsDownloading, Converter={StaticResource InvertedBoolToVisibilityConverter}, ConverterParameter=Collapsed}"
-                Command="{Binding RemoveFromListCommand}">
+                Command="{Binding RemoveFromListCommand}"
+                ToolTip="Remove from queue">
             <materialDesign:PackIcon Kind="BinOutline" Width="26" Height="26" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}"/>
         </Button>
         <Button Name="buttonCancelDownload" Grid.Column="6" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Left" VerticalContentAlignment="center"
                 Width="40" Height="40" Cursor="Hand"
                 Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
-                Command="{Binding CancelDownloadCommand}">
+                Command="{Binding CancelDownloadCommand}"
+                ToolTip="Cancel download">
             <materialDesign:PackIcon Kind="CloseCircleOutline" Width="26" Height="26" VerticalAlignment="Center" Foreground="#E43C42"/>
         </Button>
 
