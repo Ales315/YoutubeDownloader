@@ -243,6 +243,10 @@ namespace YoutubeDownloader.ViewModels
 
         public HomePageViewModel()
         {
+            DownloadOptionSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
+            FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ? 
+                ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
+
             VideoDownloadsList.CollectionChanged += (s, e) =>
             {
                 StateHandler.IsDownloadListEmpty = VideoDownloadsList.Count == 0;

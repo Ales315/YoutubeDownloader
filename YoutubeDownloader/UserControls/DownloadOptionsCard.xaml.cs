@@ -44,8 +44,7 @@ namespace YoutubeDownloader.UserControls
             cbDownloadFormat.SetBinding(ComboBox.SelectedValueProperty, bindingDownloadFormat);
 
             cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
-            cbDownloadType.SelectionChanged += OnDownloadTypeSelectionChanged;
-            cbDownloadType.SelectedItem = _contentTypeDictionary.Where(x => x.Key == ServiceProvider.SettingsService.UserPreferences.MediaTypePreference).FirstOrDefault();
+            cbDownloadType.SelectedItem = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
         }
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
