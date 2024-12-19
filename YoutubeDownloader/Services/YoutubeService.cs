@@ -134,7 +134,9 @@ public class YoutubeService
                         
                     await DownloadVideo(videoDownload, videoDownload.CancellationToken.Token);
                     videoDownload.IsDownloading = false;
-                    SystemSounds.Beep.Play();
+
+                    if(ServiceProvider.SettingsService.UserPreferences.UseNotifications)
+                        SystemSounds.Beep.Play();
                 }
                 catch (OperationCanceledException)
                 {
