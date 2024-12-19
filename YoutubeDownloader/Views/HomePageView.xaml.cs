@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
@@ -18,7 +19,7 @@ namespace YoutubeDownloader.Views
         public HomePageView()
         {
             InitializeComponent();
-            textboxInputUrl.TextChanged += (s, e) => textBlockURLHint.Visibility = textboxInputUrl.Text.Length > 0 ? Visibility.Hidden : Visibility.Visible;
+            textboxInputUrl.TextChanged += (s, e) => TextChanged();
             textboxInputUrl.GotFocus += (s, e) => 
             UrlBarBorder.BorderBrush = ServiceProvider.ThemeService.GetPrimaryColorBrush();
             textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Transparent);
@@ -28,6 +29,11 @@ namespace YoutubeDownloader.Views
             textboxInputUrl.KeyDown += OnTextboxInputUrlKeyDown;
             imgLoadingGifVideo.IsVisibleChanged += (s,e) => SetGifPlaybackFramePosition(s);
             imgLoadingGifStreams.IsVisibleChanged += (s, e) => SetGifPlaybackFramePosition(s);
+        }
+
+        private void TextChanged()
+        {
+            textBlockURLHint.Visibility = textboxInputUrl.Text.Length > 0 ? Visibility.Hidden : Visibility.Visible;
         }
 
         private static void SetGifPlaybackFramePosition(object sender)

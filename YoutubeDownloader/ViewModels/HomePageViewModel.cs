@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Accessibility;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
@@ -39,7 +40,7 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _downloadVideo = null!;
         private ICommand _goHomeCommand = null!;
         private double _progress;
-
+        private int _i;
 
         public ObservableCollection<VideoDownloadViewModel> VideoDownloadsList
         {
@@ -51,6 +52,7 @@ namespace YoutubeDownloader.ViewModels
             set
             {
                 if (_url == value) return;
+                _i++;
                 _url = value;
                 OnPropertyChanged(nameof(Url));
             }
@@ -253,6 +255,7 @@ namespace YoutubeDownloader.ViewModels
             };
             if (StateHandler.IsVideoFound)
                 LoadLastVideoData();
+            Url = "https://www.youtube.com/watch?v=HQmmM_qwG4k";
         }
 
         private void LoadLastVideoData()

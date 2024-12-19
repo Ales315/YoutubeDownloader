@@ -19,8 +19,8 @@ namespace YoutubeDownloader.ViewModels
             SettingsViewModel = new();
             _homeViewModel = new();
             SettingsViewModel.IsVisibleChanged += (s,e) => ((HomePageViewModel)CurrentPageViewModel).Invalidate();
-            //PageViewModels.Add(_homeViewModel);
             CurrentPageViewModel = _homeViewModel;
+            //PageViewModels.Add(_homeViewModel);
         }
 
         public ICommand ChangePageCommand

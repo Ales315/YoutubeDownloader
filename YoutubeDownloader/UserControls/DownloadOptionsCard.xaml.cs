@@ -45,6 +45,7 @@ namespace YoutubeDownloader.UserControls
 
             cbDownloadFormat.ItemsSource = GetFormatsByCategory("Video");
             cbDownloadType.SelectedItem = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
+            cbDownloadType.SelectionChanged += OnDownloadTypeSelectionChanged;
         }
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -60,6 +61,8 @@ namespace YoutubeDownloader.UserControls
 
         private void RefreshComboboxes()
         {
+            if (cbDownloadType.SelectedItem == null) 
+                return;
             var selectedItem = ((KeyValuePair<DownloadMediaType, string>)cbDownloadType.SelectedItem);
             switch (selectedItem.Key)
             {
