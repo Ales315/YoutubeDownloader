@@ -43,7 +43,6 @@ namespace YoutubeDownloader.ViewModels
         private void ChangeVisibility()
         {
             SettingsViewModel.IsVisible = true;
-           ((HomePageViewModel)CurrentPageViewModel).Invalidate();
         }
 
         public List<ViewModelBase> PageViewModels
