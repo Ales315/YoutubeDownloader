@@ -171,8 +171,8 @@
                 Margin="0,0,0,0"
                 Click="buttonSave_Click">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Save" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource MaterialDesignBackground}"/>
-                <materialDesign:PackIcon Kind="ContentSave" Foreground="{DynamicResource MaterialDesignBackground}" 
+                <TextBlock Text="Save" VerticalAlignment="Center" FontSize="14" Foreground="White"/>
+                <materialDesign:PackIcon Kind="ContentSave" Foreground="White" 
                                          Width="20" Height="20" Margin="5,2,0,0"/>
             </StackPanel>
             

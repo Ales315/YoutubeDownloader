@@ -9,14 +9,14 @@ namespace YoutubeDownloader.Services
     {
         private Color BackgroundLight = (Color)ColorConverter.ConvertFromString("#e9e9e9");
         private Color SurfaceLight = (Color)ColorConverter.ConvertFromString("#fbfbfb");
-        private Color PrimaryLight = (Color)ColorConverter.ConvertFromString("#4cf8be");
+        private Color PrimaryLight = (Color)ColorConverter.ConvertFromString("#E43C42");
         private Color SecondaryLight = (Color)ColorConverter.ConvertFromString("#7fe3e8");
         private Color AccentLight = (Color)ColorConverter.ConvertFromString("#65bbe3");
         private Color OnSecondaryLight = (Color)ColorConverter.ConvertFromString("#1d1d1d");
 
         private Color BackgroundDark = (Color)ColorConverter.ConvertFromString("#121212");
         private Color SurfaceDark = (Color)ColorConverter.ConvertFromString("#282828");
-        private Color PrimaryDark = (Color)ColorConverter.ConvertFromString("#4cf8be");
+        private Color PrimaryDark = (Color)ColorConverter.ConvertFromString("#E43C42");
         private Color SecondaryDark = (Color)ColorConverter.ConvertFromString("#0f2ba3");
         private Color AccentDark = (Color)ColorConverter.ConvertFromString("#5634ed");
         private Color OnPrimaryDark = (Color)ColorConverter.ConvertFromString("#121212");

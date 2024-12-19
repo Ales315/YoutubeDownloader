@@ -86,7 +86,7 @@
                 <Run Text="{Binding Progress, Converter={StaticResource DoubleToPercentageConverter}}"/>
             </TextBlock>
             <!--Download fail icon-->
-            <materialDesign:PackIcon Kind="AlertCircleOutline" Width="28" Height="28" VerticalAlignment="Center" Foreground="Red"
+            <materialDesign:PackIcon Kind="AlertCircleOutline" Width="28" Height="28" VerticalAlignment="Center" Foreground="#CE292F"
                          Visibility="{Binding IsDownloadFailed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"/>
             <!--Download success icon-->
             <materialDesign:PackIcon Name="iconCheck" Kind="Check" Width="28" Height="28" VerticalAlignment="Center" Foreground="Green"
@@ -94,7 +94,7 @@
             <!-- Progress Ring -->
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
                          Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
-                         Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="LimeGreen">
+                         Value="{Binding Progress}" IsIndeterminate="False" Maximum="1" Foreground="Green">
                 <ProgressBar.LayoutTransform>
                     <ScaleTransform CenterX="0.8" CenterY="0.8" ScaleX="1.5" ScaleY="1.5" />
                 </ProgressBar.LayoutTransform>
@@ -105,8 +105,16 @@
         <Button Name="buttonRemoveElement" Grid.Column="5" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
                 Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Left" VerticalContentAlignment="center"
                 Width="40" Height="40" Cursor="Hand"
+                Visibility="{Binding IsDownloading, Converter={StaticResource InvertedBoolToVisibilityConverter}, ConverterParameter=Collapsed}"
                 Command="{Binding RemoveFromListCommand}">
             <materialDesign:PackIcon Kind="BinOutline" Width="26" Height="26" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}"/>
+        </Button>
+        <Button Name="buttonCancelDownload" Grid.Column="5" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource ActionButton}"
+                Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Left" VerticalContentAlignment="center"
+                Width="40" Height="40" Cursor="Hand"
+                Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
+                Command="{Binding CancelDownloadCommand}">
+            <materialDesign:PackIcon Kind="CloseCircleOutline" Width="26" Height="26" VerticalAlignment="Center" Foreground="#E43C42"/>
         </Button>
 
     </Grid>

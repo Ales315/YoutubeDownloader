@@ -41,7 +41,7 @@ namespace YoutubeDownloader.ViewModels
         private double _progress;
 
 
-        public ObservableCollection<VideoDownloadModel> VideoDownloadsList
+        public ObservableCollection<VideoDownloadViewModel> VideoDownloadsList
         {
             get => ServiceProvider.YoutubeService.DownloadList;
         }
@@ -375,7 +375,7 @@ namespace YoutubeDownloader.ViewModels
         {
             try
             {
-                VideoDownloadModel newVideoDownload = new VideoDownloadModel();
+                VideoDownloadViewModel newVideoDownload = new VideoDownloadViewModel();
                 newVideoDownload.Title = Title;
                 newVideoDownload.Thumbnail = Thumbnail;
                 newVideoDownload.Duration = Duration;

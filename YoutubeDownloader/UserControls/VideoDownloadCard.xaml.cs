@@ -14,7 +14,6 @@ namespace YoutubeDownloader.UserControls
         public VideoDownloadCard()
         {
             InitializeComponent();
-            iconCheck.Foreground = ServiceProvider.ThemeService.GetPrimaryColorBrush();
         }
         private void buttonOpenFolder_Click(object sender, System.Windows.RoutedEventArgs e)
         {

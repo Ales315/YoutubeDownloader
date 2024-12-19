@@ -10,6 +10,7 @@ using Humanizer;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
+using YoutubeDownloader.ViewModels;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Converter;
@@ -19,19 +20,19 @@ public class YoutubeService
 {
     private YoutubeClient _youtube;
     private VideoDataModel _video = null!;
-    private ConcurrentQueue<VideoDownloadModel> _downloadQueue;
+    private ConcurrentQueue<VideoDownloadViewModel> _downloadQueue;
     private bool _busy;
     private VideoDataModel? _videoData;
     private readonly object _lock = new();
     public CancellationTokenSource DownloadCancellationToken;
     public CancellationTokenSource GetMetadataCancellationToken;
 
-    public ObservableCollection<VideoDownloadModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadModel>();
+    public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadViewModel>();
 
     public YoutubeService()
     {
         _youtube = new YoutubeClient();
-        _downloadQueue = new ConcurrentQueue<VideoDownloadModel>();
+        _downloadQueue = new ConcurrentQueue<VideoDownloadViewModel>();
     }
     public async Task<VideoDataModel> GetVideoAsync(string url)
     {
@@ -101,7 +102,7 @@ public class YoutubeService
 
     #region DOWNLOAD
 
-    public void EnqueueDownload(VideoDownloadModel video)
+    public void EnqueueDownload(VideoDownloadViewModel video)
     {
         string format = (Enum.GetName(typeof(DownloadFormat), video.DownloadFormat) ?? "WEBM").ToLower();
         video.FileName = $"{ServiceProvider.SettingsService.GetOutputPath()}\\{video.Title}.{format}";
@@ -176,7 +177,7 @@ public class YoutubeService
         return true;
     }
 
-    public async Task DownloadVideo(VideoDownloadModel video, CancellationToken cancellationToken)
+    public async Task DownloadVideo(VideoDownloadViewModel video, CancellationToken cancellationToken)
     {
         IStreamInfo[] streamInfo = [];
         ConversionRequestBuilder conversionBuilder;

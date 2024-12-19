@@ -145,16 +145,16 @@
             <!--Loading gifs and text-->
 
             <StackPanel Orientation="Vertical" Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Image x:Name="imgLoadingGifVideo"  Width="62" 
-                       gif:ImageBehavior.AnimatedSource="/Resources/Gifs/Loading.gif" gif:ImageBehavior.AnimationSpeedRatio="1.3" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
+                <Image x:Name="imgLoadingGifVideo"  Width="64" 
+                       gif:ImageBehavior.AnimatedSource="/Resources/Gifs/LoadingVideo.gif" gif:ImageBehavior.AnimationSpeedRatio="1.1" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
                        Visibility="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <TextBlock Text="Loading video data..."
                            Visibility="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToVisibilityConverter}}"
                            FontSize="16" FontWeight="Bold"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Panel.ZIndex="2" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center">
-                <Image Name="imgLoadingGifStreams"  Width="62" 
-                       gif:ImageBehavior.AnimatedSource="/Resources/Gifs/Loading.gif" gif:ImageBehavior.AnimationSpeedRatio="1.3" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
+                <Image Name="imgLoadingGifStreams"  Width="64" 
+                       gif:ImageBehavior.AnimatedSource="/Resources/Gifs/LoadingVideo.gif" gif:ImageBehavior.AnimationSpeedRatio="1.1" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
                        Visibility="{Binding StateHandler.IsAnalizingStreams, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,0"/>
                 <TextBlock Text="Getting streams from source..."
                            Visibility="{Binding StateHandler.IsAnalizingStreams, Converter={StaticResource BoolToVisibilityConverter}}"
