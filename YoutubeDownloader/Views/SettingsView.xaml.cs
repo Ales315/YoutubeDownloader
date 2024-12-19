@@ -4,6 +4,7 @@ using System.Windows.Data;
 using Microsoft.Win32;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Services;
+using YoutubeDownloader.ViewModels;
 
 namespace YoutubeDownloader.Views
 {
@@ -119,7 +120,8 @@ namespace YoutubeDownloader.Views
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
+            if(this.DataContext is SettingsViewModel vm)
+                vm.IsVisible = false;
         }
     }
 }

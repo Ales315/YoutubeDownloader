@@ -7,6 +7,9 @@ namespace YoutubeDownloader.ViewModels
 {
     class SettingsViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        private bool _isVisible;
+        public event EventHandler<bool> IsVisibleChanged;
+
         public DownloadMediaType MediaTypePreference
         {
             get { return ServiceProvider.SettingsService.UserPreferences.MediaTypePreference; }
@@ -50,6 +53,18 @@ namespace YoutubeDownloader.ViewModels
             {
                 ServiceProvider.SettingsService.UserPreferences.OutputPath = value;
                 OnPropertyChanged(nameof(OutputPath));
+            }
+        }
+
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                _isVisible = value;
+                OnPropertyChanged(nameof(IsVisible));
+                IsVisibleChanged?.Invoke(null, _isVisible);
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 

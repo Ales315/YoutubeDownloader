@@ -32,7 +32,7 @@ namespace YoutubeDownloader.UserControls
             var bindingDownloadType = new Binding("DownloadOptionSelected")
             {
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = BindingMode.OneWayToSource
+                Mode = BindingMode.TwoWay,
             };
             cbDownloadType.SetBinding(ComboBox.SelectedValueProperty, bindingDownloadType);
 

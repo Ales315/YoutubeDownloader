@@ -21,13 +21,6 @@
         <vm:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:HomePageViewModel}">
-            <views:HomePageView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
-            <views:SettingsView />
-        </DataTemplate>
-
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
     </Window.Resources>
@@ -39,7 +32,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Name="titlebarRow" Height="35"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="65"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Border ClipToBounds="True" Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"
                 CornerRadius="8,8,0,0"></Border>
@@ -129,25 +122,10 @@
         </Rectangle>
 
         <!--Current Page-->
-        <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}" Background="{DynamicResource MaterialDesignPaper}"/>
+        <views:HomePageView Grid.Row="1" DataContext="{Binding CurrentPageViewModel}"/>
 
-        <ItemsControl ItemsSource="{Binding PageViewModels}" Grid.Row="2" HorizontalAlignment="Center" Background="{DynamicResource MaterialDesignPaper}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding Name}"
-                            Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                            CommandParameter="{Binding }"
-                            Margin="2,5"
-                            Click="Button_Click"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
+        <!--SettingsView -->
+        <views:SettingsView DataContext="{Binding SettingsViewModel}" x:Name="settingsUserControl" Panel.ZIndex="4" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"/>
     </Grid>
 
 </Window>

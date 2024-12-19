@@ -10,7 +10,8 @@
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600"
-             Background="Transparent">
+             Background="Transparent"
+             Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
     <UserControl.DataContext>
         <vm:SettingsViewModel/>
     </UserControl.DataContext>

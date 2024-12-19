@@ -48,9 +48,6 @@
         <Border Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"></Border>
         <Border Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}"></Border>
         <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"></Border>
-        
-        <!--Settings view-->
-        <local:SettingsView x:Name="settingsUserControl" Panel.ZIndex="4" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"/>
 
         <!--URL Bar-->
         <Grid Grid.Row="0" Panel.ZIndex="2">
@@ -103,10 +100,13 @@
                     CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}" Margin="17,0,0,0"
                     Style="{StaticResource BorderWithShadow}">
             </Border>
+            
+            <!--Command to MainViewModel-->
             <Button x:Name="buttonSettings" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45" Margin="19.5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
                     Style="{StaticResource PasteButton}" 
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                    ToolTip="Search">
+                    ToolTip="Search"
+                    Command="{Binding DataContext.ChangeSettingsVisibilityCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                 <materialDesign:PackIcon Kind="Settings" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
             </Button>
         </Grid>

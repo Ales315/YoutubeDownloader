@@ -28,15 +28,6 @@ namespace YoutubeDownloader.Views
             textboxInputUrl.KeyDown += OnTextboxInputUrlKeyDown;
             imgLoadingGifVideo.IsVisibleChanged += (s,e) => SetGifPlaybackFramePosition(s);
             imgLoadingGifStreams.IsVisibleChanged += (s, e) => SetGifPlaybackFramePosition(s);
-
-            buttonSettings.Click += OnButtonSettingsClick;
-
-            settingsUserControl.Visibility = Visibility.Hidden;
-        }
-
-        private void OnButtonSettingsClick(object sender, RoutedEventArgs e)
-        {
-            settingsUserControl.Visibility = Visibility.Visible;
         }
 
         private static void SetGifPlaybackFramePosition(object sender)

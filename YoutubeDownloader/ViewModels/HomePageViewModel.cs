@@ -3,8 +3,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
@@ -41,7 +39,7 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _downloadVideo = null!;
         private ICommand _goHomeCommand = null!;
         private double _progress;
-        
+
 
         public ObservableCollection<VideoDownloadModel> VideoDownloadsList
         {
@@ -213,13 +211,7 @@ namespace YoutubeDownloader.ViewModels
         {
             get
             {
-                if (_downloadVideo == null)
-                {
-                    _downloadVideo = new RelayCommand(
-                        param => this.Download()
-                    );
-                }
-                return _downloadVideo;
+                return _downloadVideo ?? new RelayCommand(param => this.Download());
             }
         }
         public ICommand GoHomeCommand
@@ -251,9 +243,9 @@ namespace YoutubeDownloader.ViewModels
 
         public HomePageViewModel()
         {
-            VideoDownloadsList.CollectionChanged += (s, e) => 
-            { 
-                StateHandler.IsDownloadListEmpty = VideoDownloadsList.Count == 0; 
+            VideoDownloadsList.CollectionChanged += (s, e) =>
+            {
+                StateHandler.IsDownloadListEmpty = VideoDownloadsList.Count == 0;
             };
             if (StateHandler.IsVideoFound)
                 LoadLastVideoData();
@@ -316,7 +308,7 @@ namespace YoutubeDownloader.ViewModels
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
             }
-            
+
         }
         private bool CanProcessRequest()
         {
@@ -336,7 +328,7 @@ namespace YoutubeDownloader.ViewModels
             Duration = videoData.Duration;
             ViewCount = videoData.ViewCount;
             Date = videoData.Date;
-            FormatSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference ==  DownloadMediaType.AudioOnly ? 
+            FormatSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference == DownloadMediaType.AudioOnly ?
                 ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
             _previousValidUrl = Url;
         }
@@ -345,7 +337,7 @@ namespace YoutubeDownloader.ViewModels
             AudioStreams = streamData.AudioStreams;
             VideoStreams = streamData.VideoStreams;
 
-            if(AudioStreams.Count() == 0 || AudioStreams.Count() == 0)
+            if (AudioStreams.Count() == 0 || AudioStreams.Count() == 0)
                 return false;
 
             VideoStreamSelected = VideoStreams.Last();
@@ -400,6 +392,18 @@ namespace YoutubeDownloader.ViewModels
             }
         }
         #endregion
+
+        public void Invalidate()
+        {
+            DownloadOptionSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
+            FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ? 
+                ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
+
+            if (StateHandler.IsVideoFound)
+                LoadLastVideoData();
+            
+            CommandManager.InvalidateRequerySuggested();
+        }
     }
 
     public class ControlStateHandler : INotifyPropertyChanged
@@ -516,7 +520,7 @@ namespace YoutubeDownloader.ViewModels
             {
                 if (_currentState == value) return;
                 _currentState = value;
-                CurrentStateChanged?.Invoke(null,value);
+                CurrentStateChanged?.Invoke(null, value);
             }
         }
 

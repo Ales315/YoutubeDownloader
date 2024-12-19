@@ -8,14 +8,19 @@ namespace YoutubeDownloader.ViewModels
     class MainViewModel : ObservableObject
     {
         private ICommand _changePageCommand = null!;
+        private ICommand _changeSettingsVisibilityCommand = null!;
         private ViewModelBase _currentPageViewModel = null!;
         private List<ViewModelBase> _pageViewModels = null!;
+        private SettingsViewModel _settingsViewModel = null!;
+        private HomePageViewModel _homeViewModel = null!;
 
         public MainViewModel()
         {
-            PageViewModels.Add(new HomePageViewModel() { Name = "Home"});
-            PageViewModels.Add(new SettingsViewModel() { Name = "Settings"});
-            CurrentPageViewModel = PageViewModels[0];
+            _homeViewModel = new();
+            SettingsViewModel = new();
+            SettingsViewModel.IsVisibleChanged += (s,e) => ((HomePageViewModel)CurrentPageViewModel).Invalidate();
+            //PageViewModels.Add(_homeViewModel);
+            CurrentPageViewModel = _homeViewModel;
         }
 
         public ICommand ChangePageCommand
@@ -27,6 +32,20 @@ namespace YoutubeDownloader.ViewModels
                 return _changePageCommand;
             }
         }
+        public ICommand ChangeSettingsVisibilityCommand
+        {
+            get
+            {
+                return _changeSettingsVisibilityCommand ?? new RelayCommand(param => this.ChangeVisibility());
+            }
+        }
+
+        private void ChangeVisibility()
+        {
+            SettingsViewModel.IsVisible = true;
+           ((HomePageViewModel)CurrentPageViewModel).Invalidate();
+        }
+
         public List<ViewModelBase> PageViewModels
         {
             get
@@ -48,6 +67,21 @@ namespace YoutubeDownloader.ViewModels
                 {
                     _currentPageViewModel = value;
                     OnPropertyChanged(nameof(CurrentPageViewModel));
+                }
+            }
+        }
+        public SettingsViewModel SettingsViewModel
+        {
+            get
+            {
+                return _settingsViewModel;
+            }
+            set
+            {
+                if (_settingsViewModel != value)
+                {
+                    _settingsViewModel = value;
+                    OnPropertyChanged(nameof(SettingsViewModel));
                 }
             }
         }
