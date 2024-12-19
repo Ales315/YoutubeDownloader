@@ -29,6 +29,10 @@ namespace YoutubeDownloader.Views
             checkboxNotifications.Checked += (s, e) => ServiceProvider.SettingsService.UserPreferences.UseNotifications = true;
             checkboxNotifications.Unchecked += (s, e) => ServiceProvider.SettingsService.UserPreferences.UseNotifications = false;
             checkboxNotifications.IsChecked = ServiceProvider.SettingsService.UserPreferences.UseNotifications;
+
+            checkboxAutoDownload.Checked += (s, e) => ServiceProvider.SettingsService.UserPreferences.AutoDownload = true;
+            checkboxAutoDownload.Unchecked += (s, e) => ServiceProvider.SettingsService.UserPreferences.AutoDownload = false;
+            checkboxAutoDownload.IsChecked = ServiceProvider.SettingsService.UserPreferences.AutoDownload;
         }
 
         private void OnCbSelectionChanged(object sender, SelectionChangedEventArgs e)

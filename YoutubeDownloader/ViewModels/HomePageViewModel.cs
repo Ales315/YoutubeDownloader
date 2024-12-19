@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Accessibility;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
@@ -40,7 +39,6 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _downloadVideo = null!;
         private ICommand _goHomeCommand = null!;
         private double _progress;
-        private int _i;
 
         public ObservableCollection<VideoDownloadViewModel> VideoDownloadsList
         {
@@ -52,7 +50,6 @@ namespace YoutubeDownloader.ViewModels
             set
             {
                 if (_url == value) return;
-                _i++;
                 _url = value;
                 OnPropertyChanged(nameof(Url));
             }
@@ -246,7 +243,7 @@ namespace YoutubeDownloader.ViewModels
         public HomePageViewModel()
         {
             DownloadOptionSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
-            FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ? 
+            FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ?
                 ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
 
             VideoDownloadsList.CollectionChanged += (s, e) =>
@@ -275,19 +272,30 @@ namespace YoutubeDownloader.ViewModels
             if (!CanProcessRequest()) return;
             try
             {
-                StateHandler.SetUI(AppState.AnalyzingUrl);
+                if (ServiceProvider.SettingsService.UserPreferences.AutoDownload)
+                {
+                    StateHandler.IsAnalyzingAutoDownload = true;
+                    var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
+                    var videoAndStreamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
+                    StateHandler.IsAnalyzingAutoDownload = false;
 
-                var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
-                UpdateVideoData(videoData);
-                StateHandler.SetUI(AppState.VideoFound);
+                    Download(videoAndStreamData);
+                }
+                else
+                {
+                    StateHandler.SetUI(AppState.AnalyzingUrl);
 
-                var streamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
-                UpdateVideoStreamData(streamData);
-                StateHandler.SetUI(AppState.VideoStreamsFound);
+                    var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
+                    UpdateVideoData(videoData);
+                    StateHandler.SetUI(AppState.VideoFound);
 
-                if (videoData.ErrorMessage != string.Empty)
-                    throw new Exception(videoData.ErrorMessage);
+                    var streamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
+                    UpdateVideoStreamData(streamData);
+                    StateHandler.SetUI(AppState.VideoStreamsFound);
 
+                    if (videoData.ErrorMessage != string.Empty)
+                        throw new Exception(videoData.ErrorMessage);
+                }
             }
             catch (OperationCanceledException)
             {
@@ -317,6 +325,9 @@ namespace YoutubeDownloader.ViewModels
             }
 
         }
+
+
+
         private bool CanProcessRequest()
         {
             if (StateHandler.IsAnalizing)
@@ -398,17 +409,38 @@ namespace YoutubeDownloader.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
+        private void Download(VideoDataModel videoData)
+        {
+            try
+            {
+                VideoDownloadViewModel newVideoDownload = new VideoDownloadViewModel();
+                newVideoDownload.Title = videoData.Title;
+                newVideoDownload.Thumbnail = videoData.Thumbnail;
+                newVideoDownload.Duration = videoData.Duration;
+                newVideoDownload.AudioStream = videoData.AudioStreams.Last();
+                newVideoDownload.VideoStream = videoData.VideoStreams.Last();
+                newVideoDownload.DownloadOption = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
+                newVideoDownload.DownloadFormat = newVideoDownload.DownloadOption == DownloadMediaType.AudioOnly ?
+                    ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
+                ServiceProvider.YoutubeService.EnqueueDownload(newVideoDownload);
+                StateHandler.SetUI(AppState.Downloading);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         #endregion
 
         public void Invalidate()
         {
             DownloadOptionSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
-            FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ? 
+            FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ?
                 ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
 
             if (StateHandler.IsVideoFound)
                 LoadLastVideoData();
-            
+
             CommandManager.InvalidateRequerySuggested();
         }
     }
@@ -426,6 +458,7 @@ namespace YoutubeDownloader.ViewModels
         private bool _isAnalizingStreams;
         private bool _isSearchOpen;
         private AppState _currentState;
+        private bool _isAnalyzingAutoDownload;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler<AppState>? CurrentStateChanged;
@@ -517,6 +550,16 @@ namespace YoutubeDownloader.ViewModels
                 if (_isDownloaded == value) return;
                 _isDownloaded = value;
                 OnPropertyChanged(nameof(IsDownloaded));
+            }
+        }
+        public bool IsAnalyzingAutoDownload
+        {
+            get => _isAnalyzingAutoDownload;
+            set
+            {
+                if (_isAnalyzingAutoDownload == value) return;
+                _isAnalyzingAutoDownload = value;
+                OnPropertyChanged(nameof(IsAnalyzingAutoDownload));
             }
         }
 

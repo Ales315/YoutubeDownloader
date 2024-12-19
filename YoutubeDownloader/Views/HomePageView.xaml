@@ -72,10 +72,16 @@
                     Command="{Binding GetVideoData}" 
                     Style="{StaticResource PasteButton}" 
                     Cursor="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToCursorConverter}, ConverterParameter=true}"
-                    IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}"
-                    ToolTip="Search">
-                <materialDesign:PackIcon Kind="Search" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
-                                         Opacity="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToOpacityConverter}}"/>
+                    IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}">
+                <Grid>
+                    <materialDesign:PackIcon Name="iconSearchDownload" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
+                                             Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                                             Opacity="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToOpacityConverter}}"/>
+                    <materialDesign:PackIcon Name="iconLoadingAutoDownload" Kind="Sync" Width="28" Height="28"
+                                             Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}}"
+                                             Opacity="{Binding StateHandler.IsAnalyzing, Converter={StaticResource InvertedBoolToOpacityConverter}}"/>
+                </Grid>
+                
             </Button>
             <Label Name="textBlockURLHint" Content="Paste video URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
             <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
@@ -167,7 +173,7 @@
         <!--Download List-->
         <Grid Grid.Row="1" Visibility="{Binding StateHandler.IsSearchOpen, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
             <Border Margin="10,10,10,10">
-                <ListView ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" 
+                <ListView x:Name="downloadListView" ItemsSource="{Binding VideoDownloadsList}" HorizontalContentAlignment="Stretch" 
                           Style="{StaticResource MaterialDesignCardsListBox}" 
                           Background="{DynamicResource MaterialDesignPaper}">
                     <ListView.ItemContainerStyle>

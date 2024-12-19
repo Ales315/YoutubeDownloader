@@ -152,17 +152,45 @@
                               FontSize="14"
                               DisplayMemberPath="."/>
                 </Grid>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Panel.ZIndex="2" Grid.Column="1" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" 
+                <Grid Margin="0,20,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Panel.ZIndex="2" Grid.Column="0" TextAlignment="Left" TextWrapping="NoWrap" 
                                HorizontalAlignment="Stretch" Margin="0,0,30,0"
                                Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  
                                Background="Transparent" Padding="0,10,0,0"
                                Text="Notification Sounds"
                                Style="{x:Null}"/>
-                    <CheckBox x:Name="checkboxNotifications" Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
+                    <CheckBox x:Name="checkboxNotifications" Grid.Column="1" HorizontalAlignment="Left"
+                              Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
                               Width="42" Height="42" Cursor="Hand"/>
-                </StackPanel>
-                
+                </Grid>
+
+                <Grid Margin="0,20,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Panel.ZIndex="2" Grid.Column="0" TextAlignment="Left" TextWrapping="NoWrap" 
+                                   HorizontalAlignment="Stretch" Margin="0,0,7,0"
+                                   Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  
+                                   Background="Transparent" Padding="0,10,0,0"
+                                   Text="Auto Download"
+                                   Style="{x:Null}"/>
+                        <materialDesign:PackIcon Kind="QuestionMarkCircle" VerticalAlignment="Center" Margin="0,-2,0,0"
+                                                 Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.5"
+                                                 ToolTip="Automatically download videos using pre-selected quality and format"
+                                                 ToolTipService.InitialShowDelay="300"/>
+                    </StackPanel>
+                    
+                    
+                    <CheckBox x:Name="checkboxAutoDownload" Grid.Column="1" HorizontalAlignment="Left"
+                              Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
+                              Width="42" Height="42" Cursor="Hand"/>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
 

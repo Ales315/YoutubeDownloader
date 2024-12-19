@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using MaterialDesignThemes.Wpf;
 using WpfAnimatedGif;
 using YoutubeDownloader.Services;
@@ -20,15 +20,48 @@ namespace YoutubeDownloader.Views
         {
             InitializeComponent();
             textboxInputUrl.TextChanged += (s, e) => TextChanged();
-            textboxInputUrl.GotFocus += (s, e) => 
+            textboxInputUrl.GotFocus += (s, e) =>
             UrlBarBorder.BorderBrush = ServiceProvider.ThemeService.GetPrimaryColorBrush();
             textboxInputUrl.LostFocus += (s, e) => UrlBarBorder.BorderBrush = new SolidColorBrush(Colors.Transparent);
 #if DEBUG
             textboxInputUrl.Text = "https://www.youtube.com/watch?v=HQmmM_qwG4k";
 #endif
             textboxInputUrl.KeyDown += OnTextboxInputUrlKeyDown;
-            imgLoadingGifVideo.IsVisibleChanged += (s,e) => SetGifPlaybackFramePosition(s);
+
+            imgLoadingGifVideo.IsVisibleChanged += (s, e) => SetGifPlaybackFramePosition(s);
             imgLoadingGifStreams.IsVisibleChanged += (s, e) => SetGifPlaybackFramePosition(s);
+
+            UpdateSearchButton();
+
+            ServiceProvider.SettingsService.SettingsChanged += (s, e) => UpdateSearchButton();
+
+            iconLoadingAutoDownload.IsVisibleChanged += (s, e) => StartAnimation();
+            iconLoadingAutoDownload.Foreground = ServiceProvider.ThemeService.GetPrimaryColorBrush();
+        }
+
+        private void StartAnimation()
+        {
+            if(!iconLoadingAutoDownload.IsVisible) 
+                return;
+            RotateTransform rotateTransform = new RotateTransform();
+            iconLoadingAutoDownload.RenderTransform = rotateTransform;
+            iconLoadingAutoDownload.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            DoubleAnimation doubleAnimation = new DoubleAnimation()
+            {
+                From = 360,
+                To = 0,
+                Duration = TimeSpan.FromSeconds(1),
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+            rotateTransform.BeginAnimation(RotateTransform.AngleProperty, doubleAnimation);
+        }
+
+        private void UpdateSearchButton()
+        {
+            var autoDownload = ServiceProvider.SettingsService.UserPreferences.AutoDownload;
+            buttonSearch.ToolTip = autoDownload ? "Download" : "Search";
+            iconSearchDownload.Kind = autoDownload ? PackIconKind.Download : PackIconKind.Search;
         }
 
         private void TextChanged()
@@ -57,7 +90,7 @@ namespace YoutubeDownloader.Views
         {
             if (e.Key != Key.Enter) return;
             if (this.DataContext == null) return;
-            if(this.DataContext is HomePageViewModel vm)
+            if (this.DataContext is HomePageViewModel vm)
                 vm.GetVideoData.Execute(null);
         }
 

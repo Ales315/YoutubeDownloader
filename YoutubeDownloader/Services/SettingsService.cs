@@ -10,6 +10,8 @@ public class SettingsService
     public Settings UserPreferences = null!;
     private string _settingsFilename { get; set; } = "settings.json";
 
+    public event EventHandler? SettingsChanged;
+
     public SettingsService()
     {
         Load();
@@ -39,6 +41,7 @@ public class SettingsService
         {
             string json = JsonConvert.SerializeObject(UserPreferences, Formatting.Indented);
             File.WriteAllText(_settingsFilename, json);
+            SettingsChanged?.Invoke(null, EventArgs.Empty);
         }
         catch (Exception ex)
         {
