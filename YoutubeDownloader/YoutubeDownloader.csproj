@@ -6,7 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+	  <Version>1.0.0-beta</Version>
+	  <AssemblyInformationalVersion>1.0.0-beta</AssemblyInformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
