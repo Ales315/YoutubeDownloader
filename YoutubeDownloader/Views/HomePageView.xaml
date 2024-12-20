@@ -61,7 +61,7 @@
             <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                      Height="45" FontSize="16" Margin="0,0,90,0" Padding="5,0,0,0" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource MaterialDesignBody}"
                      Text="{Binding Url, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                     Style="{x:Null}"/>
+                     Style="{x:Null}" CaretBrush="{DynamicResource MaterialDesignBody}"/>
 
             <Button x:Name="buttonPaste" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,52,0"  Click="buttonPaste_Click" 
                     Style="{StaticResource PasteButton}"

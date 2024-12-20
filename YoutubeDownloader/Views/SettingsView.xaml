@@ -63,7 +63,7 @@
                              Margin="0,0,0,0" Padding="5,0,100,0" 
                              Background="Transparent" BorderBrush="Transparent"
                              Text="{Binding OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{x:Null}"/>
+                             Style="{x:Null}" CaretBrush="{DynamicResource MaterialDesignBody}"/>
                     <Button x:Name="buttonBrowse" Panel.ZIndex="3" Grid.Column="1" Grid.Row="1"  Width="45" Height="45" Margin="0,0,10,0"
                             HorizontalAlignment="Right" VerticalAlignment="Center" 
                             Click="buttonBrowse_Click"
