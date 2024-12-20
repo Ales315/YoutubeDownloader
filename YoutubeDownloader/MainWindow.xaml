@@ -112,7 +112,7 @@
         </StackPanel>
 
         <StackPanel Name="titlebarTitleStackPanel" Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
-            <materialDesign:PackIcon Kind="PlayCircleOutline" Foreground="OrangeRed" VerticalAlignment="Center" Width="24" Height="24"/>
+            <materialDesign:PackIcon Kind="MotionPlayOutline" Foreground="{DynamicResource MaterialDesignPrimaryBrush}" VerticalAlignment="Center" Width="24" Height="24"/>
             <TextBlock Text="Youtube Downloader" Foreground="{DynamicResource MaterialDesignBody}" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"
                        FontSize="14"/>
         </StackPanel>

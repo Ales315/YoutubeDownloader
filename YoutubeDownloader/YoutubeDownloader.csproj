@@ -8,7 +8,12 @@
     <UseWPF>true</UseWPF>
 	  <Version>1.0.0-beta</Version>
 	  <AssemblyInformationalVersion>1.0.0-beta</AssemblyInformationalVersion>
+	  <ApplicationIcon>appIcon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="appIcon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
