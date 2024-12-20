@@ -299,6 +299,7 @@ namespace YoutubeDownloader.ViewModels
             }
             catch (OperationCanceledException)
             {
+                StateHandler.IsAnalyzingAutoDownload = false;
                 StateHandler.SetUI(AppState.Home);
                 Thumbnail = null!;
                 Title = null!;
@@ -312,6 +313,7 @@ namespace YoutubeDownloader.ViewModels
             }
             catch (Exception)
             {
+                StateHandler.IsAnalyzingAutoDownload = false;
                 StateHandler.SetUI(AppState.VideoNotFound);
                 Thumbnail = null!;
                 Title = null!;
