@@ -53,7 +53,7 @@ public partial class MainWindow : Window
     {
         //string version = string.Empty;
         //version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly()!.Location).ProductVersion ?? "-.-.-";
-        //tbVersion.Text = version;
+        tbVersion.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "-";
     }
 
     private void SetAppTheme()
