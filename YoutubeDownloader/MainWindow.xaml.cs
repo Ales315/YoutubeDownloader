@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using YoutubeDownloader.Enums;
@@ -14,6 +16,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        GetAppVersion();
         buttonClose.Click += (s, e) => Close();
         buttonMinimize.Click += (s, e) => WindowState = WindowState.Minimized;
         buttonMaximize.Click += OnButtonMaximizeClick;
@@ -44,6 +47,13 @@ public partial class MainWindow : Window
         }
         iconMaximize.Kind = WindowState == WindowState.Maximized ? MaterialDesignThemes.Wpf.PackIconKind.CheckboxMultipleBlankOutline : MaterialDesignThemes.Wpf.PackIconKind.Maximize;
         iconMaximize.RenderTransform = new ScaleTransform(-1, -1, 7, 7);
+    }
+
+    private void GetAppVersion()
+    {
+        string version = string.Empty;
+        version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly()!.Location).ProductVersion ?? "-.-.-";
+        tbVersion.Text = version;
     }
 
     private void SetAppTheme()
