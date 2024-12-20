@@ -171,7 +171,7 @@
                                Style="{x:Null}"/>
                     <CheckBox x:Name="checkboxNotifications" Grid.Column="1" HorizontalAlignment="Left"
                               Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
-                              Width="42" Height="42" Cursor="Hand"/>
+                              Width="42" Height="42" Cursor="Hand" Background="{DynamicResource MaterialDesignPrimaryBrush}"/>
                 </Grid>
 
                 <Grid Margin="0,8,0,0">
@@ -195,7 +195,7 @@
                     
                     <CheckBox x:Name="checkboxAutoDownload" Grid.Column="1" HorizontalAlignment="Left"
                               Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
-                              Width="42" Height="42" Cursor="Hand"/>
+                              Width="42" Height="42" Cursor="Hand" Background="{DynamicResource MaterialDesignPrimaryBrush}"/>
                 </Grid>
                 <Button x:Name="buttonAbout" Style="{StaticResource CommonButtonDark}" Grid.Row="3" Grid.Column="2"
                         Height="35" Width="85" HorizontalAlignment="Left" 

@@ -51,6 +51,7 @@ namespace YoutubeDownloader.Services
             Application.Current.Resources["MaterialDesignBody"] = new SolidColorBrush(OnSecondaryLight);
             Application.Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(SurfaceLight);
             Application.Current.Resources["MaterialDesignPaper"] = new SolidColorBrush(BackgroundLight);
+            Application.Current.Resources["MaterialDesignPrimaryBrush"] = new SolidColorBrush(PrimaryLight);
             LightTheme.SetLightTheme();
         }
 
@@ -67,6 +68,7 @@ namespace YoutubeDownloader.Services
             Application.Current.Resources["MaterialDesignBody"] = new SolidColorBrush(OnSecondaryDark);
             Application.Current.Resources["MaterialDesignPaper"] = new SolidColorBrush(BackgroundDark);
             Application.Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(SurfaceDark);
+            Application.Current.Resources["MaterialDesignPrimaryBrush"] = new SolidColorBrush(PrimaryDark);
             DarkTheme.SetDarkTheme();
         }
 
