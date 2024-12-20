@@ -51,9 +51,9 @@ public partial class MainWindow : Window
 
     private void GetAppVersion()
     {
-        string version = string.Empty;
-        version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly()!.Location).ProductVersion ?? "-.-.-";
-        tbVersion.Text = version;
+        //string version = string.Empty;
+        //version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly()!.Location).ProductVersion ?? "-.-.-";
+        //tbVersion.Text = version;
     }
 
     private void SetAppTheme()
