@@ -37,7 +37,27 @@ namespace YoutubeDownloader.Views
 
             iconLoadingAutoDownload.IsVisibleChanged += (s, e) => StartAnimation();
             iconLoadingAutoDownload.Foreground = ServiceProvider.ThemeService.GetPrimaryColorBrush();
+
+            UrlErrorBorder.IsVisibleChanged += (s, e) => StartErrorAnimation();
         }
+
+        private void StartErrorAnimation()
+        {
+            if (!UrlErrorBorder.IsVisible)
+                return;
+            TranslateTransform translateTransform = new();
+            UrlErrorBorder.RenderTransform = translateTransform;
+            UrlErrorBorder.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            DoubleAnimation doubleAnimation = new DoubleAnimation()
+            {
+                From = 0,
+                To = 35,
+                Duration = TimeSpan.FromMilliseconds(280)
+            };
+            translateTransform.BeginAnimation(TranslateTransform.YProperty, doubleAnimation);
+        }
+        
 
         private void StartAnimation()
         {

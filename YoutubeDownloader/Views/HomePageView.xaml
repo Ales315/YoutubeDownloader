@@ -55,14 +55,26 @@
             </Grid.ColumnDefinitions>
 
             <Border Name="UrlBarBorder" Panel.ZIndex="0" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
-                CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}"
+                    CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}"
                     Style="{StaticResource BorderWithShadow}">
             </Border>
             <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                      Height="45" FontSize="16" Margin="0,0,90,0" Padding="5,0,0,0" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource MaterialDesignBody}"
                      Text="{Binding Url, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                      Style="{x:Null}" CaretBrush="{DynamicResource MaterialDesignBody}"/>
-
+            
+            <Border Name="UrlErrorBorder" Panel.ZIndex="-1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Height="20" Margin="1,0,1,0"
+                    CornerRadius="6" BorderThickness="2" BorderBrush="Transparent" Background="#CE292F"
+                    Style="{StaticResource BorderWithShadow}"
+                    Visibility="{Binding StateHandler.IsAutoDownloadError, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Margin="10,0,10,1" Width="auto" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
+                           Opacity="0.75" Foreground="White" FontSize="14" FontWeight="DemiBold"
+                           VerticalAlignment="Center">
+                    <Run Text="Error: "/>
+                    <Run Text="{Binding ErrorMessage}"/>
+                </TextBlock>
+            </Border>
+            
             <Button x:Name="buttonPaste" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,52,0"  Click="buttonPaste_Click" 
                     Style="{StaticResource PasteButton}"
                     ToolTip="Paste">
@@ -81,7 +93,6 @@
                                              Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}}"
                                              Opacity="{Binding StateHandler.IsAnalyzing, Converter={StaticResource InvertedBoolToOpacityConverter}}"/>
                 </Grid>
-                
             </Button>
             <Label Name="textBlockURLHint" Content="Paste video URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
             <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>

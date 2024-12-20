@@ -39,10 +39,21 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _downloadVideo = null!;
         private ICommand _goHomeCommand = null!;
         private double _progress;
+        private string _errorMessage;
 
         public ObservableCollection<VideoDownloadViewModel> VideoDownloadsList
         {
             get => ServiceProvider.YoutubeService.DownloadList;
+        }
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                if (_errorMessage == value) return;
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
         }
         public string Url
         {
@@ -272,6 +283,7 @@ namespace YoutubeDownloader.ViewModels
             if (!CanProcessRequest()) return;
             try
             {
+                StateHandler.IsAutoDownloadError = false;
                 if (ServiceProvider.SettingsService.UserPreferences.AutoDownload)
                 {
                     StateHandler.IsAnalyzingAutoDownload = true;
@@ -297,9 +309,11 @@ namespace YoutubeDownloader.ViewModels
                         throw new Exception(videoData.ErrorMessage);
                 }
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException ex)
             {
+                ErrorMessage = ex.Message;
                 StateHandler.IsAnalyzingAutoDownload = false;
+                StateHandler.IsAutoDownloadError = true;
                 StateHandler.SetUI(AppState.Home);
                 Thumbnail = null!;
                 Title = null!;
@@ -311,10 +325,14 @@ namespace YoutubeDownloader.ViewModels
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorMessage = ex.Message;
                 StateHandler.IsAnalyzingAutoDownload = false;
-                StateHandler.SetUI(AppState.VideoNotFound);
+                if (!ServiceProvider.SettingsService.UserPreferences.AutoDownload)
+                    StateHandler.SetUI(AppState.VideoNotFound);
+                else
+                    StateHandler.IsAutoDownloadError = true;
                 Thumbnail = null!;
                 Title = null!;
                 ChannelName = null!;
@@ -461,6 +479,7 @@ namespace YoutubeDownloader.ViewModels
         private bool _isSearchOpen;
         private AppState _currentState;
         private bool _isAnalyzingAutoDownload;
+        private bool _isAutoDownloadError;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler<AppState>? CurrentStateChanged;
@@ -562,6 +581,16 @@ namespace YoutubeDownloader.ViewModels
                 if (_isAnalyzingAutoDownload == value) return;
                 _isAnalyzingAutoDownload = value;
                 OnPropertyChanged(nameof(IsAnalyzingAutoDownload));
+            }
+        }
+        public bool IsAutoDownloadError
+        {
+            get => _isAutoDownloadError;
+            set
+            {
+                if (_isAutoDownloadError == value) return;
+                _isAutoDownloadError = value;
+                OnPropertyChanged(nameof(IsAutoDownloadError));
             }
         }
 
