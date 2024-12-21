@@ -135,6 +135,31 @@
                               FontSize="14"
                               DisplayMemberPath="."/>
                 </Grid>
+                
+                <!--Auto download-->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Panel.ZIndex="2" Grid.Column="0" TextAlignment="Left" TextWrapping="NoWrap" 
+                                   HorizontalAlignment="Stretch" Margin="0,0,7,0"
+                                   Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  
+                                   Background="Transparent" Padding="0,10,0,0"
+                                   Text="Auto Download"
+                                   Style="{x:Null}"/>
+                        <materialDesign:PackIcon Kind="QuestionMarkCircle" VerticalAlignment="Center" Margin="0,-2,0,0"
+                                                 Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.5"
+                                                 ToolTip="Automatically download videos using pre-selected quality and format"
+                                                 ToolTipService.InitialShowDelay="300"/>
+                    </StackPanel>
+
+
+                    <CheckBox x:Name="checkboxAutoDownload" Grid.Column="1" HorizontalAlignment="Left"
+                              Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
+                              Width="42" Height="42" Cursor="Hand" Background="{DynamicResource MaterialDesignPrimaryBrush}"/>
+                </Grid>
                 <Rectangle Width="auto" Height="1" Fill="{DynamicResource MaterialDesignBody}" Margin="0,15,10,0" Opacity="0.2"/>
                 <!--Application preferences-->
                 <Grid Margin="0,20,0,0">
@@ -158,7 +183,7 @@
                               FontSize="14"
                               DisplayMemberPath="."/>
                 </Grid>
-                <Grid Margin="0,20,0,0">
+                <Grid Margin="0,5,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="1.5*"/>
@@ -174,32 +199,10 @@
                               Width="42" Height="42" Cursor="Hand" Background="{DynamicResource MaterialDesignPrimaryBrush}"/>
                 </Grid>
 
-                <Grid Margin="0,8,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="1.5*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Panel.ZIndex="2" Grid.Column="0" TextAlignment="Left" TextWrapping="NoWrap" 
-                                   HorizontalAlignment="Stretch" Margin="0,0,7,0"
-                                   Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  
-                                   Background="Transparent" Padding="0,10,0,0"
-                                   Text="Auto Download"
-                                   Style="{x:Null}"/>
-                        <materialDesign:PackIcon Kind="QuestionMarkCircle" VerticalAlignment="Center" Margin="0,-2,0,0"
-                                                 Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.5"
-                                                 ToolTip="Automatically download videos using pre-selected quality and format"
-                                                 ToolTipService.InitialShowDelay="300"/>
-                    </StackPanel>
-                    
-                    
-                    <CheckBox x:Name="checkboxAutoDownload" Grid.Column="1" HorizontalAlignment="Left"
-                              Style="{DynamicResource MaterialDesignSwitchSecondaryToggleButton}" 
-                              Width="42" Height="42" Cursor="Hand" Background="{DynamicResource MaterialDesignPrimaryBrush}"/>
-                </Grid>
+                
                 <Button x:Name="buttonAbout" Style="{StaticResource CommonButtonDark}" Grid.Row="3" Grid.Column="2"
                         Height="35" Width="85" HorizontalAlignment="Left" 
-                        Margin="0,0,0,0"
+                        Margin="0,10,0,0"
                         Click="buttonAbout_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="About" VerticalAlignment="Center" 
