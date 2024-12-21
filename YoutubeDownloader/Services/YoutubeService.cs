@@ -24,8 +24,8 @@ public class YoutubeService
     private bool _busy;
     private VideoDataModel? _videoData;
     private readonly object _lock = new();
-    public CancellationTokenSource DownloadCancellationToken;
-    public CancellationTokenSource GetMetadataCancellationToken;
+    public CancellationTokenSource DownloadCancellationToken = null!;
+    public CancellationTokenSource GetMetadataCancellationToken = null!;
 
     public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadViewModel>();
 
@@ -42,7 +42,7 @@ public class YoutubeService
             return _video;
         }
         catch (Exception)
-        { 
+        {
             _video = null!;
             throw;
         }
@@ -82,7 +82,7 @@ public class YoutubeService
             _videoData = null!;
             throw;
         }
-        
+
 
         var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
         var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
@@ -105,14 +105,23 @@ public class YoutubeService
     public void EnqueueDownload(VideoDownloadViewModel video)
     {
         string format = (Enum.GetName(typeof(DownloadFormat), video.DownloadFormat) ?? "WEBM").ToLower();
-        video.FileName = $"{ServiceProvider.SettingsService.GetOutputPath()}\\{video.Title}.{format}";
+        string sanitizedTitle = SanitizeString(video.Title);
+        video.FileName = $"{ServiceProvider.SettingsService.GetOutputPath()}\\{sanitizedTitle}.{format}";
 
         if (!FileAlreadyExists(video.FileName))
             return;
-    
+
         DownloadList.Add(video);
         _downloadQueue.Enqueue(video);
         StartDownloads();
+    }
+
+    private string SanitizeString(string s)
+    {
+        var invalidChars = Path.GetInvalidFileNameChars();
+        foreach (char c in invalidChars)
+            s = s.Replace(c, '-');
+        return s;
     }
 
     private void StartDownloads()
@@ -131,11 +140,11 @@ public class YoutubeService
                 {
                     videoDownload.IsDownloading = true;
                     videoDownload.CancellationToken = new CancellationTokenSource();
-                        
+
                     await DownloadVideo(videoDownload, videoDownload.CancellationToken.Token);
                     videoDownload.IsDownloading = false;
 
-                    if(ServiceProvider.SettingsService.UserPreferences.UseNotifications)
+                    if (ServiceProvider.SettingsService.UserPreferences.UseNotifications)
                         SystemSounds.Beep.Play();
                 }
                 catch (OperationCanceledException)
@@ -172,7 +181,7 @@ public class YoutubeService
         if (File.Exists(filename))
         {
             var dr = MessageBox.Show("File already exists \nDo you want to replace it?", "File exists", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (dr == MessageBoxResult.No) 
+            if (dr == MessageBoxResult.No)
                 return false;
             return true;
         }
