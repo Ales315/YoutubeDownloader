@@ -16,7 +16,7 @@
         Height="540" Width="860"
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResizeWithGrip"
-        Background="Transparent"
+        Background="{DynamicResource MaterialDesignPaper}"
         TextOptions.TextFormattingMode="Display">
     <Window.DataContext>
         <vm:MainViewModel />
@@ -36,11 +36,9 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Border ClipToBounds="True" Grid.Row="0" 
-                Background="{DynamicResource MaterialDesignPaper}"
-                CornerRadius="8,8,0,0"></Border>
+                Background="{DynamicResource MaterialDesignPaper}"/>
         <Border Grid.Row="2" 
-                Background="{DynamicResource MaterialDesignPaper}"
-                CornerRadius="0,0,8,8"></Border>
+                Background="{DynamicResource MaterialDesignPaper}"/>
 
 
         <!--Titlebar buttons-->
@@ -65,6 +63,10 @@
             <TextBlock Text="Youtube Downloader" Foreground="{DynamicResource MaterialDesignBody}" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"
                        FontSize="14"/>
         </StackPanel>
+
+        <Rectangle Panel.ZIndex="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1" Opacity="0.05"
+                   Fill="{DynamicResource MaterialDesignBody}">
+        </Rectangle>
 
         <!--Current Page-->
         <views:HomePageView Grid.Row="1" DataContext="{Binding CurrentPageViewModel}"/>
