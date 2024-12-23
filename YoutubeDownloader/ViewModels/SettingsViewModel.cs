@@ -8,7 +8,7 @@ namespace YoutubeDownloader.ViewModels
     class SettingsViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private bool _isVisible;
-        public event EventHandler<bool> IsVisibleChanged;
+        public event EventHandler<bool> IsVisibleChanged = null!;
 
         public DownloadMediaType MediaTypePreference
         {

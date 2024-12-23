@@ -35,103 +35,50 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <Border ClipToBounds="True" Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"
+        <Border ClipToBounds="True" Grid.Row="0" 
+                Background="{DynamicResource MaterialDesignPaper}"
                 CornerRadius="8,8,0,0"></Border>
-        <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"
+        <Border Grid.Row="2" 
+                Background="{DynamicResource MaterialDesignPaper}"
                 CornerRadius="0,0,8,8"></Border>
 
 
-        <!--Titlebar-->
+        <!--Titlebar buttons-->
         <StackPanel Name="titlebarButtonsStackPanel" Panel.ZIndex="3" WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="buttonMinimize" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,0">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="LightBlue" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource MaterialDesignBackground}" TargetName="Border" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
+            <Button x:Name="buttonMinimize" Width="40" VerticalAlignment="Stretch" 
+                    Style="{StaticResource TitleBarWindowButton}">
                 <materialDesign:PackIcon Kind="Minimize" Foreground="{DynamicResource MaterialDesignBody}" Width="20" Height="20"/>
             </Button>
-            <Button x:Name="buttonMaximize" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,0">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="LightBlue" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource MaterialDesignBackground}" TargetName="Border" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
+            <Button x:Name="buttonMaximize" Width="40" VerticalAlignment="Stretch" 
+                    Style="{StaticResource TitleBarWindowButton}">
                 <materialDesign:PackIcon Name="iconMaximize" Foreground="{DynamicResource MaterialDesignBody}" Width="14" Height="14"/>
             </Button>
-            <Button x:Name="buttonClose" Background="Transparent" Width="40" VerticalAlignment="Stretch" BorderBrush="Transparent" BorderThickness="0">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="LightBlue" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="0,0,0,0">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Red" TargetName="Border" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
+            <Button x:Name="buttonClose" Width="40" VerticalAlignment="Stretch" 
+                    Style="{StaticResource TitlebarCloseButton}">
                 <materialDesign:PackIcon Name="iconClose" Kind="WindowClose" Width="20" Height="20"/>
             </Button>
         </StackPanel>
-
+        
+        <!--Titlebar Favicon & Title-->
         <StackPanel Name="titlebarTitleStackPanel" Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
             <Image Source="/Resources/favicon.ico" Width="24"/>
             <TextBlock Text="Youtube Downloader" Foreground="{DynamicResource MaterialDesignBody}" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"
                        FontSize="14"/>
         </StackPanel>
 
-        <!--Titlebar dropshadow-->
-        <Rectangle Panel.ZIndex="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1" Opacity="0.00"
-                   Fill="{DynamicResource MaterialDesignBody}">
-        </Rectangle>
-
         <!--Current Page-->
         <views:HomePageView Grid.Row="1" DataContext="{Binding CurrentPageViewModel}"/>
 
         <!--SettingsView -->
-        <views:SettingsView DataContext="{Binding SettingsViewModel}" x:Name="settingsUserControl" Panel.ZIndex="4" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"/>
+        <views:SettingsView DataContext="{Binding SettingsViewModel}" x:Name="settingsUserControl" 
+                            Panel.ZIndex="4" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"/>
+        
+        <!--Version-->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
             <TextBlock Text="Version: " Foreground="{DynamicResource MaterialDesignBody}" 
-                       FontSize="14" Opacity="0.3"/>
+                       FontSize="14" Opacity="0.2"/>
             <TextBlock Name="tbVersion" Foreground="{DynamicResource MaterialDesignBody}"
-                       FontSize="14" Margin="2,0,0,0" Opacity="0.3"/>
+                       FontSize="14" Margin="2,0,0,0" Opacity="0.2"/>
         </StackPanel>
     </Grid>
 

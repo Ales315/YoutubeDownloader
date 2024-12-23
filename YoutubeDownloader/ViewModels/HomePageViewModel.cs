@@ -39,7 +39,7 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _downloadVideo = null!;
         private ICommand _goHomeCommand = null!;
         private double _progress;
-        private string _errorMessage;
+        private string _errorMessage = string.Empty;
 
         public ObservableCollection<VideoDownloadViewModel> VideoDownloadsList
         {

@@ -20,16 +20,16 @@ namespace YoutubeDownloader.Helpers
         #endregion // Constructors 
         #region ICommand Members 
         [DebuggerStepThrough]
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
-            return _canExecute == null ? true : _canExecute(parameter);
+            return _canExecute == null ? true : _canExecute(parameter!);
         }
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
-        public void Execute(object parameter) { _execute(parameter); }
+        public void Execute(object? parameter) { _execute(parameter!); }
         #endregion // ICommand Members 
     }
 }

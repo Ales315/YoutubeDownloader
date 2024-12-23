@@ -15,6 +15,6 @@ namespace YoutubeDownloader.Models
         public long ViewCount { get; set; } = 0;
         public IEnumerable<VideoOnlyStreamInfo> VideoStreams { get; set; } = [];
         public IEnumerable<AudioOnlyStreamInfo> AudioStreams { get; set; } = [];
-        public BitmapImage Thumbnail { get; internal set; }
+        public BitmapImage Thumbnail { get; internal set; } = null!;
     }
 }

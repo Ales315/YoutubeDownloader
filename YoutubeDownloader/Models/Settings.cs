@@ -4,7 +4,6 @@ namespace YoutubeDownloader.Models
 {
     public class Settings
     {
-        public event EventHandler<bool>? AutoDownloadChanged;
         public string FFmpegPath { get; set; } = string.Empty;
         public string OutputPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
 
