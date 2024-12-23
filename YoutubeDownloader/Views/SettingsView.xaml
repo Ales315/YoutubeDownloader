@@ -68,7 +68,7 @@
                             HorizontalAlignment="Right" VerticalAlignment="Center" 
                             Click="buttonBrowse_Click"
                             Style="{StaticResource PasteButton}" 
-                            ToolTip="Search">
+                            ToolTip="Browse folder">
                         <materialDesign:PackIcon Kind="FolderOpen" Foreground="{DynamicResource MaterialDesignBody}" 
                                      Width="26" Height="26"/>
                     </Button>
@@ -89,9 +89,9 @@
 
                     <TextBlock Panel.ZIndex="2" Grid.Column="0" Grid.Row="0" TextAlignment="Left" TextWrapping="NoWrap" 
                                HorizontalAlignment="Stretch" Margin="0,0,0,0"
-                               Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  
+                               Height="45" FontSize="14" Foreground="{DynamicResource MaterialDesignBody}"  
                                Background="Transparent" Padding="0,10,0,0"
-                               Text="Default media type"
+                               Text="Media type preference"
                                Style="{x:Null}"/>
                     <ComboBox Name="cbMediaType" Grid.Column="2" Grid.Row="0" SelectedIndex="0" Width="155" Height="40"
                               HorizontalAlignment="Left"
@@ -105,9 +105,9 @@
 
                     <TextBlock Panel.ZIndex="2" Grid.Column="0" Grid.Row="1" TextAlignment="Left" TextWrapping="NoWrap" 
                                HorizontalAlignment="Stretch" Margin="0,0,0,0"
-                               Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  
+                               Height="45" FontSize="14" Foreground="{DynamicResource MaterialDesignBody}"  
                                Background="Transparent" Padding="0,10,0,0"
-                               Text="Default video format"
+                               Text="Video format preference"
                                Style="{x:Null}"/>
                     <ComboBox Name="cbVideoFormat" Grid.Column="2" Grid.Row="1" SelectedIndex="0" Width="120" Height="40" 
                               HorizontalAlignment="Left"
@@ -121,9 +121,9 @@
 
                     <TextBlock Panel.ZIndex="2" Grid.Column="0" Grid.Row="2" TextAlignment="Left" TextWrapping="NoWrap" 
                                HorizontalAlignment="Stretch" Margin="0,0,0,0"
-                               Height="45" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"  
+                               Height="45" FontSize="14" Foreground="{DynamicResource MaterialDesignBody}"  
                                Background="Transparent" Padding="0,10,0,0"
-                               Text="Default audio format"
+                               Text="Audio format preference"
                                Style="{x:Null}"/>
                     <ComboBox Name="cbAudioFormat" Grid.Column="2" Grid.Row="2" SelectedIndex="0" HorizontalAlignment="Left"
                               Width="120" Height="40"
@@ -151,7 +151,7 @@
                                    Style="{x:Null}"/>
                         <materialDesign:PackIcon Kind="QuestionMarkCircle" VerticalAlignment="Center" Margin="0,-2,0,0"
                                                  Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.5"
-                                                 ToolTip="Automatically download videos using pre-selected quality and format"
+                                                 ToolTip="Automatically download videos using selected quality and format preferences"
                                                  ToolTipService.InitialShowDelay="300"/>
                     </StackPanel>
 
