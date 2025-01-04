@@ -1,4 +1,4 @@
-# WPF YouTube Video Downloader
+# WPF YouTube Downloader
 
 A simple WPF application designed for downloading YouTube videos using the [YouTubeExplode](https://github.com/Tyrrrz/YouTubeExplode) library. 
 This application provides users with the ability to download videos with preferred quality and format and optionally extract video or audio. 
