@@ -41,6 +41,7 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _cancelAutoDownloadCommand = null!;
         private double _progress;
         private string _errorMessage = string.Empty;
+        private string _autoDownloadStatus = string.Empty;
 
         public ObservableCollection<VideoDownloadViewModel> VideoDownloadsList
         {
@@ -54,6 +55,16 @@ namespace YoutubeDownloader.ViewModels
                 if (_errorMessage == value) return;
                 _errorMessage = value;
                 OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
+        public string AutoDownloadStatus
+        {
+            get => _autoDownloadStatus;
+            set
+            {
+                if (_autoDownloadStatus == value) return;
+                _autoDownloadStatus = value;
+                OnPropertyChanged(nameof(AutoDownloadStatus));
             }
         }
         public string Url
@@ -293,21 +304,27 @@ namespace YoutubeDownloader.ViewModels
             if (ServiceProvider.SettingsService.UserPreferences.AutoDownload)
             {
                 StateHandler.IsAnalyzingAutoDownload = true;
+                AutoDownloadStatus = "Searching video...";
                 Video videoAndStreamData = null!;
                 try
                 {
                     var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
+                    AutoDownloadStatus = "Video found! Loading streams...";
                     videoAndStreamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
+                    AutoDownloadStatus = string.Empty;
+
                     StateHandler.IsAnalyzingAutoDownload = false;
                     Download(videoAndStreamData);
                 }
                 catch (OperationCanceledException ex)
                 {
+                    AutoDownloadStatus = string.Empty;
                     ErrorMessage = ex.Message;
                     StateHandler.IsAnalyzingAutoDownload = false;
                 }
                 catch (Exception ex)
                 {
+                    AutoDownloadStatus = string.Empty;
                     ErrorMessage = ex.Message;
                     //MessageBox.Show(ex.Message, "Download failed");
                     StateHandler.IsAnalyzingAutoDownload = false;
