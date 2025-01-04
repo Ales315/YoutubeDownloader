@@ -95,32 +95,48 @@
             <Label Name="textBlockURLHint" Content="Paste video URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
             <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
 
-            <Border Name="buttonHomeBorder" Panel.ZIndex="0" Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Right" Height="45" Width="50"
-                    CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}" Margin="0,0,17,0"
+            <Border Name="buttonHomeBorder" Panel.ZIndex="0" Grid.Column="0" Grid.ColumnSpan="1" 
+                    VerticalAlignment="Center" HorizontalAlignment="Left" Margin="35,0,0,0"
+                    Height="45" Width="50"
+                    CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}" 
                     Style="{StaticResource BorderWithShadow}">
-            </Border>
-            <Button x:Name="buttonHome" Panel.ZIndex="3" Grid.Column="0" Width="45" Height="45" Margin="0,0,19.5,0" HorizontalAlignment="Right" VerticalAlignment="Center"
-                    Command="{Binding GoHomeCommand}" 
-                    Style="{StaticResource PasteButton}" 
-                    IsEnabled="{Binding StateHandler.IsSearchOpen}"
-                    ToolTip="Home">
-                <materialDesign:PackIcon Name="iconHome" Kind="Home" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
-                                         Opacity="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToOpacityConverter}}"/>
-            </Button>
-
-            <Border Name="buttonSettingsBorder" Panel.ZIndex="0" Grid.Column="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Left" Height="45" Width="50"
-                    CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}" Margin="17,0,0,0"
-                    Style="{StaticResource BorderWithShadow}">
+                <Button x:Name="buttonHome" Panel.ZIndex="3" Grid.Column="0" Width="45" Height="45"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Command="{Binding GoHomeCommand}" 
+                        Style="{StaticResource PasteButton}" 
+                        IsEnabled="{Binding StateHandler.IsSearchOpen}"
+                        ToolTip="Home">
+                    <materialDesign:PackIcon Name="iconHome" Kind="Home" Foreground="{DynamicResource MaterialDesignBody}" 
+                                             Width="28" Height="28" HorizontalAlignment="Center"
+                                             Opacity="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToOpacityConverter}}"/>
+                </Button>
             </Border>
             
-            <!--Command to MainViewModel-->
-            <Button x:Name="buttonSettings" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45" Margin="19.5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
+
+            <Button x:Name="buttonCancelAutoDownload" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45"
+                    HorizontalAlignment="Left" VerticalAlignment="Center"
                     Style="{StaticResource PasteButton}" 
-                    IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                    ToolTip="Settings"
-                    Command="{Binding DataContext.ChangeSettingsVisibilityCommand, RelativeSource={RelativeSource AncestorType=Window}}">
-                <materialDesign:PackIcon Kind="Settings" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
+                    Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
+                    ToolTip="Cancel download"
+                    Command="{Binding CancelAutoDownload}">
+                <materialDesign:PackIcon Kind="CloseCircle" Foreground="{DynamicResource MaterialDesignPrimaryBrush}" Width="28" Height="28"/>
             </Button>
+            <Border Name="buttonSettingsBorder" Panel.ZIndex="0" Grid.Column="2" Grid.ColumnSpan="1" 
+                    VerticalAlignment="Center" HorizontalAlignment="Right" 
+                    Height="45" Width="50"
+                    CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" 
+                    Background="{DynamicResource MaterialDesignBackground}" Margin="10,0,35,0"
+                    Style="{StaticResource BorderWithShadow}">
+                <!--Command to MainViewModel-->
+                <Button x:Name="buttonSettings" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Style="{StaticResource PasteButton}" 
+                        IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                        ToolTip="Settings"
+                        Command="{Binding DataContext.ChangeSettingsVisibilityCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                    <materialDesign:PackIcon Kind="Settings" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
+                </Button>
+            </Border>
         </Grid>
 
         <!--Video Card, Download Options-->
