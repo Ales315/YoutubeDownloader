@@ -118,7 +118,7 @@
                     Style="{StaticResource PasteButton}" 
                     Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
                     ToolTip="Cancel download"
-                    Command="{Binding CancelAutoDownload}">
+                    Command="{Binding CancelAutoDownloadCommand}">
                 <materialDesign:PackIcon Kind="CloseCircle" Foreground="{DynamicResource MaterialDesignPrimaryBrush}" Width="28" Height="28"/>
             </Button>
             <Border Name="buttonSettingsBorder" Panel.ZIndex="0" Grid.Column="2" Grid.ColumnSpan="1" 

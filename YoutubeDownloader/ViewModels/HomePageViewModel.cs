@@ -38,6 +38,7 @@ namespace YoutubeDownloader.ViewModels
         private ICommand _getVideoData = null!;
         private ICommand _downloadVideo = null!;
         private ICommand _goHomeCommand = null!;
+        private ICommand _cancelAutoDownloadCommand = null!;
         private double _progress;
         private string _errorMessage = string.Empty;
 
@@ -224,6 +225,16 @@ namespace YoutubeDownloader.ViewModels
                 return _downloadVideo ?? new RelayCommand(param => this.Download());
             }
         }
+        public ICommand CancelAutoDownloadCommand
+        {
+            get
+            {
+                return _cancelAutoDownloadCommand ?? new RelayCommand(param => this.CancelAutoDownload());
+            }
+        }
+
+        
+
         public ICommand GoHomeCommand
         {
             get
@@ -242,6 +253,10 @@ namespace YoutubeDownloader.ViewModels
         {
             ServiceProvider.YoutubeService.GetMetadataCancellationToken.Cancel();
             StateHandler.SetUI(AppState.Home);
+        }
+        private void CancelAutoDownload()
+        {
+            ServiceProvider.YoutubeService.GetMetadataCancellationToken.Cancel();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -290,7 +305,6 @@ namespace YoutubeDownloader.ViewModels
                 {
                     ErrorMessage = ex.Message;
                     StateHandler.IsAnalyzingAutoDownload = false;
-                    StateHandler.IsAutoDownloadError = true;
                 }
                 catch (Exception ex)
                 {
