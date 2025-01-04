@@ -261,92 +261,89 @@ namespace YoutubeDownloader.ViewModels
             {
                 StateHandler.IsDownloadListEmpty = VideoDownloadsList.Count == 0;
             };
+
             if (StateHandler.IsVideoFound)
                 LoadLastVideoData();
-            Url = "https://www.youtube.com/watch?v=HQmmM_qwG4k";
         }
 
-        private void LoadLastVideoData()
-        {
-            var data = ServiceProvider.YoutubeService.GetLastVideoData();
-            if (data == null)
-                return;
-            UpdateVideoData(data);
-            if (UpdateVideoStreamData(data) == false)
-                StateHandler.SetUI(AppState.Home);
-        }
 
         #region GET METADATA
         //Get video metadata
         public async Task GetVideoMetadata()
         {
             if (!CanProcessRequest()) return;
-            try
-            {
-                StateHandler.IsAutoDownloadError = false;
-                if (ServiceProvider.SettingsService.UserPreferences.AutoDownload)
-                {
-                    StateHandler.IsAnalyzingAutoDownload = true;
-                    var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
-                    var videoAndStreamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
-                    StateHandler.IsAnalyzingAutoDownload = false;
+            ErrorMessage = string.Empty;
+            StateHandler.IsAutoDownloadError = false;
 
+            if (ServiceProvider.SettingsService.UserPreferences.AutoDownload)
+            {
+                StateHandler.IsAnalyzingAutoDownload = true;
+                Video videoAndStreamData = null!;
+                try
+                {
+                    var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
+                    videoAndStreamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
+                    StateHandler.IsAnalyzingAutoDownload = false;
                     Download(videoAndStreamData);
                 }
-                else
+                catch (OperationCanceledException ex)
                 {
-                    StateHandler.SetUI(AppState.AnalyzingUrl);
-
-                    var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
+                    ErrorMessage = ex.Message;
+                    StateHandler.IsAnalyzingAutoDownload = false;
+                    StateHandler.IsAutoDownloadError = true;
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = ex.Message;
+                    //MessageBox.Show(ex.Message, "Download failed");
+                    StateHandler.IsAnalyzingAutoDownload = false;
+                    StateHandler.IsAutoDownloadError = true;
+                }
+            }
+            else
+            {
+                //Show video data and available streams
+                StateHandler.SetUI(AppState.AnalyzingUrl);
+                Video videoData = null!;
+                try
+                {
+                    videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
                     UpdateVideoData(videoData);
+
                     StateHandler.SetUI(AppState.VideoFound);
 
                     var streamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
                     UpdateVideoStreamData(streamData);
-                    StateHandler.SetUI(AppState.VideoStreamsFound);
 
-                    if (videoData.ErrorMessage != string.Empty)
-                        throw new Exception(videoData.ErrorMessage);
+                    StateHandler.SetUI(AppState.VideoStreamsFound);
+                }
+                catch (OperationCanceledException)
+                {
+                    StateHandler.SetUI(AppState.Home);
+                    ClearCurrentVideoData();
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = ex.Message;
+                    StateHandler.SetUI(AppState.VideoNotFound);
+
+                    ClearCurrentVideoData();
                 }
             }
-            catch (OperationCanceledException ex)
-            {
-                ErrorMessage = ex.Message;
-                StateHandler.IsAnalyzingAutoDownload = false;
-                StateHandler.IsAutoDownloadError = true;
-                StateHandler.SetUI(AppState.Home);
-                Thumbnail = null!;
-                Title = null!;
-                ChannelName = null!;
-                ViewCount = 0;
-                Date = null!;
-                AudioStreams = null!;
-                VideoStreams = null!;
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = ex.Message;
-                StateHandler.IsAnalyzingAutoDownload = false;
-                if (!ServiceProvider.SettingsService.UserPreferences.AutoDownload)
-                    StateHandler.SetUI(AppState.VideoNotFound);
-                else
-                    StateHandler.IsAutoDownloadError = true;
-                Thumbnail = null!;
-                Title = null!;
-                ChannelName = null!;
-                ViewCount = 0;
-                Date = null!;
-                AudioStreams = null!;
-                VideoStreams = null!;
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-            }
-
         }
 
-
+        private void ClearCurrentVideoData()
+        {
+            Thumbnail = null!;
+            Title = null!;
+            ChannelName = null!;
+            ViewCount = 0;
+            Date = null!;
+            AudioStreams = null!;
+            VideoStreams = null!;
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
 
         private bool CanProcessRequest()
         {
@@ -358,7 +355,7 @@ namespace YoutubeDownloader.ViewModels
                 return false;
             return true;
         }
-        private void UpdateVideoData(VideoDataModel videoData)
+        private void UpdateVideoData(Video videoData)
         {
             Thumbnail = videoData.Thumbnail;
             Title = videoData.Title;
@@ -370,7 +367,7 @@ namespace YoutubeDownloader.ViewModels
                 ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
             _previousValidUrl = Url;
         }
-        private bool UpdateVideoStreamData(VideoDataModel streamData)
+        private bool UpdateVideoStreamData(Video streamData)
         {
             AudioStreams = streamData.AudioStreams;
             VideoStreams = streamData.VideoStreams;
@@ -429,29 +426,33 @@ namespace YoutubeDownloader.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
-        private void Download(VideoDataModel videoData)
+        private void Download(Video videoData)
         {
-            try
-            {
-                VideoDownloadViewModel newVideoDownload = new VideoDownloadViewModel();
-                newVideoDownload.Title = videoData.Title;
-                newVideoDownload.Thumbnail = videoData.Thumbnail;
-                newVideoDownload.Duration = videoData.Duration;
-                newVideoDownload.AudioStream = videoData.AudioStreams.Last();
-                newVideoDownload.VideoStream = videoData.VideoStreams.Last();
-                newVideoDownload.DownloadOption = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
-                newVideoDownload.DownloadFormat = newVideoDownload.DownloadOption == DownloadMediaType.AudioOnly ?
-                    ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
-                ServiceProvider.YoutubeService.EnqueueDownload(newVideoDownload);
-                StateHandler.SetUI(AppState.Downloading);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            VideoDownloadViewModel newVideoDownload = new VideoDownloadViewModel();
+            newVideoDownload.Title = videoData.Title;
+            newVideoDownload.Thumbnail = videoData.Thumbnail;
+            newVideoDownload.Duration = videoData.Duration;
+            newVideoDownload.AudioStream = videoData.AudioStreams.Last();
+            newVideoDownload.VideoStream = videoData.VideoStreams.Last();
+            newVideoDownload.DownloadOption = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
+            newVideoDownload.DownloadFormat = newVideoDownload.DownloadOption == DownloadMediaType.AudioOnly ?
+                ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
+            ServiceProvider.YoutubeService.EnqueueDownload(newVideoDownload);
+            StateHandler.SetUI(AppState.Downloading);
+
         }
         #endregion
 
+        //Get last analyzed video data 
+        private void LoadLastVideoData()
+        {
+            var data = ServiceProvider.YoutubeService.GetLastVideoData();
+            if (data == null)
+                return;
+            UpdateVideoData(data);
+            if (UpdateVideoStreamData(data) == false)
+                StateHandler.SetUI(AppState.Home);
+        }
         public void Invalidate()
         {
             DownloadOptionSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.IO;
 
 namespace YoutubeDownloader.Helpers
 {
@@ -29,6 +28,7 @@ namespace YoutubeDownloader.Helpers
             return _outputData.Contains("ffmpeg version");
         }
 
+        //todo: prompt ffmpeg install
         public static bool InstallFFmpeg()
         {
             return false;

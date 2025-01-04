@@ -47,7 +47,6 @@ public class SettingsService
         {
             MessageBox.Show("Failed to save user preferences.", ex.Message);
         }
-
     }
 
     public string GetOutputPath()

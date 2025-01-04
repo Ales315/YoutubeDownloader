@@ -19,14 +19,16 @@ using YoutubeExplode.Videos.Streams;
 public class YoutubeService
 {
     private YoutubeClient _youtube;
-    private VideoDataModel _video = null!;
+    
     private ConcurrentQueue<VideoDownloadViewModel> _downloadQueue;
-    private bool _busy;
-    private VideoDataModel? _videoData;
-    private readonly object _lock = new();
     public CancellationTokenSource DownloadCancellationToken = null!;
     public CancellationTokenSource GetMetadataCancellationToken = null!;
 
+    private Video? _videoData;
+    private Video _video = null!;
+    private readonly object _lock = new();
+    
+    private bool _busy;
     public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadViewModel>();
 
     public YoutubeService()
@@ -34,7 +36,7 @@ public class YoutubeService
         _youtube = new YoutubeClient();
         _downloadQueue = new ConcurrentQueue<VideoDownloadViewModel>();
     }
-    public async Task<VideoDataModel> GetVideoAsync(string url)
+    public async Task<Video> GetVideoAsync(string url)
     {
         try
         {
@@ -48,7 +50,7 @@ public class YoutubeService
         }
     }
 
-    private async Task<VideoDataModel> GetVideoMetadataAsync(string url)
+    private async Task<Video> GetVideoMetadataAsync(string url)
     {
         GetMetadataCancellationToken = new CancellationTokenSource();
         var video = await _youtube.Videos.GetAsync(url, GetMetadataCancellationToken.Token);
@@ -58,8 +60,8 @@ public class YoutubeService
         if (thumbnail == null)
             thumbnail = video.Thumbnails[0];
 
-        _videoData = new VideoDataModel();
-        _videoData.Thumbnail = ThumbnailHelper.ThumbnailUrlToBitmapImage(thumbnail.Url);
+        _videoData = new Video();
+        _videoData.Thumbnail = ThumbnailHelper.BitmapImageFromUrl(thumbnail.Url);
         _videoData.Url = url;
         _videoData.Title = video.Title;
         _videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
@@ -69,7 +71,7 @@ public class YoutubeService
 
         return _videoData;
     }
-    public async Task<VideoDataModel> GetStreamData(VideoDataModel videoData)
+    public async Task<Video> GetStreamData(Video videoData)
     {
         GetMetadataCancellationToken = new CancellationTokenSource();
         StreamManifest? streamManifest = null;
@@ -82,7 +84,6 @@ public class YoutubeService
             _videoData = null!;
             throw;
         }
-
 
         var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
         var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
@@ -98,6 +99,10 @@ public class YoutubeService
         videoData.AudioStreams = audioStreams;
         videoData.VideoStreams = videoStreams;
         return videoData;
+    }
+    public Video GetLastVideoData()
+    {
+        return _videoData!;
     }
 
     #region DOWNLOAD
@@ -216,8 +221,5 @@ public class YoutubeService
 
     #endregion
 
-    public VideoDataModel GetLastVideoData()
-    {
-        return _videoData!;
-    }
+    
 }

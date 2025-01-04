@@ -25,6 +25,7 @@ namespace YoutubeDownloader.Services
         private Theme LightTheme = null!;
         private Theme DarkTheme = null!;
         public bool IsLightTheme { get; set; } = true;
+
         /// <summary>
         /// Light theme: true.  Dark theme: false
         /// </summary>
@@ -40,35 +41,33 @@ namespace YoutubeDownloader.Services
 
         private void CreateLightTheme()
         {
-            LightTheme = null!;
             LightTheme = new();
 
             LightTheme.SetPrimaryColor(PrimaryLight);
             LightTheme.SetSecondaryColor(SecondaryLight);
             LightTheme.PrimaryLight = PrimaryLight;
 
-
             Application.Current.Resources["MaterialDesignBody"] = new SolidColorBrush(OnSecondaryLight);
             Application.Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(SurfaceLight);
             Application.Current.Resources["MaterialDesignPaper"] = new SolidColorBrush(BackgroundLight);
             Application.Current.Resources["MaterialDesignPrimaryBrush"] = new SolidColorBrush(PrimaryLight);
+
             LightTheme.SetLightTheme();
         }
 
         private void CreateDarkTheme()
         {
-            DarkTheme = null!;
             DarkTheme = new();
 
             DarkTheme.SetPrimaryColor(PrimaryLight);
             DarkTheme.SetSecondaryColor(SecondaryLight);
             DarkTheme.PrimaryDark = PrimaryDark;
 
-
             Application.Current.Resources["MaterialDesignBody"] = new SolidColorBrush(OnSecondaryDark);
             Application.Current.Resources["MaterialDesignPaper"] = new SolidColorBrush(BackgroundDark);
             Application.Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(SurfaceDark);
             Application.Current.Resources["MaterialDesignPrimaryBrush"] = new SolidColorBrush(PrimaryDark);
+
             DarkTheme.SetDarkTheme();
         }
 
@@ -80,7 +79,6 @@ namespace YoutubeDownloader.Services
             IsLightTheme = true;
             ThemeChanged?.Invoke(null, true);
         }
-
         public void SetDarkTheme()
         {
             var paletteHelper = new PaletteHelper();
@@ -96,10 +94,17 @@ namespace YoutubeDownloader.Services
                 return new SolidColorBrush(PrimaryLight);
             else return new SolidColorBrush(PrimaryDark);
         }
-
         public SolidColorBrush GetTextColorBrush()
         {
             return (SolidColorBrush)Application.Current.Resources["MaterialDesignBody"];
+        }
+
+
+        public void SetSystemTheme()
+        {
+            if(IsSystemLightTheme())
+                SetLightTheme();
+            else SetDarkTheme();
         }
 
         private bool IsSystemLightTheme()
@@ -107,13 +112,6 @@ namespace YoutubeDownloader.Services
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
             var value = key?.GetValue("AppsUseLightTheme");
             return value is int i && i > 0;
-        }
-
-        public void SetSystemTheme()
-        {
-            if(IsSystemLightTheme())
-                SetLightTheme();
-            else SetDarkTheme();
         }
     }
 }

@@ -4,7 +4,7 @@ namespace YoutubeDownloader.Helpers
 {
     public static class ThumbnailHelper
     {
-        public static BitmapImage ThumbnailUrlToBitmapImage(string url)
+        public static BitmapImage BitmapImageFromUrl(string url)
         {
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
