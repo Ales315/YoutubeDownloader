@@ -38,7 +38,3 @@ With **Auto Download** option enabled videos will be directly downloaded using s
 - Playlists are not supported
 - Subtitles and language audio tracks are not available
 
-## License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-
