@@ -13,7 +13,7 @@ This application provides users with the ability to download videos with preferr
 - Save format preferences
 - Light/Dark theme
 
-## How to Use
+## Getting started
 - Download latest release
 - Place the executable inside a folder
   
