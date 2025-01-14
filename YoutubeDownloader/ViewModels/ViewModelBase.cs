@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace YoutubeDownloader.ViewModels
 {
-    class ViewModelBase
+    public class ViewModelBase
     {
         public string Name { get; set; } = string.Empty;
     }

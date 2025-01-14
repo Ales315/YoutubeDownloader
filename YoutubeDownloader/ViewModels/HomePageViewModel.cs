@@ -43,7 +43,7 @@ namespace YoutubeDownloader.ViewModels
         private string _errorMessage = string.Empty;
         private string _autoDownloadStatus = string.Empty;
 
-        public ObservableCollection<VideoDownloadViewModel> VideoDownloadsList
+        public ObservableCollection<VideoDownloadViewModel> VideoDownloadViewModels
         {
             get => ServiceProvider.YoutubeService.DownloadList;
         }
@@ -283,9 +283,9 @@ namespace YoutubeDownloader.ViewModels
             FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ?
                 ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
 
-            VideoDownloadsList.CollectionChanged += (s, e) =>
+            VideoDownloadViewModels.CollectionChanged += (s, e) =>
             {
-                StateHandler.IsDownloadListEmpty = VideoDownloadsList.Count == 0;
+                StateHandler.IsDownloadListEmpty = VideoDownloadViewModels.Count == 0;
             };
 
             if (StateHandler.IsVideoFound)
