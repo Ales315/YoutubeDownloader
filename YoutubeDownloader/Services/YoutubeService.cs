@@ -30,6 +30,7 @@ public class YoutubeService
     
     private bool _busy;
     public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadViewModel>();
+    public ObservableCollection<System.DirectoryServices.SearchResult> SearchResults { get; set; } = null!;
 
     public YoutubeService()
     {
