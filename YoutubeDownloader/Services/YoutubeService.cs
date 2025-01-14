@@ -237,7 +237,6 @@ public class YoutubeService
                 switch (item)
                 {
                     case VideoSearchResult video:
-                        continue;
                         resultViewModel.ResultType = SearchResultType.Video;
                         resultViewModel.Title = video.Title;
                         resultViewModel.ChannelName = video.Author.ChannelTitle;
@@ -247,7 +246,6 @@ public class YoutubeService
                         break;
 
                     case PlaylistSearchResult playlist:
-                        continue;
                         resultViewModel.ResultType = SearchResultType.Playlist;
                         resultViewModel.Title = playlist.Title;
                         resultViewModel.ChannelName = playlist.Author?.ChannelTitle ?? "Mix";
