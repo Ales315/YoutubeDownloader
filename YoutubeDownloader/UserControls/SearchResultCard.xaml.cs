@@ -28,6 +28,8 @@ namespace YoutubeDownloader.UserControls
             switch (vm.ResultType)
             {
                 case SearchResultType.Channel:
+                    TextblockTitle.Margin = new Thickness(15, 20, 0, 0);
+                    ContentImageBorder.Margin = new Thickness(20, 0, 0, 0);
                     ContentImageBorder.Width = 62;
                     ContentImageBorder.Height = 62;
                     ContentImageBorder.CornerRadius = new CornerRadius(ContentImageBorder.Width/2);
@@ -39,6 +41,7 @@ namespace YoutubeDownloader.UserControls
                     break;
 
                 case SearchResultType.Playlist:
+                    TextBlockFlagValue.Visibility = Visibility.Collapsed;
                     IconPlaylist.Visibility = Visibility.Visible;
                     break;
                 default:
