@@ -18,7 +18,7 @@ namespace YoutubeDownloader.UserControls
 
         private void CheckContentType()
         {
-            var vm = this.DataContext as SearchCardViewModel ?? null!;
+            var vm = this.DataContext as SearchResultCardViewModel ?? null!;
             if (vm == null) 
                 return;
             ContentImageBorder.Width = 80;

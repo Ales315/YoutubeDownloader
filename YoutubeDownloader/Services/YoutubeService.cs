@@ -14,23 +14,25 @@ using YoutubeDownloader.ViewModels;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Converter;
+using YoutubeExplode.Search;
 using YoutubeExplode.Videos.Streams;
 
 public class YoutubeService
 {
     private YoutubeClient _youtube;
-    
+
     private ConcurrentQueue<VideoDownloadViewModel> _downloadQueue;
     public CancellationTokenSource DownloadCancellationToken = null!;
     public CancellationTokenSource GetMetadataCancellationToken = null!;
+    public CancellationTokenSource SearchCancellationToken = null!;
 
     private Video? _videoData;
     private Video _video = null!;
     private readonly object _lock = new();
-    
+
     private bool _busy;
-    public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new ObservableCollection<VideoDownloadViewModel>();
-    public ObservableCollection<System.DirectoryServices.SearchResult> SearchResults { get; set; } = null!;
+    public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new();
+    public ObservableCollection<SearchResultCardViewModel> SearchResultViewModels { get; set; } = new();
 
     public YoutubeService()
     {
@@ -62,7 +64,7 @@ public class YoutubeService
             thumbnail = video.Thumbnails[0];
 
         _videoData = new Video();
-        _videoData.Thumbnail = ThumbnailHelper.BitmapImageFromUrl(thumbnail.Url);
+        _videoData.Thumbnail = await ThumbnailHelper.BitmapImageFromUrl(thumbnail.Url);
         _videoData.Url = url;
         _videoData.Title = video.Title;
         _videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
@@ -222,5 +224,55 @@ public class YoutubeService
 
     #endregion
 
-    
+    public async Task Search(string query)
+    {
+        SearchResultViewModels.Clear();
+        SearchCancellationToken = new CancellationTokenSource();
+        await foreach (var batch in _youtube.Search.GetResultBatchesAsync(searchQuery: query, cancellationToken: SearchCancellationToken.Token))
+        {
+            foreach (var item in batch.Items)
+            {
+                SearchResultCardViewModel resultViewModel = new();
+
+                switch (item)
+                {
+                    case VideoSearchResult video:
+                        continue;
+                        resultViewModel.ResultType = SearchResultType.Video;
+                        resultViewModel.Title = video.Title;
+                        resultViewModel.ChannelName = video.Author.ChannelTitle;
+                        resultViewModel.ThumbnailFlag = GetVideoDuration(video.Duration);
+                        resultViewModel.Url = video.Url;
+                        resultViewModel.ContentImage = await ThumbnailHelper.BitmapImageFromUrl(video.Thumbnails[0].Url);
+                        break;
+
+                    case PlaylistSearchResult playlist:
+                        continue;
+                        resultViewModel.ResultType = SearchResultType.Playlist;
+                        resultViewModel.Title = playlist.Title;
+                        resultViewModel.ChannelName = playlist.Author?.ChannelTitle ?? "Mix";
+                        resultViewModel.Url = playlist.Url;
+                        resultViewModel.ContentImage = await ThumbnailHelper.BitmapImageFromUrl(playlist.Thumbnails[0].Url);
+                        break;
+
+                    case ChannelSearchResult channel:
+                        resultViewModel.ResultType = SearchResultType.Channel;
+                        resultViewModel.Title = channel.Title;
+                        resultViewModel.ChannelName = channel.Title;
+                        resultViewModel.Url = channel.Url;
+                        resultViewModel.ContentImage = await ThumbnailHelper.BitmapImageFromUrl(channel.Thumbnails[0].Url);
+                        break;
+                }
+
+                SearchResultViewModels.Add(resultViewModel);
+                continue;
+            }
+            return;
+        }
+    }
+
+    private string GetVideoDuration(TimeSpan? duration)
+    {
+        return duration == null ? "Live" : ((TimeSpan)duration).ToString(@"hh\:mm\:ss");
+    }
 }

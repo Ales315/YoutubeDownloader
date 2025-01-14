@@ -3,7 +3,7 @@ using YoutubeDownloader.Enums;
 
 namespace YoutubeDownloader.ViewModels
 {
-    public class SearchCardViewModel
+    public class SearchResultCardViewModel
     {
         public SearchResultType ResultType { get; set; }
         public string Title { get; set; } = string.Empty;

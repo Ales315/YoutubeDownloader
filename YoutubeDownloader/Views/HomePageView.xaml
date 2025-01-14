@@ -236,5 +236,37 @@
                                      Foreground="{DynamicResource MaterialDesignBody}" Visibility="{Binding StateHandler.IsDownloadListEmpty, Converter={StaticResource BoolToVisibilityConverter}}"
                                      Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
+
+        <Grid Panel.ZIndex="4" Grid.Row="1" Visibility="{Binding StateHandler.IsKeywordSearch, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Border Margin="10,10,10,10" Background="Gray">
+                <ListView x:Name="SearchListView" ItemsSource="{Binding SearchResultViewModels}" HorizontalContentAlignment="Stretch"
+                  Style="{StaticResource MaterialDesignCardsListBox}" 
+                  Background="{DynamicResource MaterialDesignPaper}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SearchResultCard HorizontalAlignment="Stretch" Margin="10,5,10,0"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Border>
+            <!--Empty list text-->
+            <TextBlock Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Download list is empty, search a video to start..." 
+               Foreground="{DynamicResource MaterialDesignBody}" FontSize="18" FontWeight="DemiBold" Opacity="0.8"
+               Visibility="{Binding StateHandler.IsDownloadListEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <materialDesign:PackIcon Kind="MovieOpenPlusOutline" Margin="0,0,0,150" Width="90" Height="90" Opacity="0.6"
+                             Foreground="{DynamicResource MaterialDesignBody}" Visibility="{Binding StateHandler.IsDownloadListEmpty, Converter={StaticResource BoolToVisibilityConverter}}"
+                             Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
     </Grid>
 </UserControl>
