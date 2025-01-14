@@ -13,7 +13,7 @@ namespace YoutubeDownloader.UserControls
         public SearchResultCard()
         {
             InitializeComponent();
-            CheckContentType();
+            
         }
 
         private void CheckContentType()
@@ -21,17 +21,18 @@ namespace YoutubeDownloader.UserControls
             var vm = this.DataContext as SearchResultCardViewModel ?? null!;
             if (vm == null) 
                 return;
-            ContentImageBorder.Width = 80;
-            ContentImageBorder.Height = 45;
+            ContentImageBorder.Width = 110;
+            ContentImageBorder.Height = 62;
             ContentImageBorder.CornerRadius = new CornerRadius(4);
             IconPlaylist.Visibility = Visibility.Collapsed;
             switch (vm.ResultType)
             {
                 case SearchResultType.Channel:
-                    ContentImageBorder.Width = 45;
-                    ContentImageBorder.Height = 45;
-                    ContentImageBorder.CornerRadius = new CornerRadius(25);
+                    ContentImageBorder.Width = 62;
+                    ContentImageBorder.Height = 62;
+                    ContentImageBorder.CornerRadius = new CornerRadius(ContentImageBorder.Width/2);
                     TextBlockChannelName.Visibility = Visibility.Collapsed;
+                    BorderThumbnailFlags.Visibility = Visibility.Collapsed;
                     break;
 
                 case SearchResultType.Video:
@@ -44,5 +45,10 @@ namespace YoutubeDownloader.UserControls
                     break;
             }
         }
+
+        private void VideoCard_Loaded(object sender, RoutedEventArgs e)
+        {
+            CheckContentType();
         }
+    }
     }
