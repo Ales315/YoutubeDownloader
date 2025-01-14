@@ -10,17 +10,18 @@
              Name="VideoCard"
              mc:Ignorable="d" Height="auto"
              Background="Transparent" Width="auto"
-             TextOptions.TextRenderingMode="ClearType">
+             TextOptions.TextRenderingMode="ClearType"
+             Loaded="VideoCard_Loaded">
     <UserControl.Resources>
         <converter:DoubleToPercentageConverter x:Key="DoubleToPercentageConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
 
-    <Grid MinWidth="500" Height="76">
+    <Grid MinWidth="500" Height="82">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="56"/>
+            <RowDefinition Height="62"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -30,31 +31,31 @@
         <Border Panel.ZIndex="-1" Grid.ColumnSpan="7" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"
                 Background="{DynamicResource MaterialDesignBackground}">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="3" ShadowDepth="1" Opacity="0.2" Direction="250"/>
+                <DropShadowEffect BlurRadius="3" ShadowDepth="1" Opacity="1" Direction="250"/>
             </Border.Effect>
         </Border>
         <!--Video data-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="7,0,0,0">
-            <Border x:Name="ContentImageBorder" Grid.Row="1" Width="100" Height="56" CornerRadius="4" BorderThickness="1" BorderBrush="Gray"
+            <Border x:Name="ContentImageBorder" Grid.Row="1" CornerRadius="4" BorderThickness="1" BorderBrush="Transparent"
                     VerticalAlignment="Center">
                 <Border.Background>
                     <ImageBrush Stretch="Fill" ImageSource="{Binding ContentImage}"/>
                 </Border.Background>
                 <Border Name="BorderThumbnailFlags" Background="Black" Opacity="0.82" Width="auto" Height="auto" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                         CornerRadius="4"
-                        Margin="0,0,3,3">
+                        Margin="0,0,2,2">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Name="IconPlaylist" Kind="PlaylistPlay" VerticalAlignment="Center"/>
                         <TextBlock Name="TextBlockFlagValue" Text="{Binding ThumbnailFlag}" Opacity="1" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                                    Background="Transparent"
                                    Foreground="White"
                                    Width="auto"
-                                   FontSize="15"
+                                   FontSize="14"
                                    Margin="6,0,6,0"
                                    Padding="1,0,3,1"
                                    FontWeight="DemiBold"/>
                     </StackPanel>
-                    
+
                 </Border>
             </Border>
             <!--Visibility updated in code behind-->
@@ -71,16 +72,10 @@
                            FontSize="12"
                            Margin="10,0,0,0"
                            TextTrimming="CharacterEllipsis">
-                    <Run Text="{Binding Title}"/>
+                    <Run Text="{Binding ChannelName}"/>
                 </TextBlock>
             </StackPanel>
-            
+
         </StackPanel>
-        <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3"
-                   Foreground="{DynamicResource MaterialDesignBody}"
-                   FontSize="14"
-                   Margin="0,0,0,0">
-            <Run Text="{Binding Duration}"/>
-        </TextBlock>
     </Grid>
 </UserControl>
