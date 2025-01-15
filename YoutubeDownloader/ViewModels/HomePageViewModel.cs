@@ -318,7 +318,6 @@ namespace YoutubeDownloader.ViewModels
         private async Task GetSearchResults()
         {
             StateHandler.SetUI(AppState.KeywordSearch);
-            ServiceProvider.YoutubeService.SearchResultViewModels.Add(new SearchResultCardViewModel() { Title = "Ciao" });
             await ServiceProvider.YoutubeService.Search(Url);
         }
 
