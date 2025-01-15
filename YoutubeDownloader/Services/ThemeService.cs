@@ -9,6 +9,7 @@ namespace YoutubeDownloader.Services
     {
         private Color BackgroundLight = (Color)ColorConverter.ConvertFromString("#e9e9e9");
         private Color SurfaceLight = (Color)ColorConverter.ConvertFromString("#fbfbfb");
+        private Color SurfaceLightHover = (Color)ColorConverter.ConvertFromString("#f4f4f4");
         private Color PrimaryLight = (Color)ColorConverter.ConvertFromString("#E43C42");
         private Color SecondaryLight = (Color)ColorConverter.ConvertFromString("#7fe3e8");
         private Color AccentLight = (Color)ColorConverter.ConvertFromString("#65bbe3");
@@ -16,6 +17,7 @@ namespace YoutubeDownloader.Services
 
         private Color BackgroundDark = (Color)ColorConverter.ConvertFromString("#121212");
         private Color SurfaceDark = (Color)ColorConverter.ConvertFromString("#282828");
+        private Color SurfaceDarkHover = (Color)ColorConverter.ConvertFromString("#323232");
         private Color PrimaryDark = (Color)ColorConverter.ConvertFromString("#E43C42");
         private Color SecondaryDark = (Color)ColorConverter.ConvertFromString("#0f2ba3");
         private Color AccentDark = (Color)ColorConverter.ConvertFromString("#5634ed");
@@ -102,7 +104,7 @@ namespace YoutubeDownloader.Services
 
         public void SetSystemTheme()
         {
-            if(IsSystemLightTheme())
+            if (IsSystemLightTheme())
                 SetLightTheme();
             else SetDarkTheme();
         }
@@ -112,6 +114,22 @@ namespace YoutubeDownloader.Services
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
             var value = key?.GetValue("AppsUseLightTheme");
             return value is int i && i > 0;
+        }
+
+        internal Brush GetSurfaceHoverColorBrush()
+        {
+            if(IsLightTheme)
+                return new SolidColorBrush(SurfaceLightHover);
+            else 
+                return new SolidColorBrush(SurfaceDarkHover);
+        }
+
+        internal Brush GetSurfaceColorBrush()
+        {
+            if (IsLightTheme)
+                return new SolidColorBrush(SurfaceLight);
+            else
+                return new SolidColorBrush(SurfaceDark);
         }
     }
 }

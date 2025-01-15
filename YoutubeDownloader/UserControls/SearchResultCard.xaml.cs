@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using YoutubeDownloader.Enums;
+using YoutubeDownloader.Services;
 using YoutubeDownloader.ViewModels;
 
 namespace YoutubeDownloader.UserControls
@@ -13,7 +14,12 @@ namespace YoutubeDownloader.UserControls
         public SearchResultCard()
         {
             InitializeComponent();
-            
+            ServiceProvider.ThemeService.ThemeChanged += OnThemeChanged;
+        }
+
+        private void OnThemeChanged(object? sender, bool e)
+        {
+            BorderBackground.Background = ServiceProvider.ThemeService.GetSurfaceColorBrush();
         }
 
         private void CheckContentType()
@@ -52,6 +58,18 @@ namespace YoutubeDownloader.UserControls
         private void VideoCard_Loaded(object sender, RoutedEventArgs e)
         {
             CheckContentType();
+        }
+
+        private void BorderBackground_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            BorderBackground.Background = ServiceProvider.ThemeService.GetSurfaceHoverColorBrush();
+            DropShadowEffectMainBorder.Opacity = 0.4;
+        }
+
+        private void BorderBackground_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            BorderBackground.Background = ServiceProvider.ThemeService.GetSurfaceColorBrush();
+            DropShadowEffectMainBorder.Opacity = 0.25;
         }
     }
     }

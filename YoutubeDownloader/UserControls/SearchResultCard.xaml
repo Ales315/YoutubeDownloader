@@ -12,7 +12,8 @@
              Background="Transparent" Width="auto"
              TextOptions.TextRenderingMode="ClearType"
              Loaded="VideoCard_Loaded"
-             Cursor="Hand">
+             Cursor="Hand"
+             MouseEnter="BorderBackground_MouseEnter" MouseLeave="BorderBackground_MouseLeave">
     <UserControl.Resources>
         <converter:DoubleToPercentageConverter x:Key="DoubleToPercentageConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
@@ -29,10 +30,10 @@
             <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Border Panel.ZIndex="-1" Grid.ColumnSpan="7" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"
+        <Border x:Name="BorderBackground" Panel.ZIndex="-1" Grid.ColumnSpan="7" Grid.RowSpan="3" Width="auto" Height="auto" CornerRadius="8"
                 Background="{DynamicResource MaterialDesignBackground}">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="5" ShadowDepth="1" Opacity="0.25" Direction="250"/>
+                <DropShadowEffect x:Name="DropShadowEffectMainBorder" BlurRadius="5" ShadowDepth="1" Opacity="0.25" Direction="250"/>
             </Border.Effect>
         </Border>
         <!--Video data-->
