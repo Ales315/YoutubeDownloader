@@ -31,7 +31,7 @@ public class YoutubeService
     private readonly object _lock = new();
 
     private bool _busy;
-    private string _lastQuery;
+    private string _lastQuery = string.Empty;
 
     public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new();
     public ObservableCollection<SearchResultCardViewModel> SearchResultViewModels { get; set; } = new();
