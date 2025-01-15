@@ -31,6 +31,8 @@ public class YoutubeService
     private readonly object _lock = new();
 
     private bool _busy;
+    private string _lastQuery;
+
     public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new();
     public ObservableCollection<SearchResultCardViewModel> SearchResultViewModels { get; set; } = new();
 
@@ -226,6 +228,10 @@ public class YoutubeService
 
     public async Task Search(string query)
     {
+        if (query == _lastQuery)
+            return;
+        _lastQuery = query;
+
         SearchResultViewModels.Clear();
         SearchCancellationToken = new CancellationTokenSource();
         await foreach (var batch in _youtube.Search.GetResultBatchesAsync(searchQuery: query, cancellationToken: SearchCancellationToken.Token))
