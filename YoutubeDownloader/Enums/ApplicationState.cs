@@ -9,6 +9,7 @@
         VideoNotFound,
         Downloading,
         DownloadCompleted,
-        AnalyzingStreams
+        AnalyzingStreams,
+        KeywordSearch
     }
 }

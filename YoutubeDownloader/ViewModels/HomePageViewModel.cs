@@ -18,7 +18,7 @@ namespace YoutubeDownloader.ViewModels
 
         #region FIELDS
         //Video stats
-        private string _url = string.Empty;
+        private string _searchQuery = string.Empty;
         private string _title = string.Empty;
         private string _channelName = string.Empty;
         private string _duration = string.Empty;
@@ -35,7 +35,8 @@ namespace YoutubeDownloader.ViewModels
         private DownloadMediaType _downloadOptionSelected;
         private DownloadFormat _formatSelected;
 
-        private ICommand _getVideoData = null!;
+        private ICommand _searchCommand = null!;
+        private ICommand _getVideoDataCommand = null!;
         private ICommand _downloadVideo = null!;
         private ICommand _goHomeCommand = null!;
         private ICommand _cancelAutoDownloadCommand = null!;
@@ -47,6 +48,12 @@ namespace YoutubeDownloader.ViewModels
         {
             get => ServiceProvider.YoutubeService.DownloadList;
         }
+        public ObservableCollection<SearchResultCardViewModel> SearchResultViewModels
+        {
+            get => ServiceProvider.YoutubeService.SearchResultViewModels;
+        }
+        public string Url { get; set; } = string.Empty;
+
         public string ErrorMessage
         {
             get => _errorMessage;
@@ -67,14 +74,14 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(AutoDownloadStatus));
             }
         }
-        public string Url
+        public string SearchQuery
         {
-            get => _url;
+            get => _searchQuery;
             set
             {
-                if (_url == value) return;
-                _url = value;
-                OnPropertyChanged(nameof(Url));
+                if (_searchQuery == value) return;
+                _searchQuery = value;
+                OnPropertyChanged(nameof(SearchQuery));
             }
         }
         public ImageSource Thumbnail
@@ -222,11 +229,18 @@ namespace YoutubeDownloader.ViewModels
             }
         }
 
-        public ICommand GetVideoData
+        public ICommand SearchCommand
         {
             get
             {
-                return _getVideoData ?? (_getVideoData = new RelayCommandAsync(GetVideoMetadata, (c) => true));
+                return _searchCommand ?? (_searchCommand = new RelayCommandAsync(Search, (c) => true));
+            }
+        }
+        public ICommand GetVideoDataCommand
+        {
+            get
+            {
+                return _getVideoDataCommand ?? (_getVideoDataCommand = new RelayCommandAsync(GetMetadataFromUrl, (c) => true));
             }
         }
         public ICommand DownloadVideo
@@ -260,9 +274,12 @@ namespace YoutubeDownloader.ViewModels
             }
         }
 
+        
+
         private void GoHome()
         {
-            ServiceProvider.YoutubeService.GetMetadataCancellationToken.Cancel();
+            ServiceProvider.YoutubeService.GetMetadataCancellationToken?.Cancel();
+            ServiceProvider.YoutubeService.SearchCancellationToken?.Cancel();
             StateHandler.SetUI(AppState.Home);
         }
         private void CancelAutoDownload()
@@ -293,11 +310,47 @@ namespace YoutubeDownloader.ViewModels
         }
 
 
+        #region SEARCH
+
+        public async Task Search()
+        {
+            if (isUrl(SearchQuery))
+            {
+                if (!CanProcessRequest(SearchQuery)) 
+                    return;
+                await GetVideoMetadata(SearchQuery);
+            }
+            else
+                await GetSearchResults();
+        }
+
+        private async Task GetSearchResults()
+        {
+            StateHandler.SetUI(AppState.KeywordSearch);
+            await ServiceProvider.YoutubeService.Search(SearchQuery);
+        }
+
+        private bool isUrl(string query)
+        {
+            if(Uri.TryCreate(query, UriKind.Absolute, out var uri))
+                return uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps;
+            return false;
+        }
+
+        #endregion
+
+
         #region GET METADATA
         //Get video metadata
-        public async Task GetVideoMetadata()
+        public async Task GetMetadataFromUrl()
         {
-            if (!CanProcessRequest()) return;
+            await GetVideoMetadata(Url);
+            _previousValidUrl = string.Empty;
+        }
+        public async Task GetVideoMetadata(string url)
+        {
+            if (!CanProcessRequest(url)) return;
+
             ErrorMessage = string.Empty;
             StateHandler.IsAutoDownloadError = false;
 
@@ -308,7 +361,7 @@ namespace YoutubeDownloader.ViewModels
                 Video videoAndStreamData = null!;
                 try
                 {
-                    var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
+                    var videoData = await ServiceProvider.YoutubeService.GetVideoAsync(url);
                     AutoDownloadStatus = "Video found! Loading streams...";
                     videoAndStreamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
                     AutoDownloadStatus = string.Empty;
@@ -338,7 +391,7 @@ namespace YoutubeDownloader.ViewModels
                 Video videoData = null!;
                 try
                 {
-                    videoData = await ServiceProvider.YoutubeService.GetVideoAsync(Url);
+                    videoData = await ServiceProvider.YoutubeService.GetVideoAsync(url);
                     UpdateVideoData(videoData);
 
                     StateHandler.SetUI(AppState.VideoFound);
@@ -376,13 +429,11 @@ namespace YoutubeDownloader.ViewModels
             GC.Collect();
         }
 
-        private bool CanProcessRequest()
+        private bool CanProcessRequest(string url)
         {
             if (StateHandler.IsAnalizing)
                 return false;
-            if (string.IsNullOrWhiteSpace(Url))
-                return false;
-            if (Url == _previousValidUrl && StateHandler.IsVideoFound)
+            if (url == _previousValidUrl && StateHandler.IsVideoFound)
                 return false;
             return true;
         }
@@ -396,7 +447,7 @@ namespace YoutubeDownloader.ViewModels
             Date = videoData.Date;
             FormatSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference == DownloadMediaType.AudioOnly ?
                 ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
-            _previousValidUrl = Url;
+            _previousValidUrl = videoData.Url;
         }
         private bool UpdateVideoStreamData(Video streamData)
         {
@@ -512,6 +563,7 @@ namespace YoutubeDownloader.ViewModels
         private AppState _currentState;
         private bool _isAnalyzingAutoDownload;
         private bool _isAutoDownloadError;
+        private bool _isKeywordSearch;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler<AppState>? CurrentStateChanged;
@@ -625,6 +677,16 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(IsAutoDownloadError));
             }
         }
+        public bool IsKeywordSearch
+        {
+            get => _isKeywordSearch;
+            set
+            {
+                if (_isKeywordSearch == value) return;
+                _isKeywordSearch = value;
+                OnPropertyChanged(nameof(IsKeywordSearch));
+            }
+        }
 
         public AppState CurrentState
         {
@@ -653,6 +715,7 @@ namespace YoutubeDownloader.ViewModels
             IsAnalizingError = false;
             IsDownloaded = false;
             IsDownloading = false;
+            IsKeywordSearch = false;
             IsDownloadListEmpty = true;
         }
 
@@ -666,6 +729,7 @@ namespace YoutubeDownloader.ViewModels
             IsAnalizingError = false;
             IsDownloaded = false;
             IsDownloading = false;
+            IsKeywordSearch = false;
 
             switch (state)
             {
@@ -704,6 +768,11 @@ namespace YoutubeDownloader.ViewModels
 
                 case AppState.DownloadCompleted:
                     IsDownloaded = true;
+                    break;
+
+                case AppState.KeywordSearch:
+                    IsSearchOpen = true;
+                    IsKeywordSearch = true;
                     break;
             }
             CurrentState = state;
