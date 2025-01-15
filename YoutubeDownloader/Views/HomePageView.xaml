@@ -255,7 +255,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <uc:SearchResultCard HorizontalAlignment="Stretch" Margin="10,5,10,0" DataContext="{Binding}"/>
+                            <uc:SearchResultCard HorizontalAlignment="Stretch" Margin="10,7,10,0" DataContext="{Binding}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
