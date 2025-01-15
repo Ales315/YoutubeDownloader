@@ -72,4 +72,4 @@ namespace YoutubeDownloader.UserControls
             DropShadowEffectMainBorder.Opacity = 0.25;
         }
     }
-    }
+}

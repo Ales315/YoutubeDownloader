@@ -60,7 +60,7 @@
             </Border>
             <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                      Height="45" FontSize="16" Margin="0,0,90,0" Padding="5,0,0,0" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource MaterialDesignBody}"
-                     Text="{Binding Url, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding SearchQuery, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                      Style="{x:Null}" CaretBrush="{DynamicResource MaterialDesignBody}"/>
             
             <Border Name="UrlErrorBorder" Panel.ZIndex="-1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Height="20" Margin="1,0,1,0"
@@ -89,7 +89,7 @@
                 <materialDesign:PackIcon Kind="ContentPaste" Foreground="{DynamicResource MaterialDesignBody}" Width="26" Height="26"/>
             </Button>
             <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                    Command="{Binding GetVideoData}" 
+                    Command="{Binding SearchCommand}" 
                     Style="{StaticResource PasteButton}" 
                     Cursor="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToCursorConverter}, ConverterParameter=true}"
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}">
@@ -255,7 +255,8 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <uc:SearchResultCard HorizontalAlignment="Stretch" Margin="10,7,10,0" DataContext="{Binding}"/>
+                            <uc:SearchResultCard x:Name="ResultCard" HorizontalAlignment="Stretch" Margin="10,7,10,0" DataContext="{Binding}"
+                                                 MouseDown="SearchResultCard_MouseDown"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

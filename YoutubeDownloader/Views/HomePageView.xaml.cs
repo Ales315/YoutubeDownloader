@@ -7,6 +7,7 @@ using System.Windows.Media.Animation;
 using MaterialDesignThemes.Wpf;
 using WpfAnimatedGif;
 using YoutubeDownloader.Services;
+using YoutubeDownloader.UserControls;
 using YoutubeDownloader.ViewModels;
 
 namespace YoutubeDownloader.Views
@@ -109,9 +110,14 @@ namespace YoutubeDownloader.Views
         private void OnTextboxInputUrlKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
+            GetVideoData();
+        }
+
+        private void GetVideoData()
+        {
             if (this.DataContext == null) return;
             if (this.DataContext is HomePageViewModel vm)
-                vm.GetVideoData.Execute(null);
+                vm.SearchCommand.Execute(null);
         }
 
         private void buttonPaste_Click(object sender, RoutedEventArgs e)
@@ -135,6 +141,23 @@ namespace YoutubeDownloader.Views
             else
             {
                 controller.Play();
+            }
+        }
+
+        private void SearchResultCard_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var card = ((SearchResultCard)sender).DataContext as SearchResultCardViewModel;
+            if (card == null) return;
+
+            var vm = this.DataContext as HomePageViewModel;
+            if (vm == null) return;
+
+            switch (card.ResultType)
+            {
+                case Enums.SearchResultType.Video:
+                    vm.Url = card.Url;
+                    vm.GetVideoDataCommand.Execute(null);
+                    break;
             }
         }
     }
