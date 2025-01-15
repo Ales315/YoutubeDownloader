@@ -266,7 +266,8 @@ namespace YoutubeDownloader.ViewModels
 
         private void GoHome()
         {
-            ServiceProvider.YoutubeService.GetMetadataCancellationToken.Cancel();
+            ServiceProvider.YoutubeService.GetMetadataCancellationToken?.Cancel();
+            ServiceProvider.YoutubeService.SearchCancellationToken?.Cancel();
             StateHandler.SetUI(AppState.Home);
         }
         private void CancelAutoDownload()
@@ -717,6 +718,7 @@ namespace YoutubeDownloader.ViewModels
             IsAnalizingError = false;
             IsDownloaded = false;
             IsDownloading = false;
+            IsKeywordSearch = false;
 
             switch (state)
             {
@@ -758,6 +760,7 @@ namespace YoutubeDownloader.ViewModels
                     break;
 
                 case AppState.KeywordSearch:
+                    IsSearchOpen = true;
                     IsKeywordSearch = true;
                     break;
             }
