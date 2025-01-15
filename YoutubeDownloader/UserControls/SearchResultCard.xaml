@@ -70,7 +70,8 @@
                            TextTrimming="CharacterEllipsis">
                     <Run Text="{Binding Title}"/>
                 </TextBlock>
-                <TextBlock Name="TextBlockChannelName" TextWrapping="NoWrap" VerticalAlignment="Bottom" MaxWidth="500"
+                <TextBlock Name="TextBlockChannelName" TextWrapping="NoWrap"  MaxWidth="500"
+                           HorizontalAlignment="Left" VerticalAlignment="Bottom"
                            Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7"
                            FontSize="12"
                            Margin="10,0,0,0"
