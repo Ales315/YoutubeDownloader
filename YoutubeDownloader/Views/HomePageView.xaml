@@ -58,7 +58,8 @@
                     CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}"
                     Style="{StaticResource BorderWithShadow}">
             </Border>
-            <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+            <TextBox Name="textboxInputUrl" Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="1"  TextAlignment="Left" VerticalContentAlignment="Center" TextWrapping="NoWrap" AcceptsReturn="False" 
+                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                      Height="45" FontSize="16" Margin="0,0,90,0" Padding="5,0,0,0" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource MaterialDesignBody}"
                      Text="{Binding SearchQuery, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                      Style="{x:Null}" CaretBrush="{DynamicResource MaterialDesignBody}"/>
@@ -100,8 +101,14 @@
                                              Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </Grid>
             </Button>
-            <Label Name="textBlockURLHint" Content="Paste video URL here..." Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" Background="Transparent" VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
-            <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
+            <Label Name="textBlockURLHint" Content="Search by keyword or paste an URL..." 
+                   Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" 
+                   FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.5" Height="45" 
+                   HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0,0,0"
+                   Background="Transparent" 
+                   VerticalContentAlignment="Center" IsHitTestVisible="False"></Label>
+            <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" 
+                       HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
 
             <Border Name="buttonHomeBorder" Panel.ZIndex="0" Grid.Column="0" Grid.ColumnSpan="1" 
                     VerticalAlignment="Center" HorizontalAlignment="Left" Margin="35,0,0,0"
