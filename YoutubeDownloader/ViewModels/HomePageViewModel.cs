@@ -492,15 +492,15 @@ namespace YoutubeDownloader.ViewModels
         {
             try
             {
-                VideoDownloadViewModel newVideoDownload = new VideoDownloadViewModel();
-                newVideoDownload.Title = Title;
-                newVideoDownload.Thumbnail = Thumbnail;
-                newVideoDownload.Duration = Duration;
-                newVideoDownload.AudioStream = AudioStreamSelected;
-                newVideoDownload.VideoStream = VideoStreamSelected;
-                newVideoDownload.DownloadOption = DownloadOptionSelected;
-                newVideoDownload.DownloadFormat = FormatSelected;
-                ServiceProvider.YoutubeService.EnqueueDownload(newVideoDownload);
+                VideoDownloadViewModel newVideoDownloadVM = new VideoDownloadViewModel();
+                newVideoDownloadVM.Title = Title;
+                newVideoDownloadVM.Thumbnail = Thumbnail;
+                newVideoDownloadVM.Duration = Duration;
+                newVideoDownloadVM.AudioStream = AudioStreamSelected;
+                newVideoDownloadVM.VideoStream = VideoStreamSelected;
+                newVideoDownloadVM.DownloadOption = DownloadOptionSelected;
+                newVideoDownloadVM.DownloadFormat = FormatSelected;
+                ServiceProvider.YoutubeService.EnqueueDownload(newVideoDownloadVM);
                 StateHandler.SetUI(AppState.Downloading);
             }
             catch (Exception ex)
