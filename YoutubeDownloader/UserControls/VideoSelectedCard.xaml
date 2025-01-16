@@ -10,7 +10,8 @@
              Name="VideoCard"
              mc:Ignorable="d" Height="auto"
              Background="Transparent" Width="auto"
-             TextOptions.TextRenderingMode="ClearType">
+             TextOptions.TextRenderingMode="ClearType"
+             SnapsToDevicePixels="True">
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
