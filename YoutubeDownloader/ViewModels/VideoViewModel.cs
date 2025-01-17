@@ -242,6 +242,13 @@ namespace YoutubeDownloader.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public VideoViewModel()
+        {
+            DownloadOptionSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
+            FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ?
+                ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
+        }
+
         #region GET METADATA
 
         //Show video data and available streams

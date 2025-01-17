@@ -156,7 +156,7 @@ namespace YoutubeDownloader.Views
             {
                 case Enums.SearchResultType.Video:
                     vm.Url = card.Url;
-                    vm.GetVideoDataCommand.Execute(null);
+                    //vm.GetVideoDataCommand.Execute(null);
                     break;
             }
         }

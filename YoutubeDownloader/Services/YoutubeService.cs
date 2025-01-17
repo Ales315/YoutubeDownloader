@@ -27,6 +27,7 @@ public class YoutubeService
     public CancellationTokenSource SearchCancellationToken = null!;
 
     private Video? _videoData;
+    private Video? _autoDownloadVideoData;
     private Video _video = null!;
     private readonly object _lock = new();
 
@@ -278,5 +279,34 @@ public class YoutubeService
     private string GetVideoDuration(TimeSpan? duration)
     {
         return duration == null ? "Live" : ((TimeSpan)duration).ToString(@"hh\:mm\:ss");
+    }
+
+    internal async Task EnqueueDownloadFromUrl(string url)
+    {
+        Video v = new();
+        v = await GetVideoMetadataAsync(url);
+        v = await GetStreamData(v);
+        EnqueueDownload(CreateDownloadCardViewModel(v));
+    }
+
+    public VideoDownloadViewModel CreateDownloadCardViewModel(object content)
+    {
+        switch (content)
+        {
+            case Video video:
+                VideoDownloadViewModel vm= new();
+                vm.Title = video.Title;
+                vm.Thumbnail = video.Thumbnail;
+                vm.Duration = video.Duration;
+                vm.AudioStream = video.AudioStreams.Last();
+                vm.VideoStream = video.VideoStreams.Last();
+                vm.DownloadOption = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
+                vm.DownloadFormat = vm.DownloadOption == DownloadMediaType.AudioOnly ?
+                    ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
+                return vm;
+
+            //case Playlist
+        }
+        return null!;
     }
 }
