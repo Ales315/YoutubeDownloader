@@ -10,8 +10,9 @@ namespace YoutubeDownloader.ViewModels
     class HomePageViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private string _previousValidUrl = string.Empty;
+        
         public VideoViewModel VideoViewModel;
-
+        
         #region FIELDS
         //data
         private string _searchQuery = string.Empty;
@@ -26,6 +27,7 @@ namespace YoutubeDownloader.ViewModels
 
         //current view
         private AppState _currentState;
+        private ViewModelBase _currentViewModel;
 
         public ObservableCollection<VideoDownloadViewModel> VideoDownloadViewModels
         {
@@ -121,6 +123,15 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(CurrentState));
             }
         }
+        public ViewModelBase CurrentViewModel
+        {
+            get => _currentViewModel;
+            set
+            {
+                _currentViewModel = value;
+                OnPropertyChanged(nameof(CurrentViewModel));
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
@@ -152,8 +163,8 @@ namespace YoutubeDownloader.ViewModels
 
         private async Task GetSearchResults()
         {
-            CurrentState = AppState.KeywordSearchForm;
-
+            SetUI(AppState.KeywordSearchForm);
+            
             //todo: move this to separate Usercontrol vm
             await ServiceProvider.YoutubeService.Search(SearchQuery);
         }
@@ -191,7 +202,7 @@ namespace YoutubeDownloader.ViewModels
             }
             else
             {
-                CurrentState = AppState.VideoDownloadForm;
+                SetUI(AppState.VideoDownloadForm);
                 await VideoViewModel.GetVideoMetadata(url);
             }
         }
@@ -204,11 +215,33 @@ namespace YoutubeDownloader.ViewModels
         {
             ServiceProvider.YoutubeService.GetMetadataCancellationToken?.Cancel();
             ServiceProvider.YoutubeService.SearchCancellationToken?.Cancel();
-            CurrentState = AppState.DownloadListForm;
+            SetUI(AppState.DownloadListForm);
         }
         private void CancelAutoDownload()
         {
             ServiceProvider.YoutubeService.GetMetadataCancellationToken?.Cancel();
+        }
+
+        #endregion
+
+        #region UI
+
+        private void SetUI(AppState state)
+        {
+            switch (state)
+            {
+                case AppState.DownloadListForm:
+                    break;
+                case AppState.VideoDownloadForm:
+                    CurrentViewModel = VideoViewModel;
+                    break;
+                case AppState.PlaylistDownloadForm:
+                    break;
+                case AppState.ChannelForm:
+                    break;
+                case AppState.KeywordSearchForm:
+                    break;
+            }
         }
 
         #endregion
