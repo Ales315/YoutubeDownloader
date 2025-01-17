@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:YoutubeDownloader.Views"
+             xmlns:local="clr-namespace:YoutubeDownloader.UserControls"
              xmlns:uc="clr-namespace:YoutubeDownloader.UserControls"
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
@@ -19,6 +19,12 @@
         <converter:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
         <converter:InvertedBoolToOpacityConverter x:Key="InvertedBoolToOpacityConverter"/>
         <converter:BoolToCursorConverter x:Key="BoolToCursorConverter"/>
+
+        <DataTemplate DataType="{x:Type vm:VideoViewModel}">
+            <local:VideoSelectedCard/>
+        </DataTemplate>
+        
+        
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
         </Style>
@@ -159,7 +165,7 @@
         </Grid>
         
         <!--Current page-->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Panel.ZIndex="10">
             <ContentControl Content="{Binding CurrentViewModel}"/>
         </Grid>
         

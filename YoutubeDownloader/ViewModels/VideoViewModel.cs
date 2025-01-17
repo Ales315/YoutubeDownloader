@@ -265,10 +265,10 @@ namespace YoutubeDownloader.ViewModels
             if (IsLoadingMetadata || IsLoadingStreams)
                 return;
 
-            if (url == _previousValidUrl && IsStreamsFound)
-                if(LoadLastVideoData(url)) 
-                    return;
-
+            //if (url == _previousValidUrl && IsStreamsFound)
+            //    if(LoadLastVideoData(url)) 
+            //        return;
+            ClearCurrentVideoData();
             SetUI(UIState.Loading);
             Video videoData = null!;
             try
@@ -277,7 +277,6 @@ namespace YoutubeDownloader.ViewModels
                 UpdateVideoData(videoData);
 
                 SetUI(UIState.MetadataFound);
-
                 var streamData = await ServiceProvider.YoutubeService.GetStreamData(videoData);
                 UpdateVideoStreamData(streamData);
 
@@ -289,6 +288,7 @@ namespace YoutubeDownloader.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 LoadingError?.Invoke(this, ex.Message);
                 ClearCurrentVideoData();
             }

@@ -59,38 +59,64 @@ public class YoutubeService
     private async Task<Video> GetVideoMetadataAsync(string url)
     {
         GetMetadataCancellationToken = new CancellationTokenSource();
-        var video = await _youtube.Videos.GetAsync(url, GetMetadataCancellationToken.Token);
-        _videoData = new();
+        int retries = 0;
+        while (retries < 3)
+        {
+            try
+            {
+                var video = await _youtube.Videos.GetAsync(url, GetMetadataCancellationToken.Token);
+                _videoData = new();
 
-        Thumbnail thumbnail = ThumbnailExtensions.TryGetWithHighestResolution(video.Thumbnails)!;
-        if (thumbnail == null)
-            thumbnail = video.Thumbnails[0];
+                Thumbnail thumbnail = ThumbnailExtensions.TryGetWithHighestResolution(video.Thumbnails)!;
+                if (thumbnail == null)
+                    thumbnail = video.Thumbnails[0];
 
-        _videoData = new Video();
-        _videoData.Thumbnail = await ThumbnailHelper.BitmapImageFromUrl(thumbnail.Url);
-        _videoData.Url = url;
-        _videoData.Title = video.Title;
-        _videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
-        _videoData.ChannelName = video.Author.ChannelTitle;
-        _videoData.ViewCount = video.Engagement.ViewCount;
-        _videoData.Date = video.UploadDate.Humanize(DateTime.Now, culture: System.Globalization.CultureInfo.CurrentCulture);
+                _videoData = new Video();
+                _videoData.Thumbnail = await ThumbnailHelper.BitmapImageFromUrl(thumbnail.Url);
+                _videoData.Url = url;
+                _videoData.Title = video.Title;
+                _videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
+                _videoData.ChannelName = video.Author.ChannelTitle;
+                _videoData.ViewCount = video.Engagement.ViewCount;
+                _videoData.Date = video.UploadDate.Humanize(DateTime.Now, culture: System.Globalization.CultureInfo.CurrentCulture);
 
-        return _videoData;
+                return _videoData;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errore metadata");
+                if (retries == 2)
+                    throw;
+                retries++;
+            }
+            await Task.Delay(200);
+        }
+        throw new Exception();
     }
     public async Task<Video> GetStreamData(Video videoData)
     {
         GetMetadataCancellationToken = new CancellationTokenSource();
         StreamManifest? streamManifest = null;
-        try
+        int retries = 0;
+        while (retries < 3)
         {
-            streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetMetadataCancellationToken.Token);
+            try
+            {
+                streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetMetadataCancellationToken.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                _videoData = null!;
+                throw;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errore streams");
+                if (retries == 2)
+                    throw;
+                retries++;
+            }
         }
-        catch (OperationCanceledException)
-        {
-            _videoData = null!;
-            throw;
-        }
-
         var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
         var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
             .GroupBy(x => x.VideoResolution.Area)
