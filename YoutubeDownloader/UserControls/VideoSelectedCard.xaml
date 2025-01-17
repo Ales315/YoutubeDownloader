@@ -6,13 +6,14 @@
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:YoutubeDownloader.UserControls"
+             xmlns:uc="clr-namespace:YoutubeDownloader.UserControls"
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels" 
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters" 
              d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
              Name="VideoCard"
              mc:Ignorable="d" 
              Height="auto" Width="auto" MinWidth="700"
-             Background="Blue" 
+             Background="Transparent" 
              TextOptions.TextRenderingMode="ClearType"
              SnapsToDevicePixels="True">
     
@@ -35,190 +36,141 @@
     
     <Grid>
         <!--Video Data-->
-        <Grid>
+        <Grid Visibility="{Binding IsSearchError, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="20"/>
-                <RowDefinition Height="55"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="15"/>
                 <ColumnDefinition Width="15*"/>
                 <ColumnDefinition Width="15"/>
             </Grid.ColumnDefinitions>
+            
             <!--Video Card-->
             <Border Grid.Row="1" Grid.Column="1" Panel.ZIndex="-1"
                     Background="{DynamicResource MaterialDesignBackground}" CornerRadius="8"
-                    Visibility="{Binding StateHandler.IsVideoFound, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Visibility="{Binding IsMetadataFound, Converter={StaticResource BoolToVisibilityConverter}}"
                     Style="{StaticResource BorderWithShadow}">
-            </Border>
+                <Grid Grid.Column="1" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!--Thumbnail with Duration-->
+                    <Border x:Name="borderThumbnail" Grid.Column="0" Grid.Row="1" Width="224" Height="126" Margin="10,10,10,10" CornerRadius="8" BorderThickness="1.5"
+                            VerticalAlignment="Center" HorizontalAlignment="Right" BorderBrush="Red">
+                        <Border.Background>
+                            <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
+                        </Border.Background>
 
-
-            <Grid Grid.Column="1" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <!--Thumbnail with Duration-->
-                <Border x:Name="borderThumbnail" Grid.Column="0" Grid.Row="1" Width="224" Height="126" Margin="10,10,10,10" CornerRadius="8" BorderThickness="1.5"
-                        VerticalAlignment="Center" HorizontalAlignment="Right" BorderBrush="Red">
-                    <Border.Background>
-                        <ImageBrush Stretch="Fill" ImageSource="{Binding Thumbnail}"/>
-                    </Border.Background>
-
-                    <Border Background="Black" Opacity="0.82" Width="auto" Height="auto" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                            CornerRadius="4"
-                            Margin="0,0,6,6">
-                        <TextBlock Name="tbDuration" Text="{Binding Duration}" Opacity="1" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                                   Background="Transparent"
-                                   Foreground="White"
-                                   Width="auto"
-                                   FontSize="15"
-                                   Margin="6,0,6,0"
-                                   Padding="1,0,3,1"
-                                   FontWeight="DemiBold"/>
+                        <Border Background="Black" Opacity="0.82" Width="auto" Height="auto" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                CornerRadius="4"
+                                Margin="0,0,6,6">
+                            <TextBlock Name="tbDuration" Text="{Binding Duration}" Opacity="1" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                       Background="Transparent"
+                                       Foreground="White"
+                                       Width="auto"
+                                       FontSize="15"
+                                       Margin="6,0,6,0"
+                                       Padding="1,0,3,1"
+                                       FontWeight="DemiBold"/>
+                        </Border>
                     </Border>
-                </Border>
 
-                <!--Video Info-->
-                <Grid Grid.Column="1" Width="auto" Background="Transparent" MinWidth="300">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="115"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                    <!--Video Info-->
+                    <Grid Grid.Column="1" Width="auto" Background="Transparent" MinWidth="300">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="115"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Name="tbTitle" Text="{Binding Title}" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0,0,30,0" MaxHeight="55"
-                                   TextWrapping="WrapWithOverflow" 
-                                   Background="Transparent"
-                                   FontSize="18" 
-                                   FontWeight="DemiBold"
-                                   TextTrimming="WordEllipsis"
-                                   ToolTip="{Binding Title}"/>
-                        <TextBlock Name="tbAuthor" Grid.Column="0" Grid.Row="2" Text="{Binding ChannelName}" VerticalAlignment="Top" 
-                                   Background="Transparent"
-                                   FontSize="16"
-                                   Margin="0,8,0,0"/>
-                        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.ColumnSpan="2">
-                            <TextBlock Name="tbViewCount" VerticalAlignment="Center"
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Name="tbTitle" Text="{Binding Title}" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0,0,30,0" MaxHeight="55"
+                                       TextWrapping="WrapWithOverflow" 
+                                       Background="Transparent"
+                                       FontSize="18" 
+                                       FontWeight="DemiBold"
+                                       TextTrimming="WordEllipsis"
+                                       ToolTip="{Binding Title}"/>
+                            <TextBlock Name="tbAuthor" Grid.Column="0" Grid.Row="2" Text="{Binding ChannelName}" VerticalAlignment="Top" 
                                        Background="Transparent"
                                        FontSize="16"
-                                       Margin="0,0,0,0">
-                                <Run Text="{Binding ViewCount, Converter={StaticResource NumberFormatterConverter}}"/>
-                                <Run Text=" Views"/>
-                            </TextBlock>
-                            <Ellipse Width="4" Height="4" Fill="{DynamicResource MaterialDesignBody}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20,0,0,-3"/>
-                            <TextBlock Name="tbDate" HorizontalAlignment="Right" VerticalAlignment="Center" Width="auto"
-                                       Background="Transparent"
-                                       FontSize="16"
-                                       Margin="8,0,0,0">
-                                <Run Text="{Binding Date}"/>
-                            </TextBlock>
-                        </StackPanel>
+                                       Margin="0,8,0,0"/>
+                            <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.ColumnSpan="2">
+                                <TextBlock Name="tbViewCount" VerticalAlignment="Center"
+                                           Background="Transparent"
+                                           FontSize="16"
+                                           Margin="0,0,0,0">
+                                    <Run Text="{Binding ViewCount, Converter={StaticResource NumberFormatterConverter}}"/>
+                                    <Run Text=" Views"/>
+                                </TextBlock>
+                                <Ellipse Width="4" Height="4" Fill="{DynamicResource MaterialDesignBody}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20,0,0,-3"/>
+                                <TextBlock Name="tbDate" HorizontalAlignment="Right" VerticalAlignment="Center" Width="auto"
+                                           Background="Transparent"
+                                           FontSize="16"
+                                           Margin="8,0,0,0">
+                                    <Run Text="{Binding Date}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-
-            <Grid MinWidth="400" MinHeight="80" Width="auto" Grid.Column="1" Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="12"/>
-                    <RowDefinition Height="55"/>
-                    <RowDefinition Height="12"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="25"/>
-                </Grid.ColumnDefinitions>
-
-                <!--DownloadOptions-->
-                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-                    <!--Binding to DownloadType and AudioFormats in code behind with visibility update-->
-                    <ComboBox Name="cbDownloadType" Margin="0,0,10,0" Width="auto" Height="40" 
-                  Style="{DynamicResource MaterialDesignFilledComboBox}"
-                  Foreground="{DynamicResource MaterialDesignBody}"
-                  Background="{DynamicResource MaterialDesignPaper}"
-                  FontSize="14"
-                  VerticalContentAlignment="Center"
-                  Padding="10,10,10,10"
-                  DisplayMemberPath="."/>
-                    <ComboBox Name="cbVideoQuality" Margin="0,0,10,0" MinWidth="80" Height="40" 
-                  Style="{DynamicResource MaterialDesignFilledComboBox}"
-                  Foreground="{DynamicResource MaterialDesignBody}"
-                  Background="{DynamicResource MaterialDesignPaper}"
-                  FontSize="14"
-                  VerticalContentAlignment="Center"
-                  Padding="10,10,10,10"
-                  ItemsSource="{Binding VideoStreams}" 
-                  SelectedItem="{Binding VideoStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
-                  DisplayMemberPath="VideoQuality"/>
-                    <ComboBox Name="cbAudioQuality" Margin="0,0,10,0" MinWidth="105" Height="40" 
-                  Style="{DynamicResource MaterialDesignFilledComboBox}"
-                  Foreground="{DynamicResource MaterialDesignBody}"
-                  Background="{DynamicResource MaterialDesignPaper}"
-                  FontSize="14"
-                  VerticalContentAlignment="Center"
-                  Padding="10,10,10,10"
-                  ItemsSource="{Binding AudioStreams}" 
-                  SelectedItem="{Binding AudioStreamSelected, UpdateSourceTrigger=PropertyChanged}" 
-                  DisplayMemberPath="Bitrate"/>
-                    <ComboBox Name="cbDownloadFormat" Margin="0,0,10,0" MinWidth="60" Height="40" 
-                  Style="{DynamicResource MaterialDesignFilledComboBox}"
-                  Foreground="{DynamicResource MaterialDesignBody}"
-                  Background="{DynamicResource MaterialDesignPaper}"
-                  FontSize="14"
-                  VerticalContentAlignment="Center"
-                  Padding="10,10,10,10"
-                  DisplayMemberPath="."/>
-
-                </StackPanel>
-                <!--Download Button and total size-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" Margin="-35,0,0,0">
-                    <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
-                   Foreground="{DynamicResource MaterialDesignBody}"
-                   Margin="0,0,10,0">
-            <Run Text="{Binding DownloadSize}"/>
-                    </TextBlock>
-                    <Button x:Name="buttonDownload" Style="{StaticResource ActionButton}" Height="45" Width="45" HorizontalAlignment="Right" Margin="0,0,0,0"
-                Command="{Binding DownloadVideo}"
-                Cursor="Hand">
-                        <materialDesign:PackIcon Kind="Download" Foreground="#e9e9e9" Width="26" Height="26"/>
-                    </Button>
-                </StackPanel>
-            </Grid>
+            </Border>
+            
+            
+            <!--Download options Card-->
+            <Border Grid.Row="3" Grid.Column="1" Panel.ZIndex="-1"
+                    Background="{DynamicResource MaterialDesignBackground}" CornerRadius="8"
+                    Visibility="{Binding IsStreamsFound, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Style="{StaticResource BorderWithShadow}">
+                <uc:DownloadOptionsCard 
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+            </Border>
+            
 
             <!--Loading gifs and text-->
             <StackPanel Orientation="Vertical" Panel.ZIndex="1" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Image x:Name="imgLoadingGifVideo"  Width="64" 
                        gif:ImageBehavior.AnimatedSource="/Resources/Gifs/LoadingVideo.gif" gif:ImageBehavior.AnimationSpeedRatio="1.1" gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
-                       Visibility="{Binding IsLoadingMetadata, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                       Visibility="{Binding IsMetadataFound, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
                 <TextBlock Text="Loading video data..."
-                           Visibility="{Binding IsLoadingStreams, Converter={StaticResource BoolToVisibilityConverter}}"
+                           Visibility="{Binding IsMetadataFound, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                            FontSize="16" FontWeight="Bold"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Panel.ZIndex="2" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center">
                 <Image Name="imgLoadingGifStreams"  Width="64" 
                        gif:ImageBehavior.AnimatedSource="/Resources/Gifs/LoadingVideo.gif" gif:ImageBehavior.AnimationSpeedRatio="1.1" 
                        gif:ImageBehavior.AnimateInDesignMode="True" gif:ImageBehavior.AutoStart="True"
-                       Visibility="{Binding IsLoadingStreams, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,0"/>
+                       Visibility="{Binding IsStreamsFound, Converter={StaticResource InvertedBoolToVisibilityConverter}}" Margin="0,-10,0,0"/>
                 <TextBlock Text="Getting streams from source..."
-                           Visibility="{Binding IsLoadingStreams, Converter={StaticResource BoolToVisibilityConverter}}"
+                           Visibility="{Binding IsStreamsFound, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                            FontSize="16" FontWeight="Bold"/>
             </StackPanel>
+            
+            
         </Grid>
+        <!--Video not found or error-->
+        <StackPanel Panel.ZIndex="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Margin="0,0,0,50" 
+            Visibility="{Binding IsSearchError, Converter={StaticResource BoolToVisibilityConverter}}">
+            <materialDesign:PackIcon Kind="VideoOffOutline" Foreground="{DynamicResource MaterialDesignBody}" 
+                                     Width="96" Height="96" Opacity="0.8" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding ErrorMessage}" FontSize="18" FontWeight="DemiBold" Opacity="0.7" Margin="0,10,0,0"/>
+        </StackPanel>
     </Grid>
     
 </UserControl>

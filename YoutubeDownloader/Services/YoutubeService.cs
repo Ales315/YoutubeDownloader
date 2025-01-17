@@ -97,26 +97,16 @@ public class YoutubeService
     {
         GetMetadataCancellationToken = new CancellationTokenSource();
         StreamManifest? streamManifest = null;
-        int retries = 0;
-        while (retries < 3)
+        try
         {
-            try
-            {
-                streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetMetadataCancellationToken.Token);
-            }
-            catch (OperationCanceledException)
-            {
-                _videoData = null!;
-                throw;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Errore streams");
-                if (retries == 2)
-                    throw;
-                retries++;
-            }
+            streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetMetadataCancellationToken.Token);
         }
+        catch (OperationCanceledException)
+        {
+            _videoData = null!;
+            throw;
+        }
+
         var audioStreams = streamManifest.GetAudioOnlyStreams().OrderBy(x => x.Bitrate);
         var videoStreams = streamManifest.GetVideoOnlyStreams().Where(x => x.Container.Name == "mp4")
             .GroupBy(x => x.VideoResolution.Area)

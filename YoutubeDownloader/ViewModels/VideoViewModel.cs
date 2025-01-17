@@ -12,15 +12,18 @@ namespace YoutubeDownloader.ViewModels
 {
     class VideoViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        
         #region FIELDS
 
         //Ui state
-        private bool _isLoadingMetadata = false;
+        private bool _isSearchError = false;
         private bool _isLoadingStreams = false;
         private bool _isMetadataFound = false;
         private bool _isStreamsFound = false;
 
+
         //Video data & stats
+        private string _errorMessage = string.Empty;
         private string _title = string.Empty;
         private string _channelName = string.Empty;
         private string _duration = string.Empty;
@@ -111,6 +114,16 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(ViewCount));
             }
         }
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                if (_errorMessage == value) return;
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
 
         //Download data
         public IEnumerable<VideoOnlyStreamInfo> VideoStreams
@@ -186,29 +199,19 @@ namespace YoutubeDownloader.ViewModels
         }
 
         //Ui state
-        public bool IsLoadingMetadata
+        public bool IsSearchError
         {
-            get => _isLoadingMetadata;
+            get => _isSearchError;
             set
             {
-                if (_isLoadingMetadata == value) return;
-                _isLoadingMetadata = value;
-                OnPropertyChanged(nameof(IsLoadingMetadata));
-            }
-        }
-        public bool IsLoadingStreams
-        {
-            get => _isLoadingStreams;
-            set
-            {
-                if (_isLoadingStreams == value) return;
-                _isLoadingStreams = value;
-                OnPropertyChanged(nameof(IsLoadingStreams));
+                if (_isSearchError == value) return;
+                _isSearchError = value;
+                OnPropertyChanged(nameof(IsSearchError));
             }
         }
         public bool IsMetadataFound
         {
-            get => _isLoadingMetadata;
+            get => _isMetadataFound;
             set
             {
                 if (_isMetadataFound == value) return;
@@ -231,7 +234,7 @@ namespace YoutubeDownloader.ViewModels
         #endregion
 
         private string _previousValidUrl = string.Empty;
-        
+        private UIState _currentState;
         public string Url { get; set; } = string.Empty;
         public event EventHandler<string>? LoadingError;
         public event EventHandler? DownloadStarted;
@@ -247,6 +250,8 @@ namespace YoutubeDownloader.ViewModels
             DownloadOptionSelected = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
             FormatSelected = DownloadOptionSelected == DownloadMediaType.AudioOnly ?
                 ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
+
+            _currentState = UIState.Idle;
         }
 
         #region GET METADATA
@@ -262,7 +267,7 @@ namespace YoutubeDownloader.ViewModels
 
         public async Task GetVideoMetadata(string url)
         {
-            if (IsLoadingMetadata || IsLoadingStreams)
+            if(_currentState != UIState.Idle) 
                 return;
 
             //if (url == _previousValidUrl && IsStreamsFound)
@@ -288,10 +293,12 @@ namespace YoutubeDownloader.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ErrorMessage = ex.Message;
+                SetUI(UIState.SearchError);
                 LoadingError?.Invoke(this, ex.Message);
                 ClearCurrentVideoData();
             }
+            _currentState = UIState.Idle;
         }
 
         private void ClearCurrentVideoData()
@@ -371,10 +378,19 @@ namespace YoutubeDownloader.ViewModels
                     break;
 
                 case UIState.Loading:
+                    IsSearchError = false;
                     IsStreamsFound = false;
                     IsMetadataFound = false;
                     break;
+
+                case UIState.SearchError:
+                    IsStreamsFound = false;
+                    IsMetadataFound = false;
+                    IsSearchError = true;
+                    break;
             }
+            _currentState = state;
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void CalculateDownloadSize()
@@ -411,9 +427,11 @@ namespace YoutubeDownloader.ViewModels
 
         private enum UIState
         {
+            Idle,
             Loading,
             MetadataFound,
             StreamsFound,
+            SearchError
         }
 
         public void Invalidate()
