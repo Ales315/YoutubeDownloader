@@ -46,7 +46,7 @@
         <Border Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}"></Border>
         <Border Grid.Row="2" Background="{DynamicResource MaterialDesignPaper}"></Border>
 
-        <!--URL Bar-->
+        <!--Top section: Search Bar & buttons-->
         <Grid Grid.Row="0" Panel.ZIndex="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -54,6 +54,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
+            <!--Search bar-->
             <Border Name="UrlBarBorder" Panel.ZIndex="0" Grid.Column="1" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="45"
                     CornerRadius="8" BorderThickness="2" BorderBrush="Transparent" Background="{DynamicResource MaterialDesignBackground}"
                     Style="{StaticResource BorderWithShadow}">
@@ -75,15 +76,6 @@
                     <Run Text="{Binding ErrorMessage}"/>
                 </TextBlock>
             </Border>
-
-            <TextBlock Panel.ZIndex="-1" Grid.Column="1" Grid.ColumnSpan="1" Height="20"
-                       Margin="10,0,10,1" Width="auto" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
-                       Opacity="0.5" Foreground="{DynamicResource MaterialDesignBody}" 
-                       FontSize="14" FontWeight="DemiBold"
-                       VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                <Run Text="{Binding AutoDownloadStatus}"/>
-            </TextBlock>
-
             <Button x:Name="buttonPaste" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,52,0"  Click="buttonPaste_Click" 
                     Style="{StaticResource PasteButton}"
                     ToolTip="Paste">
@@ -96,9 +88,9 @@
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}">
                 <Grid>
                     <materialDesign:PackIcon Name="iconSearchDownload" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
-                                             Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
+                                 Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
                     <materialDesign:PackIcon Name="iconLoadingAutoDownload" Kind="Sync" Width="28" Height="28"
-                                             Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                 Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </Grid>
             </Button>
             <Label Name="textBlockURLHint" Content="Search by keyword or paste an URL..." 
@@ -110,6 +102,16 @@
             <Rectangle Panel.ZIndex="4" Fill="{DynamicResource MaterialDesignBody}" Grid.Column="1" Grid.ColumnSpan="1" 
                        HorizontalAlignment="Right" VerticalAlignment="Center" Width="1" Height="30" Margin="0,0,49,0"/>
 
+            <!--Auto download status-->
+            <TextBlock Panel.ZIndex="-1" Grid.Column="1" Grid.ColumnSpan="1" Height="20"
+                       Margin="10,0,10,1" Width="auto" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
+                       Opacity="0.5" Foreground="{DynamicResource MaterialDesignBody}" 
+                       FontSize="14" FontWeight="DemiBold"
+                       VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <Run Text="{Binding AutoDownloadStatus}"/>
+            </TextBlock>
+
+            <!--Button Home-->
             <Border Name="buttonHomeBorder" Panel.ZIndex="0" Grid.Column="0" Grid.ColumnSpan="1" 
                     VerticalAlignment="Center" HorizontalAlignment="Left" Margin="35,0,0,0"
                     Height="45" Width="50"
@@ -126,8 +128,8 @@
                                              Opacity="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToOpacityConverter}}"/>
                 </Button>
             </Border>
-            
 
+            <!--Button Cancel auto download-->
             <Button x:Name="buttonCancelAutoDownload" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45"
                     HorizontalAlignment="Left" VerticalAlignment="Center"
                     Style="{StaticResource PasteButton}" 
@@ -136,6 +138,8 @@
                     Command="{Binding CancelAutoDownloadCommand}">
                 <materialDesign:PackIcon Kind="CloseCircle" Foreground="{DynamicResource MaterialDesignPrimaryBrush}" Width="28" Height="28"/>
             </Button>
+            
+            <!--Button Settings-->
             <Border Name="buttonSettingsBorder" Panel.ZIndex="0" Grid.Column="2" Grid.ColumnSpan="1" 
                     VerticalAlignment="Center" HorizontalAlignment="Right" 
                     Height="45" Width="50"
@@ -153,8 +157,14 @@
                 </Button>
             </Border>
         </Grid>
-
-        <!--Video Card, Download Options-->
+        
+        <!--Current page-->
+        <Grid Grid.Row="1">
+            <ContentControl Content="{Binding CurrentViewModel}"/>
+        </Grid>
+        
+        
+        <!--Video Card & Download Options-->
         <Grid Grid.Row="1" Visibility="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
@@ -244,6 +254,7 @@
                                      Panel.ZIndex="2" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
 
+        <!--Keyword search-->
         <Grid Panel.ZIndex="4" Grid.Row="1" Visibility="{Binding StateHandler.IsKeywordSearch, Converter={StaticResource BoolToVisibilityConverter}}">
             <Border Margin="10,10,10,10" Background="Transparent">
                 <ListView x:Name="SearchListView" ItemsSource="{Binding SearchResultViewModels}" HorizontalContentAlignment="Stretch"
