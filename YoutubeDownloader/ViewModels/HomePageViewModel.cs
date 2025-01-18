@@ -12,6 +12,7 @@ namespace YoutubeDownloader.ViewModels
         private string _previousValidUrl = string.Empty;
         
         public VideoViewModel VideoViewModel;
+        public DownloadListViewModel DownloadListViewModel;
         
         #region FIELDS
         //data
@@ -143,12 +144,9 @@ namespace YoutubeDownloader.ViewModels
         public HomePageViewModel()
         {
             VideoViewModel = new VideoViewModel();
-            //VideoViewModel.DownloadStarted += OnVideoVMDownloadStarted;
-
-            //VideoDownloadViewModels.CollectionChanged += (s, e) =>
-            //{
-            //    StateHandler.IsDownloadListEmpty = VideoDownloadViewModels.Count == 0;
-            //};
+            DownloadListViewModel = new DownloadListViewModel();
+            SetUI(AppState.DownloadListForm);
+            VideoViewModel.DownloadStarted += (s,e) => SetUI(AppState.DownloadListForm);
         }
 
         #region SEARCH
@@ -231,6 +229,7 @@ namespace YoutubeDownloader.ViewModels
             switch (state)
             {
                 case AppState.DownloadListForm:
+                    CurrentViewModel = DownloadListViewModel;
                     break;
                 case AppState.VideoDownloadForm:
                     CurrentViewModel = VideoViewModel;
