@@ -26,6 +26,9 @@
         <DataTemplate DataType="{x:Type vm:DownloadListViewModel}">
             <local:DownloadListUC/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:KeywordSearchViewModel}">
+            <local:KeywordSearchUC/>
+        </DataTemplate>
 
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
@@ -169,34 +172,6 @@
         <!--Current page-->
         <Grid Grid.Row="1" Panel.ZIndex="10">
             <ContentControl Content="{Binding CurrentViewModel}"/>
-        </Grid>
-        
-
-        <!--Keyword search-->
-        <Grid Panel.ZIndex="4" Grid.Row="1" Visibility="{Binding StateHandler.IsKeywordSearch, Converter={StaticResource BoolToVisibilityConverter}}">
-            <Border Margin="10,10,10,10" Background="Transparent">
-                <ListView x:Name="SearchListView" ItemsSource="{Binding SearchResultViewModels}" HorizontalContentAlignment="Stretch"
-                  Style="{StaticResource MaterialDesignCardsListBox}" 
-                  Background="{DynamicResource MaterialDesignPaper}">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListViewItem">
-                                        <ContentPresenter />
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <uc:SearchResultCard x:Name="ResultCard" HorizontalAlignment="Stretch" Margin="10,7,10,0" DataContext="{Binding}"
-                                                 MouseDown="SearchResultCard_MouseDown"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Border>
         </Grid>
     </Grid>
 </UserControl>

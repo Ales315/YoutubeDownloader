@@ -37,6 +37,7 @@ namespace YoutubeDownloader.ViewModels
 
         public DownloadListViewModel()
         {
+            IsDownloadListEmpty = VideoDownloadViewModels.Count == 0;
             VideoDownloadViewModels.CollectionChanged += (s, e) =>
             {
                 IsDownloadListEmpty = VideoDownloadViewModels.Count == 0;

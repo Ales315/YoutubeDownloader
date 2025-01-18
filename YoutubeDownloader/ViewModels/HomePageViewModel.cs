@@ -10,9 +10,11 @@ namespace YoutubeDownloader.ViewModels
     class HomePageViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private string _previousValidUrl = string.Empty;
+        private string _keywordSearchReservedUrl = string.Empty;
         
         public VideoViewModel VideoViewModel;
         public DownloadListViewModel DownloadListViewModel;
+        public KeywordSearchViewModel KeywordSearchViewModel;
         
         #region FIELDS
         //data
@@ -28,7 +30,7 @@ namespace YoutubeDownloader.ViewModels
 
         //current view
         private AppState _currentState;
-        private ViewModelBase _currentViewModel;
+        private ViewModelBase _currentViewModel = null!;
 
         public ObservableCollection<VideoDownloadViewModel> VideoDownloadViewModels
         {
@@ -141,13 +143,19 @@ namespace YoutubeDownloader.ViewModels
         }
         #endregion
 
+
         public HomePageViewModel()
         {
             VideoViewModel = new VideoViewModel();
             DownloadListViewModel = new DownloadListViewModel();
+            KeywordSearchViewModel = new KeywordSearchViewModel();
             SetUI(AppState.DownloadListForm);
+
             VideoViewModel.DownloadStarted += (s,e) => SetUI(AppState.DownloadListForm);
+            KeywordSearchViewModel.VideoSearchResultClicked += async (s,e) => { await GetVideoMetadata(e); };
+            //todo: implement other events
         }
+
 
         #region SEARCH
 
@@ -239,6 +247,7 @@ namespace YoutubeDownloader.ViewModels
                 case AppState.ChannelForm:
                     break;
                 case AppState.KeywordSearchForm:
+                    CurrentViewModel = KeywordSearchViewModel;
                     break;
             }
         }

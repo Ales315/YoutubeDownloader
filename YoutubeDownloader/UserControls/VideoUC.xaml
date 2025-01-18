@@ -138,8 +138,7 @@
                     Background="{DynamicResource MaterialDesignBackground}" CornerRadius="8"
                     Visibility="{Binding IsStreamsFound, Converter={StaticResource BoolToVisibilityConverter}}"
                     Style="{StaticResource BorderWithShadow}">
-                <uc:DownloadOptionsCard 
-                                        HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+                <uc:DownloadOptionsCard HorizontalAlignment="Stretch" VerticalAlignment="Top" />
             </Border>
             
 
