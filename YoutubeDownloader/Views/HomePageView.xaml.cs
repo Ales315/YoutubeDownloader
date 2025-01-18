@@ -8,7 +8,7 @@ using MaterialDesignThemes.Wpf;
 using WpfAnimatedGif;
 using YoutubeDownloader.Services;
 using YoutubeDownloader.UserControls;
-using YoutubeDownloader.ViewModels;
+using YoutubeDownloader.ViewModels.UserControl;
 
 namespace YoutubeDownloader.Views
 {

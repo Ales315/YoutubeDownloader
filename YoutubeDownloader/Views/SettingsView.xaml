@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:YoutubeDownloader.Views"
              xmlns:uc="clr-namespace:YoutubeDownloader.UserControls"
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
-             xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
+             xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600"
              Background="Transparent"

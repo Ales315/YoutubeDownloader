@@ -5,8 +5,9 @@ using System.Windows.Input;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Services;
+using YoutubeDownloader.ViewModels.Card;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.UserControl
 {
     class KeywordSearchViewModel : ViewModelBase, INotifyPropertyChanged
     {
@@ -83,7 +84,7 @@ namespace YoutubeDownloader.ViewModels
             IsVideosChecked = true;
             IsPlaylistsChecked = true;
             IsChannelsChecked = true;
-            
+
             FilteredSearchResultViewModels = CollectionViewSource.GetDefaultView(SearchResultViewModels);
             FilteredSearchResultViewModels.Filter = FilterResults;
             //SearchResultViewModels.CollectionChanged += (s, e) => FilteredSearchResultViewModels.Refresh();

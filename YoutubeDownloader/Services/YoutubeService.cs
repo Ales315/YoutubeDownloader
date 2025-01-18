@@ -10,7 +10,7 @@ using Humanizer;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
-using YoutubeDownloader.ViewModels;
+using YoutubeDownloader.ViewModels.Card;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Converter;
@@ -21,7 +21,7 @@ public class YoutubeService
 {
     private YoutubeClient _youtube;
 
-    private ConcurrentQueue<VideoDownloadViewModel> _downloadQueue;
+    private ConcurrentQueue<VideoDownloadCardViewModel> _downloadQueue;
     public CancellationTokenSource DownloadCancellationToken = null!;
     public CancellationTokenSource GetMetadataCancellationToken = null!;
     public CancellationTokenSource SearchCancellationToken = null!;
@@ -34,13 +34,13 @@ public class YoutubeService
     private bool _busy;
     private string _lastQuery = string.Empty;
 
-    public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new();
+    public ObservableCollection<VideoDownloadCardViewModel> DownloadList { get; internal set; } = new();
     public ObservableCollection<SearchResultCardViewModel> SearchResultViewModels { get; set; } = new();
 
     public YoutubeService()
     {
         _youtube = new YoutubeClient();
-        _downloadQueue = new ConcurrentQueue<VideoDownloadViewModel>();
+        _downloadQueue = new ConcurrentQueue<VideoDownloadCardViewModel>();
     }
     public async Task<Video> GetVideoAsync(string url)
     {
@@ -129,7 +129,7 @@ public class YoutubeService
 
     #region DOWNLOAD
 
-    public void EnqueueDownload(VideoDownloadViewModel video)
+    public void EnqueueDownload(VideoDownloadCardViewModel video)
     {
         string format = (Enum.GetName(typeof(DownloadFormat), video.DownloadFormat) ?? "WEBM").ToLower();
         string sanitizedTitle = SanitizeString(video.Title);
@@ -215,7 +215,7 @@ public class YoutubeService
         return true;
     }
 
-    public async Task DownloadVideo(VideoDownloadViewModel video, CancellationToken cancellationToken)
+    public async Task DownloadVideo(VideoDownloadCardViewModel video, CancellationToken cancellationToken)
     {
         IStreamInfo[] streamInfo = [];
         ConversionRequestBuilder conversionBuilder;
@@ -305,12 +305,12 @@ public class YoutubeService
         EnqueueDownload(CreateDownloadCardViewModel(v));
     }
 
-    public VideoDownloadViewModel CreateDownloadCardViewModel(object content)
+    public VideoDownloadCardViewModel CreateDownloadCardViewModel(object content)
     {
         switch (content)
         {
             case Video video:
-                VideoDownloadViewModel vm= new();
+                VideoDownloadCardViewModel vm= new();
                 vm.Title = video.Title;
                 vm.Thumbnail = video.Thumbnail;
                 vm.Duration = video.Duration;

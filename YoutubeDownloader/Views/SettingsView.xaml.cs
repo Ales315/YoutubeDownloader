@@ -4,7 +4,7 @@ using System.Windows.Data;
 using Microsoft.Win32;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Services;
-using YoutubeDownloader.ViewModels;
+using YoutubeDownloader.ViewModels.Views;
 
 namespace YoutubeDownloader.Views
 {

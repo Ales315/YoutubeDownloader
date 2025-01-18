@@ -4,18 +4,19 @@ using System.Windows.Input;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Services;
+using YoutubeDownloader.ViewModels.Card;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.UserControl
 {
     class HomePageViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private string _previousValidUrl = string.Empty;
         private string _keywordSearchReservedUrl = string.Empty;
-        
+
         public VideoViewModel VideoViewModel;
         public DownloadListViewModel DownloadListViewModel;
         public KeywordSearchViewModel KeywordSearchViewModel;
-        
+
         #region FIELDS
         //data
         private string _searchQuery = string.Empty;
@@ -32,7 +33,7 @@ namespace YoutubeDownloader.ViewModels
         private AppState _currentState;
         private ViewModelBase _currentViewModel = null!;
 
-        public ObservableCollection<VideoDownloadViewModel> VideoDownloadViewModels
+        public ObservableCollection<VideoDownloadCardViewModel> VideoDownloadViewModels
         {
             get => ServiceProvider.YoutubeService.DownloadList;
         }
@@ -98,7 +99,7 @@ namespace YoutubeDownloader.ViewModels
         {
             get
             {
-                return _cancelAutoDownloadCommand ?? new RelayCommand(param => this.CancelAutoDownload());
+                return _cancelAutoDownloadCommand ?? new RelayCommand(param => CancelAutoDownload());
             }
         }
 
@@ -109,7 +110,7 @@ namespace YoutubeDownloader.ViewModels
                 if (_goHomeCommand == null)
                 {
                     _goHomeCommand = new RelayCommand(
-                        param => this.GoHome()
+                        param => GoHome()
                     );
                 }
                 return _goHomeCommand;
@@ -151,8 +152,8 @@ namespace YoutubeDownloader.ViewModels
             KeywordSearchViewModel = new KeywordSearchViewModel();
             SetUI(AppState.DownloadListForm);
 
-            VideoViewModel.DownloadStarted += (s,e) => SetUI(AppState.DownloadListForm);
-            KeywordSearchViewModel.VideoSearchResultClicked += async (s,e) => { await GetVideoMetadata(e); };
+            VideoViewModel.DownloadStarted += (s, e) => SetUI(AppState.DownloadListForm);
+            KeywordSearchViewModel.VideoSearchResultClicked += async (s, e) => { await GetVideoMetadata(e); };
             //todo: implement other events
         }
 
@@ -170,7 +171,7 @@ namespace YoutubeDownloader.ViewModels
         private async Task GetSearchResults()
         {
             SetUI(AppState.KeywordSearchForm);
-            
+
             //todo: move this to separate Usercontrol vm
             await ServiceProvider.YoutubeService.Search(SearchQuery);
         }

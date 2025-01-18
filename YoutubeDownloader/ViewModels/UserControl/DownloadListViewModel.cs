@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using YoutubeDownloader.Services;
+using YoutubeDownloader.ViewModels.Card;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.UserControl
 {
     class DownloadListViewModel : ViewModelBase, INotifyPropertyChanged
     {
@@ -21,7 +22,7 @@ namespace YoutubeDownloader.ViewModels
                 OnPropertyChanged(nameof(IsDownloadListEmpty));
             }
         }
-        public ObservableCollection<VideoDownloadViewModel> VideoDownloadViewModels
+        public ObservableCollection<VideoDownloadCardViewModel> VideoDownloadViewModels
         {
             get => ServiceProvider.YoutubeService.DownloadList;
         }

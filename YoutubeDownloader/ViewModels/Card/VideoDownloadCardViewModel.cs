@@ -9,9 +9,9 @@ using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Services;
 using YoutubeExplode.Videos.Streams;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.Card
 {
-    public class VideoDownloadViewModel : INotifyPropertyChanged
+    public class VideoDownloadCardViewModel : INotifyPropertyChanged
     {
         private double _progress;
         private bool _isDownloading = false;

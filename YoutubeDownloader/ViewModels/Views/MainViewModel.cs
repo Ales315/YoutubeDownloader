@@ -2,8 +2,9 @@
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
 using YoutubeDownloader.Services;
+using YoutubeDownloader.ViewModels.UserControl;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.Views
 {
     class MainViewModel : ObservableObject
     {
@@ -18,7 +19,7 @@ namespace YoutubeDownloader.ViewModels
         {
             SettingsViewModel = new();
             _homeViewModel = new();
-            SettingsViewModel.IsVisibleChanged += (s,e) => ((HomePageViewModel)CurrentPageViewModel).VideoViewModel.Invalidate();
+            SettingsViewModel.IsVisibleChanged += (s, e) => ((HomePageViewModel)CurrentPageViewModel).VideoViewModel.Invalidate();
             CurrentPageViewModel = _homeViewModel;
             //PageViewModels.Add(_homeViewModel);
         }
@@ -36,7 +37,7 @@ namespace YoutubeDownloader.ViewModels
         {
             get
             {
-                return _changeSettingsVisibilityCommand ?? new RelayCommand(param => this.ChangeVisibility());
+                return _changeSettingsVisibilityCommand ?? new RelayCommand(param => ChangeVisibility());
             }
         }
 

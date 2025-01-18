@@ -6,13 +6,14 @@ using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
 using YoutubeDownloader.Services;
+using YoutubeDownloader.ViewModels.Card;
 using YoutubeExplode.Videos.Streams;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.UserControl
 {
     class VideoViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        
+
         #region FIELDS
 
         //Ui state
@@ -194,7 +195,7 @@ namespace YoutubeDownloader.ViewModels
         {
             get
             {
-                return _downloadVideo ?? new RelayCommand(param => this.Download());
+                return _downloadVideo ?? new RelayCommand(param => Download());
             }
         }
 
@@ -267,7 +268,7 @@ namespace YoutubeDownloader.ViewModels
 
         public async Task GetVideoMetadata(string url)
         {
-            if(_currentState != UIState.Idle) 
+            if (_currentState != UIState.Idle)
                 return;
 
             //if (url == _previousValidUrl && IsStreamsFound)
@@ -346,7 +347,7 @@ namespace YoutubeDownloader.ViewModels
         {
             try
             {
-                VideoDownloadViewModel newVideoDownloadVM = new VideoDownloadViewModel();
+                VideoDownloadCardViewModel newVideoDownloadVM = new VideoDownloadCardViewModel();
                 newVideoDownloadVM.Title = Title;
                 newVideoDownloadVM.Thumbnail = Thumbnail;
                 newVideoDownloadVM.Duration = Duration;
