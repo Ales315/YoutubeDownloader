@@ -4,7 +4,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using WpfAnimatedGif;
 using YoutubeDownloader.Services;
-using YoutubeDownloader.ViewModels;
+using YoutubeDownloader.ViewModels.Card;
+using YoutubeDownloader.ViewModels.UserControl;
 
 namespace YoutubeDownloader.UserControls
 {

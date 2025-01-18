@@ -7,7 +7,6 @@
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels" 
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
              Name="VideoCard"
              mc:Ignorable="d" Height="auto"
              Background="Transparent" Width="auto"

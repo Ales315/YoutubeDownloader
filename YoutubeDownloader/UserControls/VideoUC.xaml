@@ -55,7 +55,8 @@
                     Background="{DynamicResource MaterialDesignBackground}" CornerRadius="8"
                     Visibility="{Binding IsMetadataFound, Converter={StaticResource BoolToVisibilityConverter}}"
                     Style="{StaticResource BorderWithShadow}">
-                <Grid Grid.Column="1" Grid.Row="1">
+            </Border>
+            <Grid Grid.Column="1" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250"/>
                         <ColumnDefinition/>
@@ -130,7 +131,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
-            </Border>
+            
             
             
             <!--Download options Card-->
