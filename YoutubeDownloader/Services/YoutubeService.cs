@@ -29,6 +29,8 @@ public class YoutubeService
 
     public event EventHandler<string>? DirectDownloadStatus;
 
+    public double MeanProgress;
+
     private Video? _videoData;
     private Video? _autoDownloadVideoData;
     private Video _video = null!;

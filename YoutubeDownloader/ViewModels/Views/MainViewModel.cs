@@ -1,7 +1,9 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
 using YoutubeDownloader.Services;
+using YoutubeDownloader.ViewModels.Card;
 using YoutubeDownloader.ViewModels.UserControl;
 
 namespace YoutubeDownloader.ViewModels.Views
@@ -14,6 +16,10 @@ namespace YoutubeDownloader.ViewModels.Views
         private List<ViewModelBase> _pageViewModels = null!;
         private SettingsViewModel _settingsViewModel = null!;
         private HomePageViewModel _homeViewModel = null!;
+        private string _progressText = string.Empty;
+        private double _meanProgress;
+
+        public ObservableCollection<VideoDownloadCardViewModel> Downloads { get => ServiceProvider.YoutubeService.DownloadList; }
 
         public MainViewModel()
         {
@@ -22,7 +28,21 @@ namespace YoutubeDownloader.ViewModels.Views
             SettingsViewModel.IsVisibleChanged += (s, e) => ((HomePageViewModel)CurrentPageViewModel).VideoVM.Invalidate();
             CurrentPageViewModel = _homeViewModel;
             //PageViewModels.Add(_homeViewModel);
+
+            Downloads.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems == null) return;
+                foreach (VideoDownloadCardViewModel d in e.NewItems)
+                {
+                    d.PropertyChanged += (s, e) =>
+                    {
+                        if (e.PropertyName == nameof(VideoDownloadCardViewModel.Progress))
+                            OnPropertyChanged(nameof(MeanProgress));
+                    };
+                };
+            };
         }
+
 
         public ICommand ChangePageCommand
         {
@@ -38,6 +58,28 @@ namespace YoutubeDownloader.ViewModels.Views
             get
             {
                 return _changeSettingsVisibilityCommand ?? new RelayCommand(param => ChangeVisibility());
+            }
+        }
+
+        public string ProgressText
+        {
+            get => _progressText;
+            set
+            {
+                _progressText = value;
+                OnPropertyChanged(nameof(ProgressText));
+            }
+        }
+        public double MeanProgress
+        {
+            get
+            {
+                double p = Downloads.Any() ? Downloads.Average(d => d.Progress) : 0;
+                if (p == 1)
+                    ProgressText = $"All downloads completed ✓";
+                else
+                    ProgressText = $"Dowloading {Downloads.Where(d => d.IsDownloading == true).Count()}/{Downloads.Count}";
+                return p;
             }
         }
 
