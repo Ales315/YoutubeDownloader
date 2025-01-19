@@ -99,7 +99,7 @@
             <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Command="{Binding SearchCommand}" 
                     Style="{StaticResource PasteButton}" 
-                    Cursor="{Binding StateHandler.IsAnalizing, Converter={StaticResource BoolToCursorConverter}, ConverterParameter=true}"
+                    Cursor="Hand"
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}">
                 <Grid>
                     <materialDesign:PackIcon Name="iconSearchDownload" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
@@ -137,13 +137,23 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                         Command="{Binding GoHomeCommand}" 
                         Style="{StaticResource PasteButton}" 
-                        IsEnabled="{Binding StateHandler.IsSearchOpen}"
+                        IsEnabled="{Binding IsHome, Converter={StaticResource InvertBooleanConverter}}"
                         ToolTip="Home">
                     <materialDesign:PackIcon Name="iconHome" Kind="Home" Foreground="{DynamicResource MaterialDesignBody}" 
                                              Width="28" Height="28" HorizontalAlignment="Center"
-                                             Opacity="{Binding StateHandler.IsSearchOpen, Converter={StaticResource BoolToOpacityConverter}}"/>
+                                             Opacity="{Binding IsHome, Converter={StaticResource InvertedBoolToOpacityConverter}}"/>
                 </Button>
             </Border>
+
+            <Button x:Name="buttonBack" Panel.ZIndex="3" Grid.Column="0" Grid.ColumnSpan="1" Width="45" Height="45"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Margin="85,0,0,0"
+                        Command="{Binding GoBackCommand}" 
+                        Style="{StaticResource PasteButton}" 
+                        Visibility="{Binding IsBackEnabled, Converter={StaticResource BoolToVisibilityConverter}}"
+                        ToolTip="Home">
+                <materialDesign:PackIcon Name="iconBack" Kind="ArrowULeftTop" Foreground="{DynamicResource MaterialDesignBody}" 
+                                 Width="28" Height="28" HorizontalAlignment="Center"/>
+            </Button>
 
             <!--Button Cancel auto download-->
             <Button x:Name="buttonCancelAutoDownload" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45"
