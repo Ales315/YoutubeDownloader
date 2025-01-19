@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels"
+        xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels.Views"
         xmlns:local="clr-namespace:YoutubeDownloader"
         xmlns:uc="clr-namespace:YoutubeDownloader.UserControls" 
         xmlns:converter="clr-namespace:YoutubeDownloader.Converters"
@@ -81,6 +81,26 @@
                        FontSize="14" Opacity="0.2"/>
             <TextBlock Name="tbVersion" Foreground="{DynamicResource MaterialDesignBody}"
                        FontSize="14" Margin="2,0,0,0" Opacity="0.2"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,-10,25,0">
+            <TextBlock TextWrapping="NoWrap" VerticalAlignment="Center"
+                       Text="{Binding ProgressText}"
+                       Foreground="{DynamicResource MaterialDesignBody}"
+                       FontSize="13"
+                       Margin="0,0,5,0"
+                       Opacity="0.6">
+            </TextBlock>
+
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
+                         Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
+                         Value="{Binding MeanProgress, Mode=OneWay}" 
+                         IsIndeterminate="False" Maximum="1" Foreground="Green"
+                         Width="13" Margin="0,0,0,-11" Opacity="0.7">
+                <ProgressBar.LayoutTransform>
+                    <ScaleTransform CenterX="0.8" CenterY="0.8" ScaleX="1.5" ScaleY="1.5" />
+                </ProgressBar.LayoutTransform>
+            </ProgressBar>
         </StackPanel>
     </Grid>
 

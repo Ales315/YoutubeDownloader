@@ -10,7 +10,7 @@ using Humanizer;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Models;
-using YoutubeDownloader.ViewModels;
+using YoutubeDownloader.ViewModels.Card;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Converter;
@@ -21,25 +21,31 @@ public class YoutubeService
 {
     private YoutubeClient _youtube;
 
-    private ConcurrentQueue<VideoDownloadViewModel> _downloadQueue;
+    private ConcurrentQueue<VideoDownloadCardViewModel> _downloadQueue;
     public CancellationTokenSource DownloadCancellationToken = null!;
     public CancellationTokenSource GetMetadataCancellationToken = null!;
+    public CancellationTokenSource GetStreamsCancellationToken = null!;
     public CancellationTokenSource SearchCancellationToken = null!;
 
+    public event EventHandler<string>? DirectDownloadStatus;
+
+    public double MeanProgress;
+
     private Video? _videoData;
+    private Video? _autoDownloadVideoData;
     private Video _video = null!;
     private readonly object _lock = new();
 
     private bool _busy;
     private string _lastQuery = string.Empty;
 
-    public ObservableCollection<VideoDownloadViewModel> DownloadList { get; internal set; } = new();
+    public ObservableCollection<VideoDownloadCardViewModel> DownloadList { get; internal set; } = new();
     public ObservableCollection<SearchResultCardViewModel> SearchResultViewModels { get; set; } = new();
 
     public YoutubeService()
     {
         _youtube = new YoutubeClient();
-        _downloadQueue = new ConcurrentQueue<VideoDownloadViewModel>();
+        _downloadQueue = new ConcurrentQueue<VideoDownloadCardViewModel>();
     }
     public async Task<Video> GetVideoAsync(string url)
     {
@@ -58,31 +64,47 @@ public class YoutubeService
     private async Task<Video> GetVideoMetadataAsync(string url)
     {
         GetMetadataCancellationToken = new CancellationTokenSource();
-        var video = await _youtube.Videos.GetAsync(url, GetMetadataCancellationToken.Token);
-        _videoData = new();
+        int retries = 0;
+        while (retries < 3)
+        {
+            try
+            {
+                var video = await _youtube.Videos.GetAsync(url, GetMetadataCancellationToken.Token);
+                _videoData = new();
 
-        Thumbnail thumbnail = ThumbnailExtensions.TryGetWithHighestResolution(video.Thumbnails)!;
-        if (thumbnail == null)
-            thumbnail = video.Thumbnails[0];
+                Thumbnail thumbnail = ThumbnailExtensions.TryGetWithHighestResolution(video.Thumbnails)!;
+                if (thumbnail == null)
+                    thumbnail = video.Thumbnails[0];
 
-        _videoData = new Video();
-        _videoData.Thumbnail = await ThumbnailHelper.BitmapImageFromUrl(thumbnail.Url);
-        _videoData.Url = url;
-        _videoData.Title = video.Title;
-        _videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
-        _videoData.ChannelName = video.Author.ChannelTitle;
-        _videoData.ViewCount = video.Engagement.ViewCount;
-        _videoData.Date = video.UploadDate.Humanize(DateTime.Now, culture: System.Globalization.CultureInfo.CurrentCulture);
+                _videoData = new Video();
+                _videoData.Thumbnail = await ThumbnailHelper.BitmapImageFromUrl(thumbnail.Url);
+                _videoData.Url = url;
+                _videoData.Title = video.Title;
+                _videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
+                _videoData.ChannelName = video.Author.ChannelTitle;
+                _videoData.ViewCount = video.Engagement.ViewCount;
+                _videoData.Date = video.UploadDate.Humanize(DateTime.Now, culture: System.Globalization.CultureInfo.CurrentCulture);
 
-        return _videoData;
+                return _videoData;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errore metadata");
+                if (retries == 2)
+                    throw;
+                retries++;
+            }
+            await Task.Delay(200);
+        }
+        throw new Exception();
     }
     public async Task<Video> GetStreamData(Video videoData)
     {
-        GetMetadataCancellationToken = new CancellationTokenSource();
+        GetStreamsCancellationToken = new CancellationTokenSource();
         StreamManifest? streamManifest = null;
         try
         {
-            streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetMetadataCancellationToken.Token);
+            streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetStreamsCancellationToken.Token);
         }
         catch (OperationCanceledException)
         {
@@ -112,7 +134,7 @@ public class YoutubeService
 
     #region DOWNLOAD
 
-    public void EnqueueDownload(VideoDownloadViewModel video)
+    public void EnqueueDownload(VideoDownloadCardViewModel video)
     {
         string format = (Enum.GetName(typeof(DownloadFormat), video.DownloadFormat) ?? "WEBM").ToLower();
         string sanitizedTitle = SanitizeString(video.Title);
@@ -198,7 +220,7 @@ public class YoutubeService
         return true;
     }
 
-    public async Task DownloadVideo(VideoDownloadViewModel video, CancellationToken cancellationToken)
+    public async Task DownloadVideo(VideoDownloadCardViewModel video, CancellationToken cancellationToken)
     {
         IStreamInfo[] streamInfo = [];
         ConversionRequestBuilder conversionBuilder;
@@ -278,5 +300,36 @@ public class YoutubeService
     private string GetVideoDuration(TimeSpan? duration)
     {
         return duration == null ? "Live" : ((TimeSpan)duration).ToString(@"hh\:mm\:ss");
+    }
+
+    internal async Task EnqueueDownloadFromUrl(string url)
+    {
+        Video v = new();
+        DirectDownloadStatus?.Invoke(null, "Loading Video data...");
+        v = await GetVideoMetadataAsync(url);
+        DirectDownloadStatus?.Invoke(null, "Loading stream manifest...");
+        v = await GetStreamData(v);
+        EnqueueDownload(CreateDownloadCardViewModel(v));
+    }
+
+    public VideoDownloadCardViewModel CreateDownloadCardViewModel(object content)
+    {
+        switch (content)
+        {
+            case Video video:
+                VideoDownloadCardViewModel vm= new();
+                vm.Title = video.Title;
+                vm.Thumbnail = video.Thumbnail;
+                vm.Duration = video.Duration;
+                vm.AudioStream = video.AudioStreams.Last();
+                vm.VideoStream = video.VideoStreams.Last();
+                vm.DownloadOption = ServiceProvider.SettingsService.UserPreferences.MediaTypePreference;
+                vm.DownloadFormat = vm.DownloadOption == DownloadMediaType.AudioOnly ?
+                    ServiceProvider.SettingsService.UserPreferences.AudioFormatPreference : ServiceProvider.SettingsService.UserPreferences.VideoFormatPreference;
+                return vm;
+
+            //case Playlist
+        }
+        return null!;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.UserControl
 {
     class ChannelViewModel : ViewModelBase, INotifyPropertyChanged
     {

@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Services;
-using YoutubeDownloader.ViewModels;
+using YoutubeDownloader.ViewModels.Card;
 
 namespace YoutubeDownloader.UserControls
 {

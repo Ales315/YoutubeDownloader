@@ -7,12 +7,11 @@ namespace YoutubeDownloader.UserControls
     /// <summary>
     /// Interaction logic for VideoSelectedCard.xaml
     /// </summary>
-    public partial class VideoSelectedCard : UserControl
+    public partial class DownloadListUC : UserControl
     {
-        public VideoSelectedCard()
+        public DownloadListUC()
         {
             InitializeComponent();
-            borderThumbnail.BorderBrush = ServiceProvider.ThemeService.GetPrimaryColorBrush();
         }
     }
 }

@@ -9,6 +9,7 @@
 	  <Version>1.0.1</Version>
 	  <AssemblyInformationalVersion>1.0.1</AssemblyInformationalVersion>
 	  <ApplicationIcon>appIcon.ico</ApplicationIcon>
+	  <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>

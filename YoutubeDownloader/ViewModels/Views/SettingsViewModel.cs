@@ -3,7 +3,7 @@ using System.Windows.Input;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Services;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.Views
 {
     class SettingsViewModel : ViewModelBase, INotifyPropertyChanged
     {

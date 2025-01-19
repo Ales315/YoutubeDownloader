@@ -6,7 +6,6 @@ namespace YoutubeDownloader.Services
     {
         public static SettingsService SettingsService { get; } = new SettingsService();
         public static YoutubeService YoutubeService { get; } = new YoutubeService();
-        public static ControlStateHandler StateHandler { get; } = new ControlStateHandler();
         public static ThemeService ThemeService { get; } = new ThemeService();
     }
 }

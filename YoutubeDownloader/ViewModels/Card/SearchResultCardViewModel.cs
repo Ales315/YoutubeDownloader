@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media.Imaging;
 using YoutubeDownloader.Enums;
 
-namespace YoutubeDownloader.ViewModels
+namespace YoutubeDownloader.ViewModels.Card
 {
     public class SearchResultCardViewModel
     {

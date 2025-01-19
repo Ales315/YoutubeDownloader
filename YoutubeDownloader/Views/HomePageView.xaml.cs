@@ -8,7 +8,7 @@ using MaterialDesignThemes.Wpf;
 using WpfAnimatedGif;
 using YoutubeDownloader.Services;
 using YoutubeDownloader.UserControls;
-using YoutubeDownloader.ViewModels;
+using YoutubeDownloader.ViewModels.UserControl;
 
 namespace YoutubeDownloader.Views
 {
@@ -29,8 +29,7 @@ namespace YoutubeDownloader.Views
 #endif
             textboxInputUrl.KeyDown += OnTextboxInputUrlKeyDown;
 
-            imgLoadingGifVideo.IsVisibleChanged += (s, e) => SetGifPlaybackFramePosition(s);
-            imgLoadingGifStreams.IsVisibleChanged += (s, e) => SetGifPlaybackFramePosition(s);
+            
 
             UpdateSearchButton();
 
@@ -90,21 +89,7 @@ namespace YoutubeDownloader.Views
             textBlockURLHint.Visibility = textboxInputUrl.Text.Length > 0 ? Visibility.Hidden : Visibility.Visible;
         }
 
-        private static void SetGifPlaybackFramePosition(object sender)
-        {
-            var img = sender as Image;
-            var controller = ImageBehavior.GetAnimationController(img);
-            if (controller == null) return;
-            if (img?.Visibility == Visibility.Hidden || img?.Visibility == Visibility.Collapsed)
-            {
-                controller.Pause();
-                controller.GotoFrame(1);
-            }
-            else
-            {
-                controller.Play();
-            }
-        }
+        
 
         //Search with Enter key
         private void OnTextboxInputUrlKeyDown(object sender, KeyEventArgs e)
@@ -127,38 +112,6 @@ namespace YoutubeDownloader.Views
             textboxInputUrl.Select(textboxInputUrl.Text.Length, 0);
         }
 
-        //Loading gif play parameters
-        private void imgLoadingGifVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var img = sender as Image;
-            var controller = ImageBehavior.GetAnimationController(imgLoadingGifVideo);
-            if (controller == null) return;
-            if (img?.Visibility == Visibility.Hidden || img?.Visibility == Visibility.Collapsed)
-            {
-                controller.Pause();
-                controller.GotoFrame(1);
-            }
-            else
-            {
-                controller.Play();
-            }
-        }
-
-        private void SearchResultCard_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var card = ((SearchResultCard)sender).DataContext as SearchResultCardViewModel;
-            if (card == null) return;
-
-            var vm = this.DataContext as HomePageViewModel;
-            if (vm == null) return;
-
-            switch (card.ResultType)
-            {
-                case Enums.SearchResultType.Video:
-                    vm.Url = card.Url;
-                    vm.GetVideoDataCommand.Execute(null);
-                    break;
-            }
-        }
+        
     }
 }
