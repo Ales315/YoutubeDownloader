@@ -24,6 +24,7 @@ public class YoutubeService
     private ConcurrentQueue<VideoDownloadCardViewModel> _downloadQueue;
     public CancellationTokenSource DownloadCancellationToken = null!;
     public CancellationTokenSource GetMetadataCancellationToken = null!;
+    public CancellationTokenSource GetStreamsCancellationToken = null!;
     public CancellationTokenSource SearchCancellationToken = null!;
 
     public event EventHandler<string>? DirectDownloadStatus;
@@ -97,11 +98,11 @@ public class YoutubeService
     }
     public async Task<Video> GetStreamData(Video videoData)
     {
-        GetMetadataCancellationToken = new CancellationTokenSource();
+        GetStreamsCancellationToken = new CancellationTokenSource();
         StreamManifest? streamManifest = null;
         try
         {
-            streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetMetadataCancellationToken.Token);
+            streamManifest = await _youtube.Videos.Streams.GetManifestAsync(videoData.Url, GetStreamsCancellationToken.Token);
         }
         catch (OperationCanceledException)
         {
