@@ -13,9 +13,9 @@ namespace YoutubeDownloader.ViewModels.UserControl
         private string _previousValidUrl = string.Empty;
         private string _keywordSearchReservedUrl = string.Empty;
 
-        public VideoViewModel VideoViewModel;
-        public DownloadListViewModel DownloadListViewModel;
-        public KeywordSearchViewModel KeywordSearchViewModel;
+        public VideoViewModel VideoVM;
+        public DownloadListViewModel DownloadListVM;
+        public KeywordSearchViewModel KeywordSearchVM;
 
         #region FIELDS
         //data
@@ -28,14 +28,19 @@ namespace YoutubeDownloader.ViewModels.UserControl
         private ICommand _searchCommand = null!;
         private ICommand _goHomeCommand = null!;
         private ICommand _cancelAutoDownloadCommand = null!;
+        private ICommand _goBackCommand = null!;
 
         //current view
         private AppState _currentState;
+        private AppState _previousState;
         private ViewModelBase _currentViewModel = null!;
+        private ViewModelBase _previousViewModel = null!;
 
         //UI state
         private bool _isLoadingAutoDownload;
         private bool _isAutoDownloadFailed;
+        private bool _isHome;
+        private bool _isBackEnabled;
 
         public ObservableCollection<VideoDownloadCardViewModel> VideoDownloadViewModels
         {
@@ -106,6 +111,15 @@ namespace YoutubeDownloader.ViewModels.UserControl
                 return _cancelAutoDownloadCommand ?? new RelayCommand(param => CancelAutoDownload());
             }
         }
+        public ICommand GoBackCommand
+        {
+            get
+            {
+                return _goBackCommand ?? new RelayCommand(param => GoToPreviousPage());
+            }
+        }
+
+        
 
         public ICommand GoHomeCommand
         {
@@ -160,6 +174,24 @@ namespace YoutubeDownloader.ViewModels.UserControl
                 OnPropertyChanged(nameof(IsAutoDownloadFailed));
             }
         }
+        public bool IsHome
+        {
+            get => _isHome;
+            set
+            {
+                _isHome = value;
+                OnPropertyChanged(nameof(IsHome));
+            }
+        }
+        public bool IsBackEnabled
+        {
+            get => _isBackEnabled;
+            set
+            {
+                _isBackEnabled = value;
+                OnPropertyChanged(nameof(IsBackEnabled));
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
@@ -171,15 +203,19 @@ namespace YoutubeDownloader.ViewModels.UserControl
 
         public HomePageViewModel()
         {
+            IsHome = true;
             ServiceProvider.YoutubeService.DirectDownloadStatus += (s, e) => { AutoDownloadStatus = e; };
-            VideoViewModel = new VideoViewModel();
-            DownloadListViewModel = new DownloadListViewModel();
-            KeywordSearchViewModel = new KeywordSearchViewModel();
+            VideoVM = new VideoViewModel();
+            DownloadListVM = new DownloadListViewModel();
+            KeywordSearchVM = new KeywordSearchViewModel();
             SetUI(AppState.DownloadListForm);
 
-            VideoViewModel.DownloadStarted += (s, e) => SetUI(AppState.DownloadListForm);
+            VideoVM.DownloadStarted += (s, e) => SetUI(AppState.DownloadListForm);
 
-            KeywordSearchViewModel.VideoSearchResultClicked += async (s, e) => { await GetVideoMetadata(e); };
+            KeywordSearchVM.VideoSearchResultClicked += async (s, e) => {
+                SetUI(AppState.VideoDownloadForm);
+                await VideoVM.OverrideGetVideoMetadataAsync(e); 
+            };
             //todo: implement other events
         }
 
@@ -217,13 +253,13 @@ namespace YoutubeDownloader.ViewModels.UserControl
                     AutoDownloadStatus = string.Empty;
                     ErrorMessage = ex.Message;
                 }
-                
+
                 IsLoadingAutoDownload = false;
             }
             else
             {
                 SetUI(AppState.VideoDownloadForm);
-                await VideoViewModel.GetVideoMetadata(url);
+                await VideoVM.GetMetadataAsync(url);
             }
         }
 
@@ -245,7 +281,11 @@ namespace YoutubeDownloader.ViewModels.UserControl
         #endregion
 
         #region COMMANDS
-
+        private void GoToPreviousPage()
+        {
+            ServiceProvider.YoutubeService.GetMetadataCancellationToken?.Cancel();
+            SetUIFromViewModel(_previousViewModel);
+        }
         private void GoHome()
         {
             ServiceProvider.YoutubeService.GetMetadataCancellationToken?.Cancel();
@@ -263,20 +303,38 @@ namespace YoutubeDownloader.ViewModels.UserControl
 
         private void SetUI(AppState state)
         {
+            IsBackEnabled = false;
+            IsHome = false;
+            _previousViewModel = CurrentViewModel;
             switch (state)
             {
                 case AppState.DownloadListForm:
-                    CurrentViewModel = DownloadListViewModel;
+                    IsHome = true;
+                    CurrentViewModel = DownloadListVM;
                     break;
                 case AppState.VideoDownloadForm:
-                    CurrentViewModel = VideoViewModel;
+                    CurrentViewModel = VideoVM;
                     break;
                 case AppState.PlaylistDownloadForm:
                     break;
                 case AppState.ChannelForm:
                     break;
                 case AppState.KeywordSearchForm:
-                    CurrentViewModel = KeywordSearchViewModel;
+                    CurrentViewModel = KeywordSearchVM;
+                    break;
+            }
+            if ((state == AppState.VideoDownloadForm || state == AppState.PlaylistDownloadForm || state == AppState.ChannelForm) 
+                && _previousState == AppState.KeywordSearchForm)
+                IsBackEnabled = true;
+
+            _previousState = state;
+        }
+        private void SetUIFromViewModel(object tagetViewModel)
+        {
+            switch (tagetViewModel)
+            {
+                case KeywordSearchViewModel:
+                    SetUI(AppState.KeywordSearchForm);
                     break;
             }
         }
