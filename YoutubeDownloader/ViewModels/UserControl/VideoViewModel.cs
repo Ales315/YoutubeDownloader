@@ -234,6 +234,7 @@ namespace YoutubeDownloader.ViewModels.UserControl
 
         #endregion
 
+        private Task _currentGetMetadataTask = Task.CompletedTask;
         private string _previousValidUrl = string.Empty;
         private UIState _currentState;
         public string Url { get; set; } = string.Empty;
@@ -256,17 +257,27 @@ namespace YoutubeDownloader.ViewModels.UserControl
         }
 
         #region GET METADATA
-
-        //Show video data and available streams
-
-        //Used for loading videos using property Url
-        public async Task GetMetadataFromUrl()
+        public async Task GetMetadataAsync(string url)
         {
-            await GetVideoMetadata(Url);
+            _currentGetMetadataTask = GetVideoMetadata(url);
+            await _currentGetMetadataTask;
+        }
+        
+        //Forces new url and cancels ongoing tasks
+        public async Task OverrideGetVideoMetadataAsync(string url)
+        {
+            ServiceProvider.YoutubeService.GetMetadataCancellationToken?.Cancel();
+            ServiceProvider.YoutubeService.GetStreamsCancellationToken?.Cancel();
+            if (!_currentGetMetadataTask.IsCompleted)
+                _currentGetMetadataTask.Wait();
+
+            SetUI(UIState.Idle);
+            await GetVideoMetadata(url);
             _previousValidUrl = string.Empty;
         }
 
-        public async Task GetVideoMetadata(string url)
+        //Show video data and available streams
+        private async Task GetVideoMetadata(string url)
         {
             if (_currentState != UIState.Idle)
                 return;
@@ -294,7 +305,7 @@ namespace YoutubeDownloader.ViewModels.UserControl
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = ex.Message + "\n" + ex.InnerException?.Message;
                 SetUI(UIState.SearchError);
                 LoadingError?.Invoke(this, ex.Message);
                 ClearCurrentVideoData();
@@ -313,6 +324,7 @@ namespace YoutubeDownloader.ViewModels.UserControl
             VideoStreams = null!;
             GC.WaitForPendingFinalizers();
             GC.Collect();
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void UpdateVideoData(Video videoData)
