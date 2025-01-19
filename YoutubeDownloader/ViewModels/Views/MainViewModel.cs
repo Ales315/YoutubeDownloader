@@ -19,7 +19,7 @@ namespace YoutubeDownloader.ViewModels.Views
         {
             SettingsViewModel = new();
             _homeViewModel = new();
-            SettingsViewModel.IsVisibleChanged += (s, e) => ((HomePageViewModel)CurrentPageViewModel).VideoViewModel.Invalidate();
+            SettingsViewModel.IsVisibleChanged += (s, e) => ((HomePageViewModel)CurrentPageViewModel).VideoVM.Invalidate();
             CurrentPageViewModel = _homeViewModel;
             //PageViewModels.Add(_homeViewModel);
         }
