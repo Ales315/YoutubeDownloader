@@ -76,10 +76,12 @@
                      Text="{Binding SearchQuery, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                      Style="{x:Null}" CaretBrush="{DynamicResource MaterialDesignBody}"/>
             
+            <!--Auto Download error message-->
             <Border Name="UrlErrorBorder" Panel.ZIndex="-1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Height="20" Margin="1,0,1,0"
                     CornerRadius="6" BorderThickness="2" BorderBrush="Transparent" Background="#CE292F"
                     Style="{StaticResource BorderWithShadow}"
-                    Visibility="{Binding StateHandler.IsAutoDownloadError, Converter={StaticResource BoolToVisibilityConverter}}">
+                    UseLayoutRounding="True"
+                    Visibility="{Binding IsAutoDownloadFailed, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBlock Margin="10,0,10,1" Width="auto" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
                            Opacity="0.75" Foreground="White" FontSize="14" FontWeight="DemiBold"
                            VerticalAlignment="Center">
@@ -92,6 +94,8 @@
                     ToolTip="Paste">
                 <materialDesign:PackIcon Kind="ContentPaste" Foreground="{DynamicResource MaterialDesignBody}" Width="26" Height="26"/>
             </Button>
+            
+            <!--Button search-->
             <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Command="{Binding SearchCommand}" 
                     Style="{StaticResource PasteButton}" 
@@ -99,11 +103,12 @@
                     IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}">
                 <Grid>
                     <materialDesign:PackIcon Name="iconSearchDownload" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
-                                 Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
+                                 Visibility="{Binding IsLoadingAutoDownload, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
                     <materialDesign:PackIcon Name="iconLoadingAutoDownload" Kind="Sync" Width="28" Height="28"
-                                 Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                 Visibility="{Binding IsLoadingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </Grid>
             </Button>
+            
             <Label Name="textBlockURLHint" Content="Search by keyword or paste an URL..." 
                    Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="1" 
                    FontSize="16" Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.5" Height="45" 
@@ -144,7 +149,7 @@
             <Button x:Name="buttonCancelAutoDownload" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45"
                     HorizontalAlignment="Left" VerticalAlignment="Center"
                     Style="{StaticResource PasteButton}" 
-                    Visibility="{Binding StateHandler.IsAnalyzingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
+                    Visibility="{Binding IsLoadingAutoDownload, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}"
                     ToolTip="Cancel download"
                     Command="{Binding CancelAutoDownloadCommand}">
                 <materialDesign:PackIcon Kind="CloseCircle" Foreground="{DynamicResource MaterialDesignPrimaryBrush}" Width="28" Height="28"/>

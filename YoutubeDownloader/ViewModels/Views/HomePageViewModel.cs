@@ -33,6 +33,10 @@ namespace YoutubeDownloader.ViewModels.UserControl
         private AppState _currentState;
         private ViewModelBase _currentViewModel = null!;
 
+        //UI state
+        private bool _isLoadingAutoDownload;
+        private bool _isAutoDownloadFailed;
+
         public ObservableCollection<VideoDownloadCardViewModel> VideoDownloadViewModels
         {
             get => ServiceProvider.YoutubeService.DownloadList;
@@ -137,6 +141,26 @@ namespace YoutubeDownloader.ViewModels.UserControl
             }
         }
 
+        //UI state
+        public bool IsLoadingAutoDownload
+        {
+            get => _isLoadingAutoDownload;
+            set
+            {
+                _isLoadingAutoDownload = value;
+                OnPropertyChanged(nameof(IsLoadingAutoDownload));
+            }
+        }
+        public bool IsAutoDownloadFailed
+        {
+            get => _isAutoDownloadFailed;
+            set
+            {
+                _isAutoDownloadFailed = value;
+                OnPropertyChanged(nameof(IsAutoDownloadFailed));
+            }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
@@ -147,12 +171,14 @@ namespace YoutubeDownloader.ViewModels.UserControl
 
         public HomePageViewModel()
         {
+            ServiceProvider.YoutubeService.DirectDownloadStatus += (s, e) => { AutoDownloadStatus = e; };
             VideoViewModel = new VideoViewModel();
             DownloadListViewModel = new DownloadListViewModel();
             KeywordSearchViewModel = new KeywordSearchViewModel();
             SetUI(AppState.DownloadListForm);
 
             VideoViewModel.DownloadStarted += (s, e) => SetUI(AppState.DownloadListForm);
+
             KeywordSearchViewModel.VideoSearchResultClicked += async (s, e) => { await GetVideoMetadata(e); };
             //todo: implement other events
         }
@@ -162,10 +188,43 @@ namespace YoutubeDownloader.ViewModels.UserControl
 
         public async Task Search()
         {
+            AutoDownloadStatus = string.Empty;
+            IsAutoDownloadFailed = false;
             if (isUrl(SearchQuery))
                 await GetVideoMetadata(SearchQuery);
             else
                 await GetSearchResults();
+        }
+
+        public async Task GetVideoMetadata(string url)
+        {
+            if (ServiceProvider.SettingsService.UserPreferences.AutoDownload)
+            {
+                try
+                {
+                    IsAutoDownloadFailed = false;
+                    IsLoadingAutoDownload = true;
+                    await ServiceProvider.YoutubeService.EnqueueDownloadFromUrl(url);
+                    AutoDownloadStatus = "Download started ✓";
+                }
+                catch (OperationCanceledException)
+                {
+                    AutoDownloadStatus = string.Empty;
+                }
+                catch (Exception ex)
+                {
+                    IsAutoDownloadFailed = true;
+                    AutoDownloadStatus = string.Empty;
+                    ErrorMessage = ex.Message;
+                }
+                
+                IsLoadingAutoDownload = false;
+            }
+            else
+            {
+                SetUI(AppState.VideoDownloadForm);
+                await VideoViewModel.GetVideoMetadata(url);
+            }
         }
 
         private async Task GetSearchResults()
@@ -181,37 +240,6 @@ namespace YoutubeDownloader.ViewModels.UserControl
             if (Uri.TryCreate(query, UriKind.Absolute, out var uri))
                 return uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps;
             return false;
-        }
-
-        #endregion
-
-        #region GET METADATA
-        //Get video metadata
-        public async Task GetMetadataFromUrl()
-        {
-            await VideoViewModel.GetMetadataFromUrl();
-        }
-        public async Task GetVideoMetadata(string url)
-        {
-            if (ServiceProvider.SettingsService.UserPreferences.AutoDownload)
-            {
-                try
-                {
-                    await ServiceProvider.YoutubeService.EnqueueDownloadFromUrl(url);
-                }
-                catch (OperationCanceledException)
-                {
-                }
-                catch (Exception ex)
-                {
-                    ErrorMessage = ex.Message;
-                }
-            }
-            else
-            {
-                SetUI(AppState.VideoDownloadForm);
-                await VideoViewModel.GetVideoMetadata(url);
-            }
         }
 
         #endregion

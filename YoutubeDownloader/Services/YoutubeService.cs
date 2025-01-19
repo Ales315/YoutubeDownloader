@@ -26,6 +26,8 @@ public class YoutubeService
     public CancellationTokenSource GetMetadataCancellationToken = null!;
     public CancellationTokenSource SearchCancellationToken = null!;
 
+    public event EventHandler<string>? DirectDownloadStatus;
+
     private Video? _videoData;
     private Video? _autoDownloadVideoData;
     private Video _video = null!;
@@ -300,7 +302,9 @@ public class YoutubeService
     internal async Task EnqueueDownloadFromUrl(string url)
     {
         Video v = new();
+        DirectDownloadStatus?.Invoke(null, "Loading Video data...");
         v = await GetVideoMetadataAsync(url);
+        DirectDownloadStatus?.Invoke(null, "Loading stream manifest...");
         v = await GetStreamData(v);
         EnqueueDownload(CreateDownloadCardViewModel(v));
     }
