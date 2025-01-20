@@ -18,6 +18,7 @@ namespace YoutubeDownloader.ViewModels.Views
         private HomePageViewModel _homeViewModel = null!;
         private string _progressText = string.Empty;
         private double _meanProgress;
+        private bool _isDownloadListEmpty;
 
         public ObservableCollection<VideoDownloadCardViewModel> Downloads { get => ServiceProvider.YoutubeService.DownloadList; }
 
@@ -74,12 +75,36 @@ namespace YoutubeDownloader.ViewModels.Views
         {
             get
             {
-                double p = Downloads.Any() ? Downloads.Average(d => d.Progress) : 0;
+                bool anyDl = Downloads.Any();
+                var validDls = Downloads.Where(d => !d.IsDownloadCompleted && !d.IsDownloadFailed && !d.IsDownloadCancelled);
+                int dlCount = validDls.Count();
+                int activeDlCount = Downloads.Where(d => d.IsDownloading == true).Count();
+
+                double avg = dlCount > 0 ? validDls.Average(d => d.Progress) : 1;
+                double p = anyDl ? avg : 0;
+
                 if (p == 1)
-                    ProgressText = $"All downloads completed ✓";
+                    ProgressText = $"All downloads completed";
                 else
-                    ProgressText = $"Dowloading {Downloads.Where(d => d.IsDownloading == true).Count()}/{Downloads.Count}";
+                    ProgressText = $"Dowloading {activeDlCount}/{dlCount}";
+
+                if (!anyDl)
+                    ProgressText = "No active downloads";
+
+                if (activeDlCount == 0)
+                    IsDownloading = false;
+                else
+                    IsDownloading = true;
                 return p;
+            }
+        }
+        public bool IsDownloading
+        {
+            get => _isDownloadListEmpty;
+            set
+            {
+                _isDownloadListEmpty = value;
+                OnPropertyChanged(nameof(IsDownloading));
             }
         }
 

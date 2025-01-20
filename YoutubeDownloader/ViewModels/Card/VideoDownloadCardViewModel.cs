@@ -17,6 +17,8 @@ namespace YoutubeDownloader.ViewModels.Card
         private bool _isDownloading = false;
         private bool _isDownloadCompleted = false;
         private bool _isDownloadFailed = false;
+        private bool _isDownloadCancelled;
+
         private ICommand _cancelDownloadCommand = null!;
         private ICommand _playCommand = null!;
         private ICommand _openDownloadFolderCommand = null!;
@@ -64,6 +66,16 @@ namespace YoutubeDownloader.ViewModels.Card
                 if (_isDownloadFailed == value) return;
                 _isDownloadFailed = value;
                 OnPropertyChanged(nameof(IsDownloadFailed));
+            }
+        }
+        public bool IsDownloadCancelled
+        {
+            get => _isDownloadCancelled;
+            set
+            {
+                if (_isDownloadCancelled == value) return;
+                _isDownloadCancelled = value;
+                OnPropertyChanged(nameof(IsDownloadCancelled));
             }
         }
         public VideoOnlyStreamInfo VideoStream { get; set; } = null!;
@@ -122,6 +134,8 @@ namespace YoutubeDownloader.ViewModels.Card
         private void CancelDownload()
         {
             CancellationToken?.Cancel();
+            IsDownloadCancelled = true;
+            IsDownloading = false;
         }
         private void OpenDownloadFolder()
         {

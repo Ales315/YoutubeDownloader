@@ -99,8 +99,7 @@
             <Button x:Name="buttonSearch" Panel.ZIndex="3" Grid.Column="1" Width="45" Height="45" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Command="{Binding SearchCommand}" 
                     Style="{StaticResource PasteButton}" 
-                    Cursor="Hand"
-                    IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertBooleanConverter}}">
+                    Cursor="Hand">
                 <Grid>
                     <materialDesign:PackIcon Name="iconSearchDownload" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"
                                  Visibility="{Binding IsLoadingAutoDownload, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
@@ -176,7 +175,6 @@
                 <Button x:Name="buttonSettings" Panel.ZIndex="3" Grid.Column="2" Width="45" Height="45"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                         Style="{StaticResource PasteButton}" 
-                        IsEnabled="{Binding StateHandler.IsAnalizing, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                         ToolTip="Settings"
                         Command="{Binding DataContext.ChangeSettingsVisibilityCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <materialDesign:PackIcon Kind="Settings" Foreground="{DynamicResource MaterialDesignBody}" Width="28" Height="28"/>
