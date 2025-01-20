@@ -62,25 +62,29 @@
 
                 </Border>
             </Border>
-            <!--Visibility updated in code behind-->
+            <!--Visibility & positioning updated in code behind-->
             <StackPanel Orientation="Vertical">
                 <TextBlock x:Name="TextblockTitle" TextWrapping="WrapWithOverflow" LineStackingStrategy="MaxHeight" MaxHeight="50" VerticalAlignment="Center" MaxWidth="600"
                            Foreground="{DynamicResource MaterialDesignBody}"
                            FontSize="14"
-                           Margin="10,0,0,5" Padding="0,0,10,0"
+                           Margin="10,0,0,4" Padding="0,0,10,0"
                            TextTrimming="CharacterEllipsis">
                     <Run Text="{Binding Title}"/>
                 </TextBlock>
-                <TextBlock Name="TextBlockChannelName" TextWrapping="NoWrap"  MaxWidth="500"
-                           HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                           Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7"
-                           FontSize="12"
-                           Margin="10,0,0,0"
-                           TextTrimming="CharacterEllipsis">
-                    <Run Text="{Binding ChannelName}"/>
-                </TextBlock>
-            </StackPanel>
+                <StackPanel Name="StackPanelChannelName" Orientation="Horizontal" Margin="10,0,0,0">
+                    <materialDesign:PackIcon Name="IconChannelName" Kind="User" Width="14" Height="14" Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7"
+                                             VerticalAlignment="Center" Margin="0,1,0,0"/>
+                    <TextBlock Name="TextBlockChannelName" TextWrapping="NoWrap"  MaxWidth="500"
+                               HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                               Foreground="{DynamicResource MaterialDesignBody}" Opacity="0.7"
+                               FontSize="12"
+                               Margin="4,0,0,0"
+                               TextTrimming="CharacterEllipsis">
+                        <Run Text="{Binding ChannelName}"/>
+                    </TextBlock>
+                </StackPanel>
 
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

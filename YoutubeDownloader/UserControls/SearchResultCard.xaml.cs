@@ -41,6 +41,7 @@ namespace YoutubeDownloader.UserControls
                     ContentImageBorder.CornerRadius = new CornerRadius(ContentImageBorder.Width/2);
                     TextBlockChannelName.Visibility = Visibility.Collapsed;
                     BorderThumbnailFlags.Visibility = Visibility.Collapsed;
+                    StackPanelChannelName.Visibility = Visibility.Collapsed;
                     break;
 
                 case SearchResultType.Video:
