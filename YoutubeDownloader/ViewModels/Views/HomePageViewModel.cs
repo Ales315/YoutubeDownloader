@@ -213,8 +213,7 @@ namespace YoutubeDownloader.ViewModels.UserControl
             VideoVM.DownloadStarted += (s, e) => SetUI(AppState.DownloadListForm);
 
             KeywordSearchVM.VideoSearchResultClicked += async (s, e) => {
-                SetUI(AppState.VideoDownloadForm);
-                await VideoVM.OverrideGetVideoMetadataAsync(e); 
+                await GetVideoMetadata(e); 
             };
             //todo: implement other events
         }
