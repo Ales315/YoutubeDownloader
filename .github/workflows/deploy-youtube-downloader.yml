@@ -1,4 +1,4 @@
-name: "Deploy Class Commands"
+name: "Deploy YoutubeDownloader"
 
 on:
   push:
