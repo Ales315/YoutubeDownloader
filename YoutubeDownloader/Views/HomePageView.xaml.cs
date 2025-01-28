@@ -5,9 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using MaterialDesignThemes.Wpf;
-using WpfAnimatedGif;
 using YoutubeDownloader.Services;
-using YoutubeDownloader.UserControls;
 using YoutubeDownloader.ViewModels.UserControl;
 
 namespace YoutubeDownloader.Views
@@ -29,7 +27,7 @@ namespace YoutubeDownloader.Views
 #endif
             textboxInputUrl.KeyDown += OnTextboxInputUrlKeyDown;
 
-            
+            MouseDown += OnMouseDown;
 
             UpdateSearchButton();
 
@@ -39,6 +37,16 @@ namespace YoutubeDownloader.Views
             iconLoadingAutoDownload.Foreground = ServiceProvider.ThemeService.GetPrimaryColorBrush();
 
             UrlErrorBorder.IsVisibleChanged += (s, e) => StartErrorAnimation();
+        }
+
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //handle back button press
+            if (e.ChangedButton == System.Windows.Input.MouseButton.XButton1)
+            {
+                if (this.DataContext is HomePageViewModel vm)
+                    vm.GoBackCommand.Execute(null);
+            }
         }
 
         private void StartErrorAnimation()
@@ -57,11 +65,11 @@ namespace YoutubeDownloader.Views
             };
             translateTransform.BeginAnimation(TranslateTransform.YProperty, doubleAnimation);
         }
-        
+
 
         private void StartAnimation()
         {
-            if(!iconLoadingAutoDownload.IsVisible) 
+            if (!iconLoadingAutoDownload.IsVisible)
                 return;
             RotateTransform rotateTransform = new RotateTransform();
             iconLoadingAutoDownload.RenderTransform = rotateTransform;
@@ -89,7 +97,7 @@ namespace YoutubeDownloader.Views
             textBlockURLHint.Visibility = textboxInputUrl.Text.Length > 0 ? Visibility.Hidden : Visibility.Visible;
         }
 
-        
+
 
         //Search with Enter key
         private void OnTextboxInputUrlKeyDown(object sender, KeyEventArgs e)
@@ -112,6 +120,6 @@ namespace YoutubeDownloader.Views
             textboxInputUrl.Select(textboxInputUrl.Text.Length, 0);
         }
 
-        
+
     }
 }

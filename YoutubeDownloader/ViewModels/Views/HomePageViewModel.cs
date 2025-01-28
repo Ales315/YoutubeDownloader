@@ -282,6 +282,8 @@ namespace YoutubeDownloader.ViewModels.UserControl
         #region COMMANDS
         private void GoToPreviousPage()
         {
+            if (CurrentViewModel is not VideoViewModel && _previousViewModel is not KeywordSearchViewModel)
+                return;
             ServiceProvider.YoutubeService.GetMetadataCancellationToken?.Cancel();
             SetUIFromViewModel(_previousViewModel);
         }
