@@ -9,7 +9,6 @@
              xmlns:uc="clr-namespace:YoutubeDownloader.UserControls"
              xmlns:vm="clr-namespace:YoutubeDownloader.ViewModels" 
              xmlns:converter="clr-namespace:YoutubeDownloader.Converters" 
-             d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
              Name="VideoCard"
              mc:Ignorable="d" 
              Height="auto" Width="auto" MinWidth="700"

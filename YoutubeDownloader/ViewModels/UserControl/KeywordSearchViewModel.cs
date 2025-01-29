@@ -107,5 +107,9 @@ namespace YoutubeDownloader.ViewModels.UserControl
         {
             VideoSearchResultClicked?.Invoke(this, url);
         }
+        public void GetPlaylistVideos(string url)
+        {
+            PlaylistSearchResultClicked?.Invoke(this, url);
+        }
     }
 }

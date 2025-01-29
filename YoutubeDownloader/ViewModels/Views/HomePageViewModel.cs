@@ -16,6 +16,7 @@ namespace YoutubeDownloader.ViewModels.UserControl
         public VideoViewModel VideoVM;
         public DownloadListViewModel DownloadListVM;
         public KeywordSearchViewModel KeywordSearchVM;
+        public PlaylistViewModel PlaylistVM;
 
         #region FIELDS
         //data
@@ -205,9 +206,12 @@ namespace YoutubeDownloader.ViewModels.UserControl
         {
             IsHome = true;
             ServiceProvider.YoutubeService.DirectDownloadStatus += (s, e) => { AutoDownloadStatus = e; };
+
+            //Load all views
             VideoVM = new VideoViewModel();
             DownloadListVM = new DownloadListViewModel();
             KeywordSearchVM = new KeywordSearchViewModel();
+            PlaylistVM = new PlaylistViewModel(); 
             SetUI(AppState.DownloadListForm);
 
             VideoVM.DownloadStarted += (s, e) => SetUI(AppState.DownloadListForm);
@@ -215,9 +219,20 @@ namespace YoutubeDownloader.ViewModels.UserControl
             KeywordSearchVM.VideoSearchResultClicked += async (s, e) => {
                 await GetVideoMetadata(e); 
             };
+            KeywordSearchVM.PlaylistSearchResultClicked += async (s, e) =>
+            {
+                await GetPlaylistVideos(e);
+            };
             //todo: implement other events
         }
 
+        #region PLAYLISTS
+        private async Task GetPlaylistVideos(string e)
+        {
+            SetUI(AppState.PlaylistDownloadForm);
+            await PlaylistVM.GetPlaylistAsync(e);
+        }
+        #endregion
 
         #region SEARCH
 
@@ -317,6 +332,7 @@ namespace YoutubeDownloader.ViewModels.UserControl
                     CurrentViewModel = VideoVM;
                     break;
                 case AppState.PlaylistDownloadForm:
+                    CurrentViewModel = PlaylistVM;
                     break;
                 case AppState.ChannelForm:
                     break;

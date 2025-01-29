@@ -29,6 +29,9 @@
         <DataTemplate DataType="{x:Type vm:KeywordSearchViewModel}">
             <local:KeywordSearchUC/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PlaylistViewModel}">
+            <local:PlaylistUC/>
+        </DataTemplate>
 
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>

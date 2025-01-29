@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Media;
 using System.Windows;
+using System.Windows.Navigation;
+using AngleSharp.Media.Dom;
 using Humanizer;
 using YoutubeDownloader.Enums;
 using YoutubeDownloader.Helpers;
@@ -14,6 +16,7 @@ using YoutubeDownloader.ViewModels.Card;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Converter;
+using YoutubeExplode.Playlists;
 using YoutubeExplode.Search;
 using YoutubeExplode.Videos.Streams;
 
@@ -41,6 +44,7 @@ public class YoutubeService
 
     public ObservableCollection<VideoDownloadCardViewModel> DownloadList { get; internal set; } = new();
     public ObservableCollection<SearchResultCardViewModel> SearchResultViewModels { get; set; } = new();
+    public ObservableCollection<PlaylistVideoCardViewModel> PlaylistVideoViewModels { get; set; } = new();
 
     public YoutubeService()
     {
@@ -80,7 +84,7 @@ public class YoutubeService
                 _videoData.Thumbnail = await ThumbnailHelper.BitmapImageFromUrl(thumbnail.Url);
                 _videoData.Url = url;
                 _videoData.Title = video.Title;
-                _videoData.Duration = video.Duration == null ? "Live" : ((TimeSpan)video.Duration).ToString(@"hh\:mm\:ss");
+                _videoData.Duration = GetVideoDuration(video.Duration);
                 _videoData.ChannelName = video.Author.ChannelTitle;
                 _videoData.ViewCount = video.Engagement.ViewCount;
                 _videoData.Date = video.UploadDate.Humanize(DateTime.Now, culture: System.Globalization.CultureInfo.CurrentCulture);
@@ -89,7 +93,7 @@ public class YoutubeService
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Errore metadata");
+                MessageBox.Show(ex.Message);
                 if (retries == 2)
                     throw;
                 retries++;
@@ -297,7 +301,7 @@ public class YoutubeService
         }
     }
 
-    private string GetVideoDuration(TimeSpan? duration)
+    public string GetVideoDuration(TimeSpan? duration)
     {
         return duration == null ? "Live" : ((TimeSpan)duration).ToString(@"hh\:mm\:ss");
     }
@@ -331,5 +335,13 @@ public class YoutubeService
             //case Playlist
         }
         return null!;
+    }
+
+    public async Task<List<PlaylistVideo>> GetPlaylistAsync(string url)
+    {
+        var videoList = await _youtube.Playlists.GetVideosAsync(url);
+        if (videoList == null) throw new Exception("Error loading video list");
+
+        return [.. videoList];
     }
 }
