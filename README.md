@@ -1,7 +1,6 @@
 # WPF YouTube Downloader
 
-![](https://img.shields.io/github/downloads/Ales315/YoutubeDownloader/YoutubeDownloader.exe?style=flat&label=Downloads
-)
+[![](https://img.shields.io/github/downloads/Ales315/YoutubeDownloader/YoutubeDownloader.exe?style=flat&label=Downloads)](https://github.com/Ales315/YoutubeDownloader/releases)
 
 
 A simple WPF application designed for downloading YouTube videos using the [YouTubeExplode](https://github.com/Tyrrrz/YouTubeExplode) library. 
