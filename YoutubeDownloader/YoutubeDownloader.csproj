@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-	  <Version>2.0.0</Version>
-	  <AssemblyInformationalVersion>2.0.0</AssemblyInformationalVersion>
+	  <Version>2.0.1</Version>
+	  <AssemblyInformationalVersion>2.0.1</AssemblyInformationalVersion>
 	  <ApplicationIcon>appIcon.ico</ApplicationIcon>
 	  <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
@@ -26,8 +26,8 @@
     <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
-    <PackageReference Include="YoutubeExplode" Version="6.5.2" />
-    <PackageReference Include="YoutubeExplode.Converter" Version="6.5.2" />
+    <PackageReference Include="YoutubeExplode" Version="6.5.3" />
+    <PackageReference Include="YoutubeExplode.Converter" Version="6.5.3" />
   </ItemGroup>
 
   <ItemGroup>
