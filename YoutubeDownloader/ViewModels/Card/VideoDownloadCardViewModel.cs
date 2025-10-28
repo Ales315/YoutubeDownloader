@@ -141,16 +141,17 @@ namespace YoutubeDownloader.ViewModels.Card
         {
             if (!File.Exists(FileName))
             {
-                MessageBox.Show("File spostato o mancante", "File non trovato");
+                MessageBox.Show("File was moved or deleted", "File not found");
                 return;
             }
-            Process.Start("explorer.exe", Path.GetDirectoryName(FileName) ?? string.Empty);
+            string argument = "/select, \"" + FileName + "\"";
+            Process.Start("explorer.exe", argument);
         }
         private void Play()
         {
             if (!File.Exists(FileName))
             {
-                MessageBox.Show("File spostato o mancante", "File non trovato");
+                MessageBox.Show("File was moved or deleted", "File not found");
                 return;
             }
             Process.Start("explorer.exe", FileName);
